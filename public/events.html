@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Demo activity log · ZheshGo</title>
+  <meta name="description" content="The local demo event log for this ZheshGo session — what features were used."/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body data-page="explore">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">Demo analytics</p>
+        <h1>Activity in this browser</h1>
+        <p class="lead">A minimal, local event log — the early tool for learning what travelers actually use. Stored here, on your device only. Clear it any time.</p>
+      </div>
+    </div>
+
+    <div class="wrap page page-narrow">
+      <div class="evt-grid" id="counts"></div>
+      <div class="flex mb2">
+        <button class="btn btn-secondary btn-sm" type="button" id="refresh">Refresh</button>
+        <button class="btn btn-ghost btn-sm" type="button" id="clear">Clear log</button>
+      </div>
+      <div class="evt-log" id="log" aria-live="polite"></div>
+      <p class="small muted mt2">Session: <span id="session"></span> · Kept to the last 500 events. This is demo instrumentation — the future version of this is how we'll judge whether guides, the assistant and the photo guide are actually useful.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var LABELS = {
+        view_home: "Home page views",
+        view_explore: "Explore page views",
+        view_plan: "Planner views",
+        view_assistant: "Assistant page views",
+        view_trip: "My Trip views",
+        view_guide: "Guide views (city/route/place)",
+        search: "Searches",
+        search_open: "Search opened",
+        filter: "Filter changes",
+        save_route: "Routes saved",
+        save_place: "Places saved",
+        unsave_route: "Routes unsaved",
+        save_plan_intent: "Planner runs",
+        open_assistant: "Assistant opened",
+        assistant_query: "Assistant questions",
+        photo_start: "Photo guide started",
+        photo_scan: "Photo scans",
+        photo_matched: "Photo matches",
+        photo_step: "Guide steps viewed",
+        photo_complete: "Guides completed",
+        photo_abandon: "Guides abandoned",
+        open_consult: "Consult opened",
+        submit_consult: "Consults submitted",
+        error: "Errors",
+        human_handoff: "Hand-offs to human",
+        faq_open: "FAQ items opened",
+        community_ask: "Community questions",
+        export_trip: "Trip exports",
+      };
+      function render() {
+        var counts = ZW.eventCounts();
+        var total = ZW.getEvents().length;
+        document.getElementById("counts").innerHTML =
+          '<div class="evt-count"><b>' + total + "</b><span>total events this browser</span></div>" +
+          Object.keys(counts).map(function (k) {
+            return '<div class="evt-count"><b>' + counts[k] + "</b><span>" + (LABELS[k] || k) + "</span></div>";
+          }).join("");
+        document.getElementById("log").innerHTML = ZW.getEvents().slice(-120).reverse().map(function (e) {
+          var d = new Date(e.ts);
+          return "<div>" + d.toLocaleTimeString() + " · " + ZW.esc(e.task) +
+            (e.payload && Object.keys(e.payload).length ? " · " + ZW.esc(JSON.stringify(e.payload).slice(0, 90)) : "") + "</div>";
+        }).join("");
+        document.getElementById("session").textContent = ZW.sessionId;
+      }
+      document.getElementById("refresh").addEventListener("click", render);
+      document.getElementById("clear").addEventListener("click", function () {
+        if (confirm("Clear this browser's ZheshGo activity log?")) { ZW.clearEvents(); render(); }
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 760" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: islands and a ferry on open water">
+  <defs>
+    <linearGradient id="zsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E3EADF"/>
+      <stop offset="1" stop-color="#F1EDE0"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="760" fill="url(#zsky)"/>
+  <circle cx="140" cy="130" r="42" fill="#FBF8F1"/>
+  <path d="M0 300 L120 210 L230 290 L340 220 L450 300 L600 240 L600 460 L0 460 Z" fill="#C3D2C6"/>
+  <path d="M420 300 Q520 330 600 300 L600 460 L420 460 Z" fill="#93AD9C"/>
+  <rect y="450" width="600" height="310" fill="#8FA996"/>
+  <g transform="translate(280 380)">
+    <rect x="0" y="0" width="150" height="40" rx="6" fill="#F6F2E9" opacity="0.95"/>
+    <rect x="40" y="-34" width="70" height="34" fill="#F6F2E9" opacity="0.95"/>
+    <path d="M75 -34 L75 -64 L115 -34 Z" fill="#3D6B5C"/>
+    <rect x="58" y="-26" width="10" height="10" fill="#3D6B5C"/>
+    <rect x="78" y="-26" width="10" height="10" fill="#3D6B5C"/>
+    <rect x="12" y="8" width="12" height="22" fill="#A67C52"/>
+  </g>
+  <g stroke="#F6F2E9" stroke-width="2.4" opacity="0.5">
+    <path d="M60 560 h160" fill="none"/>
+    <path d="M380 610 h150" fill="none"/>
+    <path d="M180 680 h220" fill="none"/>
+  </g>
+  <g fill="#22302E" opacity="0.5">
+    <circle cx="480" cy="180" r="4"/><circle cx="500" cy="196" r="4"/><circle cx="466" cy="200" r="4"/>
+  </g>
+</svg>

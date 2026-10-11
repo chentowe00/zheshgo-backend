@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 760" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: Shanghai skyline and riverside facades">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#CBD6CC"/>
+      <stop offset="1" stop-color="#E9E4D6"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="760" fill="url(#sky)"/>
+  <circle cx="440" cy="150" r="48" fill="#F6F2E9" opacity="0.9"/>
+  <g fill="#7E9385" opacity="0.7">
+    <rect x="60" y="300" width="26" height="320"/>
+    <rect x="96" y="260" width="30" height="360"/>
+    <rect x="136" y="330" width="20" height="290"/>
+  </g>
+  <g fill="#22302E">
+    <rect x="40" y="420" width="36" height="240" rx="3"/>
+    <rect x="80" y="370" width="26" height="290" rx="3"/>
+    <rect x="110" y="340" width="48" height="320" rx="4"/>
+    <circle cx="134" cy="330" r="7" fill="#3D6B5C"/>
+    <rect x="162" y="400" width="30" height="260" rx="3"/>
+    <rect x="196" y="440" width="44" height="220" rx="3"/>
+  </g>
+  <g fill="#3D6B5C">
+    <rect x="240" y="300" width="52" height="360" rx="5"/>
+    <rect x="256" y="272" width="20" height="26"/>
+    <rect x="300" y="330" width="40" height="330" rx="4"/>
+    <rect x="350" y="250" width="28" height="410" rx="4"/>
+    <rect x="390" y="360" width="46" height="300" rx="5"/>
+  </g>
+  <g fill="#F6F2E9" opacity="0.25">
+    <rect x="250" y="320" width="10" height="14"/><rect x="270" y="320" width="10" height="14"/>
+    <rect x="310" y="350" width="9" height="13"/><rect x="330" y="350" width="9" height="13"/><rect x="350" y="350" width="9" height="13"/>
+    <rect x="400" y="380" width="10" height="14"/><rect x="420" y="380" width="10" height="14"/>
+  </g>
+  <rect y="620" width="600" height="140" fill="#9FB4A5"/>
+  <g stroke="#6E9183" stroke-width="2.5" opacity="0.6">
+    <path d="M30 660 h160"/><path d="M240 690 h180"/><path d="M470 655 h100"/>
+  </g>
+  <g fill="none" stroke="#22302E" stroke-width="3">
+    <path d="M0 700 Q150 690 300 700 T600 700" opacity="0.35"/>
+  </g>
+</svg>
