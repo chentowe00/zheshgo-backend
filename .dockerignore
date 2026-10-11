@@ -24,4 +24,5 @@ data/*.tmp
 # tooling / meta not needed at runtime
 .git
 .gitignore
+.github
 node_modules
