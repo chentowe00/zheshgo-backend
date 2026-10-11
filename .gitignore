@@ -1,0 +1,14 @@
+.env
+.env.*
+*.key
+data/secret.key
+data/bootstrap.json
+data/bootstrap-token.txt
+data/users.json
+data/sessions.json
+data/audit.json
+data/consults.json
+data/submissions.json
+data/events.json
+data/*.tmp
+node_modules/

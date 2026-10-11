@@ -1,0 +1,27 @@
+# .dockerignore — controls what reaches the Railway build (and runtime image).
+# Secrets and runtime state MUST stay out of the image. Site content
+# (data/content.json) is KEPT so the AI assistant can ground its answers in
+# the published guides — it is public content, not a secret.
+
+# secrets / credentials — never ship
+.env
+.env.*
+!.env.example
+*.key
+data/secret.key
+data/bootstrap.json
+data/bootstrap-token.txt
+
+# runtime state (ephemeral on Railway; regenerated or empty)
+data/users.json
+data/sessions.json
+data/audit.json
+data/consults.json
+data/submissions.json
+data/events.json
+data/*.tmp
+
+# tooling / meta not needed at runtime
+.git
+.gitignore
+node_modules
