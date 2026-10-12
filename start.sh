@@ -16,7 +16,12 @@ cat > /tmp/Caddyfile <<EOF
 ${public_host} {
   @ai path /api/v1/assistant/status /api/v1/assistant/chat /api/v1/health
   handle @ai {
-    reverse_proxy 127.0.0.1:8080
+    reverse_proxy 127.0.0.1:8080 {
+      # Only public AI endpoints reach this proxy. Browser requests are
+      # same-origin here; remove Origin before the internal backend check.
+      # Cross-origin callers still receive no allow-origin response header.
+      header_up -Origin
+    }
   }
   handle {
     root * /app/public
