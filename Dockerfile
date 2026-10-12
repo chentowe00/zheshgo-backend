@@ -6,6 +6,10 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# Serve the existing visitor pages and the AI API from one HTTPS origin.
+# Caddy obtains a public certificate for the current instance EIP.
+RUN apk add --no-cache caddy curl
+
 # Copy the whole app (respects .dockerignore: secrets & runtime state excluded)
 COPY . .
 
@@ -16,6 +20,6 @@ ENV PORT=8080
 RUN mkdir -p /app/data
 
 # SAE probes this port; server.js serves / and /api/v1/health
-EXPOSE 8080
+EXPOSE 80 443 8080
 
-CMD ["node", "server.js"]
+CMD ["sh", "start.sh"]
