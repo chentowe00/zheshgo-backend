@@ -3,7 +3,7 @@ set -eu
 
 # A CLB ingress hostname stays fixed when SAE replaces its application instance.
 # This value is public configuration, never a credential.
-stable_host="${PUBLIC_HTTPS_HOST:-8-210-44-250.sslip.io}"
+stable_host="${PUBLIC_HTTPS_HOST:-8-210-60-175.sslip.io}"
 if ! printf '%s' "$stable_host" | grep -Eq '^([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$'; then
   echo '[public-https] Invalid PUBLIC_HTTPS_HOST' >&2
   exit 1
