@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480" role="img" aria-label="Sample illustration of station directional signage">
+  <rect width="600" height="480" fill="#F2EEE4"/>
+  <rect x="40" y="90" width="520" height="120" rx="10" fill="#3D6B5C" stroke="#22302E" stroke-width="5"/>
+  <g fill="#F6F2E9">
+    <circle cx="110" cy="150" r="26"/>
+    <rect x="170" y="130" width="120" height="14" rx="3"/>
+    <rect x="170" y="156" width="90" height="10" rx="3" opacity="0.75"/>
+  </g>
+  <g stroke="#F6F2E9" stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M240 200 h120 M300 170 v60 l20 10"/>
+    <path d="M360 220 h40"/>
+  </g>
+  <g fill="#F6F2E9">
+    <circle cx="470" cy="150" r="26"/>
+    <rect x="380" y="130" width="60" height="14" rx="3" opacity="0.85"/>
+  </g>
+  <rect x="40" y="280" width="520" height="100" rx="10" fill="#FFFDF8" stroke="#22302E" stroke-width="5"/>
+  <g fill="#22302E">
+    <rect x="90" y="310" width="100" height="14" rx="3"/>
+    <rect x="90" y="336" width="70" height="10" rx="3" opacity="0.6"/>
+    <rect x="260" y="310" width="100" height="14" rx="3"/>
+    <rect x="260" y="336" width="80" height="10" rx="3" opacity="0.6"/>
+    <rect x="430" y="310" width="90" height="14" rx="3"/>
+  </g>
+  <text x="300" y="428" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#77837C" letter-spacing="2">SAMPLE ILLUSTRATION — DEMO ONLY</text>
+</svg>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Route · ZheshGo</title>
+  <meta name="description" content="ZheshGo draft travel route."/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body data-page="explore">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <div id="detail"></div>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var id = ZW.param("id");
+      var r = ZW.getRoute(id);
+      var el = document.getElementById("detail");
+      if (!r) { ZW.notFound("This route doesn't exist yet"); return; }
+
+      document.title = r.title + " · ZheshGo";
+      var meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", r.summary);
+      var city = ZW.getCity(r.city);
+
+      var daysHtml = r.dayByDay.map(function (d) {
+        return (
+          '<div class="day-block">' +
+          '<div class="day-head"><span class="day-num">' + d.day + "</span>" +
+          "<h3>Day " + d.day + " — " + ZW.esc(d.title) + "</h3></div>" +
+          d.stops.map(function (s) {
+            return (
+              '<div class="stop-item"><span class="stop-dot" aria-hidden="true"></span><div>' +
+              "<h4>" + ZW.esc(s.name) + "</h4><p>" + ZW.esc(s.note) + "</p></div></div>"
+            );
+          }).join("") +
+          "</div>"
+        );
+      }).join("");
+
+      var confirmHtml = r.confirmBefore && r.confirmBefore.length
+        ? '<div class="side-card"><h3>Confirm before you go</h3><ul class="side-list">' +
+          r.confirmBefore.map(function (x) { return "<li>" + ZW.icon("warn") + " " + ZW.esc(x) + "</li>"; }).join("") +
+          "</ul></div>"
+        : "";
+
+      var highlightHtml = r.highlights && r.highlights.length
+        ? '<div class="side-card"><h3>Highlights</h3><ul class="side-list">' +
+          r.highlights.map(function (x) { return "<li>" + ZW.icon("check") + " " + ZW.esc(x) + "</li>"; }).join("") +
+          "</ul></div>"
+        : "";
+
+      var transportHtml = r.transportNotes && r.transportNotes.length
+        ? '<div class="note-box"><h4>Transport notes</h4><ul style="margin:4px 0 0;padding-left:18px">' +
+          r.transportNotes.map(function (x) { return "<li>" + ZW.esc(x) + "</li>"; }).join("") +
+          "</ul></div>"
+        : "";
+
+      var related = ZW.CONTENT.routes.filter(function (o) {
+        return o.id !== r.id && o.status !== "archived" && o.city === r.city;
+      }).slice(0, 3);
+
+      el.innerHTML =
+        '<div class="page-hero"><div class="wrap">' +
+        '<nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><a href="explore.html">Explore</a><span class="sep">/</span>' +
+        (city ? '<a href="city.html?id=' + city.id + '">' + ZW.esc(city.name) + "</a>" : '<span>' + ZW.esc(r.city) + "</span>") +
+        '<span class="sep">/</span><span>' + ZW.esc(r.title) + "</span></nav>" +
+        '<span class="theme-tag" style="background:var(--celadon-mist);color:var(--celadon-deep)">' + ZW.esc(r.theme) + "</span>" +
+        '<h1 style="max-width:760px">' + ZW.esc(r.title) + "</h1>" +
+        '<div class="route-facts" style="font-size:.92rem;gap:8px 22px">' +
+        "<span>" + ZW.icon("clock") + " " + r.days + " day" + (r.days > 1 ? "s" : "") + "</span>" +
+        "<span>" + ZW.icon("walk") + " " + ZW.esc(r.pace) + " pace</span>" +
+        "<span>" + ZW.icon("users") + " " + ZW.esc(r.groups.join(" · ")) + "</span>" +
+        "</div>" +
+        '<div class="flex mt1">' + ZW.verifyBadge(r) +
+        '<span class="pill-demo">Draft route — not a bookable tour</span></div>' +
+        "</div></div>" +
+        '<div class="wrap page">' +
+        '<div class="detail-grid">' +
+        "<div>" +
+        '<div class="flex mb1"><button class="btn btn-primary" type="button" id="save-route">' + ZW.icon("heart") + " <span id='save-label'>Save to My Trip</span></button>" +
+        '<a class="btn btn-secondary" href="planner.html?route=' + r.id + '">Fit into a plan</a></div>' +
+        "<h2>Why this route</h2><p>" + ZW.esc(r.why) + "</p>" +
+        "<h2>The shape of it</h2>" + daysHtml +
+        transportHtml +
+        '<div class="note-box warn"><h4>Not for everyone</h4>' + ZW.esc(r.notFor) + "</div>" +
+        '<div class="note-box info"><h4>Costs</h4>We don\u2019t publish prices we can\u2019t check. Budget for: rail tickets, entrance fees, local transport and meals — confirm actual costs before you go. No bookings are made on this site.</div>' +
+        "</div>" +
+        '<aside class="sticky-side">' +
+        '<div class="side-card"><h3>Snapshot</h3><ul class="side-list">' +
+        "<li>" + ZW.icon("explore") + " " + r.cities.map(function (cid) { return ZW.cityName(cid); }).join(" → ") + "</li>" +
+        "<li>" + ZW.icon("clock") + " " + r.days + " day" + (r.days > 1 ? "s" : "") + ", " + ZW.esc(r.pace) + " pace</li>" +
+        "<li>" + ZW.icon("users") + " Good for: " + ZW.esc(r.groups.join(", ")) + "</li>" +
+        "</ul></div>" +
+        confirmHtml + highlightHtml +
+        '<div class="side-card"><h3>Need a real person?</h3><p class="small">If this route doesn\u2019t fit your dates or group, ask us.</p>' +
+        '<a class="btn btn-sandal btn-sm" href="consult.html?route=' + r.id + '">Request human help</a></div>' +
+        "</aside></div>" +
+        (related.length
+          ? '<hr class="divider"/><h2>More from ' + ZW.esc(city ? city.name : "the region") + "</h2>" +
+            '<div class="route-grid mt1">' + related.map(ZW.routeCard).join("") + "</div>"
+          : "") +
+        "</div>";
+
+      var saveBtn = document.getElementById("save-route");
+      var saveLabel = document.getElementById("save-label");
+      function paintSave() {
+        var saved = ZW.isSaved("routes", r.id);
+        saveLabel.textContent = saved ? "Saved to My Trip" : "Save to My Trip";
+        saveBtn.setAttribute("aria-pressed", String(saved));
+      }
+      saveBtn.addEventListener("click", function () { ZW.toggleSave("routes", r.id); paintSave(); });
+      paintSave();
+      ZW.bindSaveButtons(el);
+      ZW.log("view_guide", { type: "route", id: r.id });
+    })();
+  </script>
+</body>
+</html>

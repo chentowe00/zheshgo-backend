@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>About · ZheshGo</title>
+  <meta name="description" content="How ZheshGo keeps content honest: verification flags, no fake social proof, AI disclosure, and what's still an assumption."/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+</head>
+<body data-page="explore" data-app="app">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">About</p>
+        <h1>Guides you can check</h1>
+        <p class="lead">ZheshGo is an early demo for a simple idea: international visitors to Shanghai and Zhejiang deserve practical, honest travel help — not manufactured urgency.</p>
+      </div>
+    </div>
+
+    <div class="wrap page page-narrow">
+      <h2>What we are (and aren't)</h2>
+      <p>We're a travel-guide and helper tool — not an OTA, not a booking platform, not a tour operator. We don't sell anything, hold no inventory, and take no bookings. We publish routes, practical notes and answers; you book with official channels yourself, or ask us for human help and we'll point honestly.</p>
+
+      <h2>Content rules we won't break</h2>
+      <ul>
+        <li><strong>Unverified facts are flagged.</strong> Train times, opening hours, tickets and entry rules carry a “please verify before travel” marker unless we state a checked date. Right now, effectively everything is demo seed content.</li>
+        <li><strong>No fake social proof.</strong> No invented reviews, ratings, booking counts, discounts or “only 2 left”. Any illustrative content is labeled as a demo sample.</li>
+        <li><strong>No invented supply.</strong> We don't claim teams, guides, vehicles, partnerships or cases we don't have.</li>
+        <li><strong>No prices we can't check.</strong> Budget guidance is by cost composition (“rail + tickets + meals”), never made-up figures.</li>
+      </ul>
+
+      <h2>What's still an assumption</h2>
+      <p>These are working hypotheses, not market facts — the whole point of this demo is to test them with real behavior:</p>
+      <div id="assumptions"></div>
+
+      <h2>AI disclosure</h2>
+      <p>The travel assistant checks its server connection when you open it and labels live AI availability. When available, Qwen runs on our Hong Kong backend. If the configured service is unavailable, the assistant shows an error rather than a simulated answer. The App photo guide still uses sample images and simulated recognition. AI suggestions are guidance, never booked services.</p>
+
+      <h2>Images</h2>
+      <p>All artwork on this site is original illustrative SVG created for the demo — abstract Jiangnan motifs, not photographs, not sourced from elsewhere. When real photography arrives, it will be credited properly.</p>
+
+      <h2>Version &amp; status</h2>
+      <p class="small muted" id="status-line"></p>
+      <p>Questions, corrections, or a route you'd like covered? The <a href="consult.html">human help form</a> is the fastest door.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      document.getElementById("assumptions").innerHTML =
+        "<ul>" + ZW.CONTENT.assumptions.map(function (x) {
+          return "<li><strong>" + ZW.esc(x.a) + "</strong> — <span class='muted'>" + ZW.esc(x.s) + "</span></li>";
+        }).join("") + "</ul>";
+      document.getElementById("status-line").textContent =
+        ZW.CONTENT.meta.contentStatus + " · last updated " + ZW.CONTENT.meta.lastUpdated + " · demo, not field-verified.";
+    })();
+  </script>
+</body>
+</html>

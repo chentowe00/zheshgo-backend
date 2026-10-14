@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Port and maritime">
+  <g fill="none" stroke="#3D6B5C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="30" cy="28" r="5"/>
+    <path d="M30 33 v10 M22 43 h16"/>
+    <path d="M24 19 q6 -6 12 0"/>
+    <path d="M10 48 h44"/>
+    <path d="M10 54 h44 M10 48 q8 6 22 0 q14 6 22 0" opacity="0.55"/>
+  </g>
+  <circle cx="46" cy="20" r="3" fill="#A67C52"/>
+</svg>
