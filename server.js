@@ -1025,7 +1025,7 @@ function handlePublicApi(req, res, parts) {
       if (!body || body === null) return sendError(res, 400, "BAD_JSON", "Invalid request.");
       const raw = Array.isArray(body.messages) ? body.messages : [];
       const locale = body.locale === undefined ? "en" : body.locale;
-      if (!["en", "ja"].includes(locale)) return sendError(res, 400, "UNSUPPORTED_LOCALE", "Supported page languages: en, ja.");
+      if (!["en", "ja", "ko"].includes(locale)) return sendError(res, 400, "UNSUPPORTED_LOCALE", "Supported page languages: en, ja, ko.");
       // The server supplies the system instruction. Client history is untrusted
       // and cannot supply system, developer or tool messages.
       const conversation = raw
@@ -1036,6 +1036,8 @@ function handlePublicApi(req, res, parts) {
       if (!conversation.some((m) => m.role === "user")) return sendError(res, 400, "BAD_INPUT", "No message content.");
       const languageInstruction = locale === "ja"
         ? "Answer in natural Japanese by default. Use concise, friendly desu/masu prose, practical travel terms and concrete trade-offs. Preserve original Chinese place names where useful for navigation."
+        : locale === "ko"
+        ? "Answer in natural Korean by default. Use concise, friendly haeyo-style polite Korean and practical travel terms such as itinerary, walking route and pre-trip checks. Use established Korean place names where known (Shanghai: 상하이, Hangzhou: 항저우, Ningbo: 닝보, West Lake: 서호, Tianyi Pavilion: 천일각), and preserve original Chinese names where useful for maps. Do not assume a Korean-speaking traveler holds a Korean passport."
         : "Answer in clear English by default.";
       const messages = [{ role: "system", content: AI_SYSTEM + " " + languageInstruction + " Follow an explicit language change requested by the user in the conversation, including subsequent turns.\n\n" + buildContextDigest() }]
         .concat(conversation);

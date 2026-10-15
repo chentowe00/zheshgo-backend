@@ -19,6 +19,8 @@ jobs:
           node-version: '20'
       - name: Check server syntax
         run: node --check server.js
+      - name: Check assistant locales and trust boundaries
+        run: node tests/assistant-locales.cjs
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
