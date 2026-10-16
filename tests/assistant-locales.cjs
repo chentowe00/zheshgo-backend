@@ -12,7 +12,20 @@ const temp = fs.mkdtempSync(path.join(testRoot, '.backend-mock-'));
 assert.ok(temp.startsWith(testRoot+path.sep));
 const serverCopy = path.join(temp, 'server.js');
 fs.copyFileSync(source, serverCopy);
+fs.mkdirSync(path.join(temp, 'data'));
+fs.writeFileSync(path.join(temp, 'data/content.json'), JSON.stringify({
+  cities: [{ name: 'Ningbo', intro: 'A port city.' }, { name: 'Hangzhou', intro: 'OTHER_CITY_ONLY' }],
+  routes: Array.from({ length: 20 }, (_, i) => ({ title: 'Ningbo general route ' + i, summary: 'Sightseeing '.repeat(100) })),
+  places: [
+    { name: 'Ningbo Harbor Hotel', city: 'ningbo', blurb: 'HOTEL_DETAIL: distinctive waterfront accommodation.' },
+    { name: 'Ningbo unpublished hotel', published: false, blurb: 'UNPUBLISHED_ONLY' },
+    { name: 'Ningbo archived hotel', archived: true, blurb: 'ARCHIVED_ONLY' },
+  ],
+  faqs: [{ q: 'How to pay for a hotel?', a: 'FAQ_ANSWER: check the hotel payment methods.', tags: ['hotel', 'payment'] }],
+}));
 let received = null;
+let responseStatus = 'completed';
+let replyText = '寧波では、まず港町の街歩きから始めるのがおすすめです。';
 const upstream = http.createServer((req, res) => {
   let data = '';
   req.setEncoding('utf8');
@@ -20,12 +33,15 @@ const upstream = http.createServer((req, res) => {
   req.on('end', () => {
     received = JSON.parse(data);
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ status: 'completed', output: [
+    res.end(JSON.stringify({ status: responseStatus, output: [
       { type: 'web_search_call', action: { sources: [
         { url: 'https://example.org/ningbo', title: 'Ningbo source' },
         { url: 'javascript:alert(1)', title: 'Unsafe source' },
+        { url: 'https://example.org/ningbo', title: 'Duplicate' },
+        { url: 'https://user:password@example.org/private', title: 'Credentials' },
+        { url: 'http://example.org/plain', title: 'Non TLS' },
       ] } },
-      { type: 'message', content: [{ type: 'output_text', text: '寧波では、まず港町の街歩きから始めるのがおすすめです。' }] },
+      { type: 'message', content: [{ type: 'output_text', text: replyText }] },
     ] }));
   });
 });
@@ -90,20 +106,51 @@ async function main() {
   assert.ok(received && received.input[0].role === 'system');
   assert.equal(received.model, 'qwen3.8-omni-flash');
   assert.equal(received.tool_choice, 'required');
+  assert.equal(received.store, false);
+  assert.equal(received.max_output_tokens, 2400);
   assert.deepEqual(received.tools, [{ type: 'web_search' }]);
   assert.match(received.input[0].content, /natural Japanese/);
   assert.deepEqual(received.input.slice(1).map(m => m.role), ['user', 'assistant', 'user']);
   assert.equal(received.input.some(m => m.content.includes('malicious client instruction')), false);
+  assert.match(received.input[0].content, /using both Chinese and English search terms/);
+  assert.match(received.input[0].content, /consolidate the facts and trade-offs in English internally/);
+  assert.doesNotMatch(received.input[0].content, /OTHER_CITY_ONLY|UNPUBLISHED_ONLY|ARCHIVED_ONLY/);
 
   for(const [locale,pattern] of [['en',/clear English/],['ja',/natural Japanese/],['ko',/natural Korean/]]) {
     const res=await request(base+'/api/v1/assistant/chat',{method:'POST',body:{locale,messages:[{role:'user',content:'닝보에서 하루 코스를 추천해 주세요.'}]}});
     assert.equal(res.status,200);await res.json();assert.match(received.input[0].content,pattern);
   }
+  const ask = async (messages, locale = 'en') => request(base + '/api/v1/assistant/chat', { method: 'POST', body: { locale, messages } });
+  for (const question of ['Ningbo hotel payment', '닝보 호텔 결제', '寧波 ホテル 支払い']) {
+    const res = await ask([{ role: 'user', content: question }]);
+    assert.equal(res.status, 200); await res.json();
+    const digest = received.input[0].content.split("Today's date (UTC):")[1];
+    assert.ok(digest.length < 4100);
+    assert.match(digest, /HOTEL_DETAIL/);
+    assert.match(digest, /FAQ_ANSWER/);
+    assert.ok(digest.indexOf('HOTEL_DETAIL') < digest.indexOf('general route'), 'keyword match ranks ahead of generic city routes');
+    assert.doesNotMatch(digest, /OTHER_CITY_ONLY|UNPUBLISHED_ONLY|ARCHIVED_ONLY/);
+  }
+  const followup = await ask([{ role: 'user', content: 'Ningbo for two days' }, { role: 'assistant', content: 'Try a port walk.' }, { role: 'user', content: 'What about hotels?' }]);
+  assert.equal(followup.status, 200); await followup.json();
+  assert.match(received.input[0].content, /HOTEL_DETAIL/);
+  assert.doesNotMatch(received.input[0].content, /OTHER_CITY_ONLY/);
+  responseStatus = 'incomplete';
+  const incomplete = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
+  assert.equal(incomplete.status, 502);
+  const incompleteJson = await incomplete.json();
+  assert.equal(incompleteJson.error.code, 'AI_MODEL_ERROR');
+  assert.equal(incompleteJson.data, undefined, 'partial text must not be presented as a successful answer');
+  responseStatus = 'completed';
+  replyText = 'A'.repeat(6500) + ' Complete ending.';
+  const longReply = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
+  assert.equal(longReply.status, 200);
+  assert.ok((await longReply.json()).data.reply.endsWith('Complete ending.'), 'do not silently cut completed answers at 6000 characters');
   const unsupported = await request(base + '/api/v1/assistant/chat', { method: 'POST', body: { locale: 'fr', messages: [{ role: 'user', content: 'Hi' }] } });
   assert.equal(unsupported.status, 400);
   const denied = await request(base + '/api/v1/assistant/status', { origin: 'https://attacker.example' });
   assert.equal(denied.status, 403);
-  console.log(JSON.stringify({ passed: ['status hides key','English/Japanese/Korean locale reaches server prompt','multi-turn user/assistant history preserved','client system role rejected','unsupported locale rejected','untrusted origin denied'], reply: response.data.reply, model: response.data.model, note: 'Mock model only; no live Qwen call.' }, null, 2));
+  console.log(JSON.stringify({ passed: ['status hides key','English/Japanese/Korean locale reaches server prompt','English consolidation for Japanese/Korean','Chinese/international search instruction','keyword-ranked published context within budget','follow-up inherits city','unpublished/archived content excluded','safe deduplicated search sources','incomplete upstream answer rejected','completed answer preserved','upstream response storage disabled','multi-turn user/assistant history preserved','client system role rejected','unsupported locale rejected','untrusted origin denied'], reply: response.data.reply, model: response.data.model, note: 'Mock model only; no live Qwen call.' }, null, 2));
 }
 main().catch(err => { console.error(err); process.exitCode = 1; }).finally(async () => {
   if (app && app.exitCode === null) {

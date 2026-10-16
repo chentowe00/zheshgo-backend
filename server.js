@@ -1035,11 +1035,11 @@ function handlePublicApi(req, res, parts) {
         .slice(-16);
       if (!conversation.some((m) => m.role === "user")) return sendError(res, 400, "BAD_INPUT", "No message content.");
       const languageInstruction = locale === "ja"
-        ? "Answer in natural Japanese by default. Use concise, friendly desu/masu prose, practical travel terms and concrete trade-offs. Preserve original Chinese place names where useful for navigation."
+        ? "Gather evidence across source languages, consolidate the facts and trade-offs in English internally, then translate the final answer into natural Japanese. Show only the Japanese answer unless the traveler asks otherwise. Use concise, friendly desu/masu prose and preserve original Chinese place names where useful for navigation."
         : locale === "ko"
-        ? "Answer in natural Korean by default. Use concise, friendly haeyo-style polite Korean and practical travel terms such as itinerary, walking route and pre-trip checks. Use established Korean place names where known (Shanghai: 상하이, Hangzhou: 항저우, Ningbo: 닝보, West Lake: 서호, Tianyi Pavilion: 천일각), and preserve original Chinese names where useful for maps. Do not assume a Korean-speaking traveler holds a Korean passport."
+        ? "Gather evidence across source languages, consolidate the facts and trade-offs in English internally, then translate the final answer into natural Korean. Show only the Korean answer unless the traveler asks otherwise. Use concise, friendly haeyo-style polite Korean and practical travel terms such as itinerary, walking route and pre-trip checks. Use established Korean place names where known (Shanghai: 상하이, Hangzhou: 항저우, Ningbo: 닝보, West Lake: 서호, Tianyi Pavilion: 천일각), and preserve original Chinese names where useful for maps. Do not assume a Korean-speaking traveler holds a Korean passport."
         : "Answer in clear English by default.";
-      const messages = [{ role: "system", content: AI_SYSTEM + " " + languageInstruction + " Follow an explicit language change requested by the user in the conversation, including subsequent turns.\n\n" + buildContextDigest() }]
+      const messages = [{ role: "system", content: AI_SYSTEM + " " + languageInstruction + " Follow an explicit language change requested by the user in the conversation, including subsequent turns.\n\n" + buildContextDigest(conversation) }]
         .concat(conversation);
       const t0 = Date.now();
       callQwen(cfg, messages, (err, data) => {
@@ -1087,14 +1087,15 @@ function loadDotEnv() {
 /* ---------------- AI assistant (server-side Qwen adapter) ----------------
    - Config comes ONLY from server env: AI_PROVIDER / QWEN_API_KEY /
      QWEN_BASE_URL / QWEN_MODEL. Base URL and model are never hardcoded.
-   - OpenAI-compatible Chat Completions (Aliyun Bailian compatible-mode).
+   - OpenAI-compatible Responses API with native web search.
    - Failures are explicit (AI_NOT_CONFIGURED / AUTH / TIMEOUT / RATE /
      MODEL) — never a silent simulated fallback. Logs never contain the
      API key or user message text. Full conversations are not persisted. */
 const AI_SYSTEM = [
   "You are ZheshGo's travel assistant for Shanghai and Zhejiang (China), serving international visitors.",
-  "Use three layers of information, in this order of trust: (1) ZheshGo's own reviewed guides below — prefer these as ZheshGo's viewpoint whenever they apply; (2) live web search — use it to name and describe real places the guides do not cover, such as hotels, restaurants, transport and opening hours; (3) your general travel knowledge — use it only to explain, compare and frame suggestions.",
-  "You may recommend specific candidates (for example hotels or restaurants) with reasons: what it is, who it suits, which area it is in, and why it fits the trip. Use the web search tool for specific places not covered by the site. Do not say a fact was checked online unless the tool actually returned a source for it. If sources are absent or inconclusive, state that clearly and label candidates as unverified.",
+  "Combine three layers of information: (1) relevant published ZheshGo guides below as ZheshGo's own viewpoint; (2) live web search for facts and perspectives beyond the site; (3) general travel knowledge only to explain and compare. Distinguish these layers when they differ.",
+  "Search by the traveler's topic and keywords using both Chinese and English search terms across publicly indexed Chinese-language and international websites. For substantive travel recommendations, seek relevant evidence from both source groups and connect it to relevant ZheshGo excerpts. Depending on the question, useful sources may include official sites, Ctrip/携程 and Trip.com, Tripadvisor, travel media and forums, and public YouTube or Instagram pages. These are examples, not required citations. Consider more than one independent source when useful. If either source group has no relevant result, disclose that gap. Never imply that search reaches private, login-only or unindexed platform content, or that a video or post was watched unless its contents were actually available to the tool.",
+  "Recommend specific candidates only when supported by relevant search results or ZheshGo's published guide. Explain the place, area, who it suits and why. Mention an external publisher, review score, price, video, post, date or URL as a checked source only if the web search actually returned that source and supports that claim. Never invent citations or present a generic destination listing as proof of a specific hotel fact. If search results are absent or inconclusive, state what could not be verified. Keep answers concise so they finish completely.",
   "Never fabricate a hotel, restaurant, facility, review, price or timetable. If you are not confident a place exists or a fact is right, say so instead of inventing it.",
   "Prices, room availability, booking, train/bus times and opening hours change and can never be guaranteed by you. Whenever any of these matters, tell the user to confirm on the official website or a trusted booking channel before relying on it. Never claim anything is booked or confirmed.",
   "For visas, legal, medical or emergency matters, give no definitive answers; point to official sources (embassy/consulate; police 110, ambulance 120, fire 119).",
@@ -1122,20 +1123,61 @@ function publishedContent() {
   });
   return out;
 }
-function buildContextDigest() {
+function buildContextDigest(conversation) {
   const doc = publishedContent();
   const parts = [];
   parts.push("Today's date (UTC): " + new Date().toISOString().slice(0, 10) + ". Use this as 'today' when labelling how fresh an answer is.");
   if (doc) {
-    parts.push("ZheshGo's own reviewed guides (your first and most trusted layer of information):");
-    (doc.cities || []).forEach((c) => parts.push("- City " + (c.name || "") + ": " + String(c.tagline || "").slice(0, 160)));
-    (doc.routes || []).forEach((r) => {
-      parts.push('- Route "' + (r.title || "") + '" (' + (r.days || 1) + "d, " + (r.pace || "") + "): " + String(r.summary || "").slice(0, 240));
-      (r.dayByDay || []).slice(0, 3).forEach((d) => {
-        parts.push("  Day" + (d.day || "") + " " + String(d.title || "").slice(0, 80) + ": " + (d.stops || []).slice(0, 4).map((s) => s.name).join(", "));
-      });
-    });
-    (doc.faqs || []).slice(0, 12).forEach((f) => parts.push("- FAQ: " + String(f.q || "").slice(0, 120)));
+    const userTurns = conversation.filter((m) => m.role === "user");
+    const query = userTurns.slice(-1)[0].content.toLowerCase();
+    const aliases = [
+      ["shanghai", /shanghai|上海|상하이|シャンハイ/i],
+      ["hangzhou", /hangzhou|杭州|항저우|ハンジョウ/i],
+      ["ningbo", /ningbo|宁波|寧波|닝보|ニンポー/i],
+      ["shaoxing", /shaoxing|绍兴|紹興|사오싱|ショウコウ/i],
+      ["huzhou", /huzhou|湖州|후저우|フーチョウ/i],
+    ];
+    // A short follow-up can inherit its city from the nearest user turn.
+    const cityTurn = userTurns.slice().reverse().find((m) => aliases.some((entry) => entry[1].test(m.content)));
+    const cities = aliases.filter((entry) => entry[1].test(cityTurn ? cityTurn.content : query));
+    const topics = [
+      ["hotel", /hotel|accommodation|stay|酒店|住宿|ホテル|숙박|호텔/i],
+      ["food", /food|restaurant|dining|美食|餐厅|餐廳|レストラン|グルメ|맛집|음식|식당/i],
+      ["train", /train|rail|铁路|鐵路|火车|火車|高铁|高鐵|鉄道|列車|기차|철도/i],
+      ["history", /history|historic|heritage|历史|歷史|歴史|역사/i],
+      ["walking", /walk|stroll|步行|散步|街歩き|산책|도보/i],
+      ["payment", /pay|alipay|wechat|支付|付款|支払|결제/i],
+    ];
+    const stop = new Set("the and for with from what about your you are can how please recommend tell places place first visit trip travel".split(" "));
+    const tokens = [...new Set((query.match(/[\p{L}\p{N}]+/gu) || []).filter((t) => t.length > 2 && !stop.has(t)))].slice(0, 40);
+    const candidates = [];
+    const add = (kind, item, excerpt) => {
+      const text = JSON.stringify(item).toLowerCase();
+      const matchedCities = cities.filter(([name, pattern]) => text.includes(name) || pattern.test(text));
+      // Keep city-neutral practical FAQs as candidates, but exclude other-city guides.
+      if (cities.length && !matchedCities.length && kind !== "FAQ") return;
+      let score = matchedCities.length * 5;
+      tokens.forEach((token) => { if (text.includes(token)) score += 2; });
+      topics.forEach(([name, pattern]) => { if (pattern.test(query) && (text.includes(name) || pattern.test(text))) score += 4; });
+      if (score || !cities.length) candidates.push({ score, excerpt });
+    };
+    parts.push("ZheshGo published guide excerpts (site content, not live web verification):");
+    const short = (value, limit) => String(value || "").slice(0, limit);
+    (doc.cities || []).forEach((c) => add("City", c, "- City " + short(c.name, 80) + ": " + short(c.tagline, 120) + ". " + short(c.intro, 180)));
+    (doc.routes || []).forEach((r) => add("Route", r,
+      '- Route "' + short(r.title, 100) + '" (' + (r.days || 1) + "d): " + short(r.summary, 180) + ". " + short(r.why, 100) + "\n" +
+      (r.dayByDay || []).slice(0, 3).map((d) => "  Day" + (d.day || "") + " " + short(d.title, 60) + ": " + (d.stops || []).slice(0, 4).map((s) => short(s.name, 50)).join(", ")).join("\n")));
+    (doc.places || []).forEach((p) => add("Place", p, "- Place " + short(p.name, 100) + ": " + short(p.blurb, 240)));
+    (doc.faqs || []).forEach((f) => add("FAQ", f, "- FAQ " + short(f.q, 120) + ": " + short(f.a, 280)));
+    let remaining = 4000 - parts.join("\n").length;
+    let selected = 0;
+    for (const candidate of candidates.sort((a, b) => b.score - a.score)) {
+      if (candidate.excerpt.length + 1 > remaining) continue;
+      parts.push(candidate.excerpt);
+      remaining -= candidate.excerpt.length + 1;
+      if (++selected >= 16) break;
+    }
+    if (!selected) parts.push("No relevant published guide excerpt matched this question.");
   } else {
     parts.push("No published content is available yet.");
   }
@@ -1154,7 +1196,7 @@ function responseSources(data) {
         seen.add(url.href);
         result.push({ url: url.href, title: String(source && source.title || url.hostname).slice(0, 120) });
       } catch (_) { /* Ignore malformed upstream source URLs. */ }
-      if (result.length >= 8) return result;
+      if (result.length >= 32) return result;
     }
   }
   return result;
@@ -1164,7 +1206,7 @@ function responseText(data) {
     .filter((item) => item.type === "message")
     .flatMap((item) => Array.isArray(item.content) ? item.content : [])
     .filter((part) => part.type === "output_text" && typeof part.text === "string")
-    .map((part) => part.text).join("\n").slice(0, 6000);
+    .map((part) => part.text).join("\n");
 }
 function callQwen(cfg, messages, cb) {
   const controller = new AbortController();
@@ -1178,7 +1220,7 @@ function callQwen(cfg, messages, cb) {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": "Bearer " + cfg.apiKey },
     body: JSON.stringify({ model: requestModel, input: messages, tools: [{ type: "web_search" }],
-      tool_choice: "required", stream: false, reasoning: { effort: "low" }, max_output_tokens: 1600 }),
+      tool_choice: "required", stream: false, store: false, reasoning: { effort: "low" }, max_output_tokens: 2400 }),
     signal: controller.signal,
   }).then((up) => {
     if (up.status === 401 || up.status === 403) return cb({ code: "AI_AUTH_ERROR", http: 502, detail: "upstream auth " + up.status });
@@ -1186,7 +1228,10 @@ function callQwen(cfg, messages, cb) {
     if (!up.ok) return cb({ code: "AI_MODEL_ERROR", http: 502, detail: "upstream " + up.status });
     return up.json().then((data) => {
       const reply = responseText(data);
-      if (!reply) return cb({ code: "AI_MODEL_ERROR", http: 502, detail: "empty reply" });
+      if (!reply || reply.length > 20000 || (data.status && data.status !== "completed") ||
+          (data.output || []).some((item) => item.type === "message" && item.status && item.status !== "completed")) {
+        return cb({ code: "AI_MODEL_ERROR", http: 502, detail: "empty, oversized or unfinished reply" });
+      }
       const sources = responseSources(data);
       cb(null, { reply, model: requestModel, usage: data.usage || null,
         sources, checkedAt: sources.length ? new Date().toISOString() : null });
