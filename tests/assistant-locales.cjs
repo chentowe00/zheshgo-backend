@@ -25,6 +25,8 @@ fs.writeFileSync(path.join(temp, 'data/content.json'), JSON.stringify({
 }));
 let received = null;
 let responseStatus = 'completed';
+let messageStatus = 'completed';
+let diagnosticReason = 'max_output_tokens';
 let replyText = '寧波では、まず港町の街歩きから始めるのがおすすめです。';
 const upstream = http.createServer((req, res) => {
   let data = '';
@@ -33,7 +35,9 @@ const upstream = http.createServer((req, res) => {
   req.on('end', () => {
     received = JSON.parse(data);
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ status: responseStatus, output: [
+    res.end(JSON.stringify({ status: responseStatus,
+      incomplete_details: responseStatus === 'incomplete' ? { reason: diagnosticReason } : null,
+      usage: { output_tokens: 2400, output_tokens_details: { reasoning_tokens: 900 } }, output: [
       { type: 'web_search_call', action: { sources: [
         { url: 'https://example.org/ningbo', title: 'Ningbo source' },
         { url: 'javascript:alert(1)', title: 'Unsafe source' },
@@ -41,7 +45,7 @@ const upstream = http.createServer((req, res) => {
         { url: 'https://user:password@example.org/private', title: 'Credentials' },
         { url: 'http://example.org/plain', title: 'Non TLS' },
       ] } },
-      { type: 'message', content: [{ type: 'output_text', text: replyText }] },
+      { type: 'message', status: messageStatus, content: [{ type: 'output_text', text: replyText }] },
     ] }));
   });
 });
@@ -107,7 +111,7 @@ async function main() {
   assert.equal(received.model, 'qwen3.8-omni-flash');
   assert.equal(received.tool_choice, 'required');
   assert.equal(received.store, false);
-  assert.equal(received.max_output_tokens, 2400);
+  assert.equal(received.max_output_tokens, 4096);
   assert.deepEqual(received.tools, [{ type: 'web_search' }]);
   assert.match(received.input[0].content, /natural Japanese/);
   assert.deepEqual(received.input.slice(1).map(m => m.role), ['user', 'assistant', 'user']);
@@ -141,7 +145,21 @@ async function main() {
   const incompleteJson = await incomplete.json();
   assert.equal(incompleteJson.error.code, 'AI_MODEL_ERROR');
   assert.equal(incompleteJson.data, undefined, 'partial text must not be presented as a successful answer');
+  messageStatus = 'incomplete';
+  diagnosticReason = 'UPSTREAM_PRIVATE_TEXT_MUST_NOT_BE_LOGGED';
+  replyText = 'UPSTREAM_PRIVATE_REPLY_MUST_NOT_BE_LOGGED';
+  const privateIncomplete = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
+  assert.equal(privateIncomplete.status, 502); await privateIncomplete.json();
   responseStatus = 'completed';
+  const incompleteMessage = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
+  assert.equal(incompleteMessage.status, 502, 'completed wrapper must not hide an unfinished message');
+  await incompleteMessage.json();
+  for (let i = 0; i < 20 && !output.includes('unfinished_messages=1'); i++) await new Promise(resolve => setTimeout(resolve, 25));
+  assert.match(output, /status=incomplete reason=max_output_tokens.*output_tokens=2400 reasoning_tokens=900/);
+  assert.match(output, /reason=unknown/);
+  assert.doesNotMatch(output, /UPSTREAM_PRIVATE_TEXT_MUST_NOT_BE_LOGGED|UPSTREAM_PRIVATE_REPLY_MUST_NOT_BE_LOGGED/);
+  responseStatus = 'completed';
+  messageStatus = 'completed';
   replyText = 'A'.repeat(6500) + ' Complete ending.';
   const longReply = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
   assert.equal(longReply.status, 200);
@@ -150,7 +168,7 @@ async function main() {
   assert.equal(unsupported.status, 400);
   const denied = await request(base + '/api/v1/assistant/status', { origin: 'https://attacker.example' });
   assert.equal(denied.status, 403);
-  console.log(JSON.stringify({ passed: ['status hides key','English/Japanese/Korean locale reaches server prompt','English consolidation for Japanese/Korean','Chinese/international search instruction','keyword-ranked published context within budget','follow-up inherits city','unpublished/archived content excluded','safe deduplicated search sources','incomplete upstream answer rejected','completed answer preserved','upstream response storage disabled','multi-turn user/assistant history preserved','client system role rejected','unsupported locale rejected','untrusted origin denied'], reply: response.data.reply, model: response.data.model, note: 'Mock model only; no live Qwen call.' }, null, 2));
+  console.log(JSON.stringify({ passed: ['status hides key','English/Japanese/Korean locale reaches server prompt','English consolidation for Japanese/Korean','Chinese/international search instruction','keyword-ranked published context within budget','follow-up inherits city','unpublished/archived content excluded','safe deduplicated search sources','incomplete upstream answer rejected','unfinished message rejected despite completed wrapper','diagnostic metadata allowlisted and reply text excluded','completed answer preserved','upstream response storage disabled','multi-turn user/assistant history preserved','client system role rejected','unsupported locale rejected','untrusted origin denied'], reply: response.data.reply, model: response.data.model, note: 'Mock model only; no live Qwen call.' }, null, 2));
 }
 main().catch(err => { console.error(err); process.exitCode = 1; }).finally(async () => {
   if (app && app.exitCode === null) {

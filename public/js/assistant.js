@@ -264,7 +264,7 @@
               return r.json().then(function (d) { return { kind: "ok", d: d }; })
                 .catch(function () { return { kind: "statuserror", status: r.status }; }); // 200 but unreadable body
             }
-            if (r.status === 404) return { kind: "nostatus" }; // HTTP 404 ONLY => no backend on this site
+            if (r.status === 404 && !API_BASE) return { kind: "nostatus" }; // HTTP 404 ONLY => no backend on this site
             return { kind: "statuserror", status: r.status }; // 500/503/other non-404 => backend exists, status unknown
           })
           .catch(function () { return { kind: "statuserror" }; }) // network error / timeout
@@ -334,7 +334,7 @@
         chatHistory.push(q);
         if (chatHistory.length > 8) chatHistory = chatHistory.slice(-8);
         var controller = new AbortController();
-        var timer = setTimeout(function () { controller.abort(); }, 30000);
+        var timer = setTimeout(function () { controller.abort(); }, 120000);
         addMsg("user", "<p>" + ZW.esc(q) + "</p>");
         var typing = addTyping();
         fetch(apiUrl("/api/v1/assistant/chat"), {
@@ -350,7 +350,32 @@
         }).then(function (d) {
           clearTimeout(timer);
           typing.remove();
-          addMsg("assistant", "<p>" + ZW.esc(d.data.reply) + "</p>", ZW.esc(modelLabel()) + " · live model · verify anything time-sensitive");
+          if (d.data.model) realModel = d.data.model;
+          if (d.data.provider) realProvider = d.data.provider;
+          setBanner();
+          var answer = addMsg("assistant", "<p>" + ZW.esc(d.data.reply) + "</p>", ZW.esc(modelLabel()) + " · live model · verify anything time-sensitive");
+          var sources = d.data && Array.isArray(d.data.sources) ? d.data.sources : [];
+          if (sources.length) {
+            var lang = document.documentElement.lang || "en";
+            var label = lang.indexOf("ko") === 0 ? "검색 출처" : lang.indexOf("ja") === 0 ? "検索元" : "Web sources";
+            var box = document.createElement("p");
+            box.style.marginTop = "12px";
+            box.appendChild(document.createTextNode(label + (d.data.checkedAt ? " · " + new Date(d.data.checkedAt).toLocaleString(lang) : "") + ": "));
+            sources.forEach(function (source, i) {
+              try {
+                var url = new URL(source.url);
+                if (url.protocol !== "https:") return;
+                if (i) box.appendChild(document.createTextNode(" · "));
+                var link = document.createElement("a");
+                link.href = url.href;
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+                link.textContent = source.title || url.hostname;
+                box.appendChild(link);
+              } catch (_) { /* Ignore malformed source links. */ }
+            });
+            answer.querySelector(".bubble").appendChild(box);
+          }
           ZW.log("assistant_query_real", { ok: true, provider: realProvider });
         }).catch(function (e) {
           clearTimeout(timer);
