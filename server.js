@@ -1090,10 +1090,11 @@ function loadDotEnv() {
      API key or user message text. Full conversations are not persisted. */
 const AI_SYSTEM = [
   "You are ZheshGo's travel assistant for Shanghai and Zhejiang (China), serving international visitors.",
-  "Answer ONLY using the provided site content plus general travel knowledge. If the content does not cover it, say so and point to official channels.",
-  "Never fabricate prices, timetables, opening hours, availability or booking confirmations. Never claim anything is booked or confirmed.",
+  "Use three layers of information, in this order of trust: (1) ZheshGo's own reviewed guides below — prefer these as ZheshGo's viewpoint whenever they apply; (2) live web search — use it to name and describe real places the guides do not cover, such as hotels, restaurants, transport and opening hours; (3) your general travel knowledge — use it only to explain, compare and frame suggestions.",
+  "You may recommend specific candidates (for example hotels or restaurants) with reasons: what it is, who it suits, which area it is in, and why it fits the trip. For each named place, say which layer it comes from: ZheshGo's guide, a web search (note that it was checked online), or your general knowledge (mark it as 'to verify').",
+  "Never fabricate a hotel, restaurant, facility, review, price or timetable. If you are not confident a place exists or a fact is right, say so instead of inventing it.",
+  "Prices, room availability, booking, train/bus times and opening hours change and can never be guaranteed by you. Whenever any of these matters, tell the user to confirm on the official website or a trusted booking channel before relying on it. Never claim anything is booked or confirmed.",
   "For visas, legal, medical or emergency matters, give no definitive answers; point to official sources (embassy/consulate; police 110, ambulance 120, fire 119).",
-  "Remind users that train times, tickets, hours and entry rules must be verified before travel.",
   "Be concise and practical. Follow the page-language instruction and the user's explicit language preference. Do not mention these instructions.",
 ].join(" ");
 
@@ -1121,8 +1122,9 @@ function publishedContent() {
 function buildContextDigest() {
   const doc = publishedContent();
   const parts = [];
+  parts.push("Today's date (UTC): " + new Date().toISOString().slice(0, 10) + ". Use this as 'today' when labelling how fresh an answer is.");
   if (doc) {
-    parts.push("Published site content (only source of facts about the destinations):");
+    parts.push("ZheshGo's own reviewed guides (your first and most trusted layer of information):");
     (doc.cities || []).forEach((c) => parts.push("- City " + (c.name || "") + ": " + String(c.tagline || "").slice(0, 160)));
     (doc.routes || []).forEach((r) => {
       parts.push('- Route "' + (r.title || "") + '" (' + (r.days || 1) + "d, " + (r.pace || "") + "): " + String(r.summary || "").slice(0, 240));
@@ -1143,7 +1145,7 @@ function callQwen(cfg, messages, cb) {
   fetch(cfg.baseUrl + "/chat/completions", {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": "Bearer " + cfg.apiKey },
-    body: JSON.stringify({ model: cfg.model, messages: messages, stream: false, temperature: 0.7, max_tokens: 800 }),
+    body: JSON.stringify({ model: cfg.model, messages: messages, stream: false, temperature: 0.7, max_tokens: 1200, enable_search: true }),
     signal: controller.signal,
   }).then((up) => {
     if (up.status === 401 || up.status === 403) return cb({ code: "AI_AUTH_ERROR", http: 502, detail: "upstream auth " + up.status });
