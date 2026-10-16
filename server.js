@@ -1055,7 +1055,10 @@ function handlePublicApi(req, res, parts) {
         }
         aiLog(cfg, "OK", 200, ms, data.usage && data.usage.total_tokens ? "tokens=" + data.usage.total_tokens : null);
         // NOTE: full conversations are NOT persisted anywhere by design.
-        sendJson(res, 200, { code: "OK", data: { reply: data.reply, model: data.model, provider: "qwen" } });
+        sendJson(res, 200, { code: "OK", data: {
+          reply: data.reply, model: data.model, provider: "qwen",
+          sources: data.sources, checkedAt: data.checkedAt,
+        } });
       });
     });
     return;
@@ -1091,7 +1094,7 @@ function loadDotEnv() {
 const AI_SYSTEM = [
   "You are ZheshGo's travel assistant for Shanghai and Zhejiang (China), serving international visitors.",
   "Use three layers of information, in this order of trust: (1) ZheshGo's own reviewed guides below — prefer these as ZheshGo's viewpoint whenever they apply; (2) live web search — use it to name and describe real places the guides do not cover, such as hotels, restaurants, transport and opening hours; (3) your general travel knowledge — use it only to explain, compare and frame suggestions.",
-  "You may recommend specific candidates (for example hotels or restaurants) with reasons: what it is, who it suits, which area it is in, and why it fits the trip. For each named place, say which layer it comes from: ZheshGo's guide, a web search (note that it was checked online), or your general knowledge (mark it as 'to verify').",
+  "You may recommend specific candidates (for example hotels or restaurants) with reasons: what it is, who it suits, which area it is in, and why it fits the trip. Use the web search tool for specific places not covered by the site. Do not say a fact was checked online unless the tool actually returned a source for it. If sources are absent or inconclusive, state that clearly and label candidates as unverified.",
   "Never fabricate a hotel, restaurant, facility, review, price or timetable. If you are not confident a place exists or a fact is right, say so instead of inventing it.",
   "Prices, room availability, booking, train/bus times and opening hours change and can never be guaranteed by you. Whenever any of these matters, tell the user to confirm on the official website or a trusted booking channel before relying on it. Never claim anything is booked or confirmed.",
   "For visas, legal, medical or emergency matters, give no definitive answers; point to official sources (embassy/consulate; police 110, ambulance 120, fire 119).",
@@ -1138,24 +1141,51 @@ function buildContextDigest() {
   }
   return parts.join("\n").slice(0, 4000);
 }
+function responseSources(data) {
+  const seen = new Set();
+  const result = [];
+  for (const item of Array.isArray(data.output) ? data.output : []) {
+    if (item.type !== "web_search_call") continue;
+    for (const source of Array.isArray(item.action && item.action.sources) ? item.action.sources : []) {
+      const raw = typeof source === "string" ? source : source && source.url;
+      try {
+        const url = new URL(raw);
+        if (url.protocol !== "https:" || url.username || url.password || seen.has(url.href)) continue;
+        seen.add(url.href);
+        result.push({ url: url.href, title: String(source && source.title || url.hostname).slice(0, 120) });
+      } catch (_) { /* Ignore malformed upstream source URLs. */ }
+      if (result.length >= 8) return result;
+    }
+  }
+  return result;
+}
+function responseText(data) {
+  return (Array.isArray(data.output) ? data.output : [])
+    .filter((item) => item.type === "message")
+    .flatMap((item) => Array.isArray(item.content) ? item.content : [])
+    .filter((part) => part.type === "output_text" && typeof part.text === "string")
+    .map((part) => part.text).join("\n").slice(0, 6000);
+}
 function callQwen(cfg, messages, cb) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 25000);
+  const timer = setTimeout(() => controller.abort(), 90000);
   const started = Date.now();
-  fetch(cfg.baseUrl + "/chat/completions", {
+  fetch(cfg.baseUrl + "/responses", {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": "Bearer " + cfg.apiKey },
-    body: JSON.stringify({ model: cfg.model, messages: messages, stream: false, temperature: 0.7, max_tokens: 1200, enable_search: true }),
+    body: JSON.stringify({ model: cfg.model, input: messages, tools: [{ type: "web_search" }],
+      tool_choice: "required", stream: false, reasoning: { effort: "low" }, max_output_tokens: 1600 }),
     signal: controller.signal,
   }).then((up) => {
     if (up.status === 401 || up.status === 403) return cb({ code: "AI_AUTH_ERROR", http: 502, detail: "upstream auth " + up.status });
     if (up.status === 429) return cb({ code: "AI_RATE_LIMITED", http: 429, detail: "upstream rate limited" });
     if (!up.ok) return cb({ code: "AI_MODEL_ERROR", http: 502, detail: "upstream " + up.status });
     return up.json().then((data) => {
-      const msg = data && data.choices && data.choices[0] && data.choices[0].message;
-      const reply = msg && msg.content ? String(msg.content).slice(0, 6000) : "";
+      const reply = responseText(data);
       if (!reply) return cb({ code: "AI_MODEL_ERROR", http: 502, detail: "empty reply" });
-      cb(null, { reply, model: cfg.model, usage: data.usage || null });
+      const sources = responseSources(data);
+      cb(null, { reply, model: cfg.model, usage: data.usage || null,
+        sources, checkedAt: sources.length ? new Date().toISOString() : null });
     }).catch(() => cb({ code: "AI_MODEL_ERROR", http: 502, detail: "bad upstream json" }));
   }).catch((err) => {
     if (err && err.name === "AbortError") return cb({ code: "AI_TIMEOUT", http: 504, detail: "upstream timeout" });
