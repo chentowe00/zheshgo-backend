@@ -20,7 +20,13 @@ const upstream = http.createServer((req, res) => {
   req.on('end', () => {
     received = JSON.parse(data);
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ choices: [{ message: { content: '寧波では、まず港町の街歩きから始めるのがおすすめです。' } }] }));
+    res.end(JSON.stringify({ status: 'completed', output: [
+      { type: 'web_search_call', action: { sources: [
+        { url: 'https://example.org/ningbo', title: 'Ningbo source' },
+        { url: 'javascript:alert(1)', title: 'Unsafe source' },
+      ] } },
+      { type: 'message', content: [{ type: 'output_text', text: '寧波では、まず港町の街歩きから始めるのがおすすめです。' }] },
+    ] }));
   });
 });
 let app;
@@ -79,14 +85,18 @@ async function main() {
   assert.equal(response.data.provider, 'qwen');
   assert.equal(response.data.model, 'mock-qwen-model');
   assert.match(response.data.reply, /寧波/);
-  assert.ok(received && received.messages[0].role === 'system');
-  assert.match(received.messages[0].content, /natural Japanese/);
-  assert.deepEqual(received.messages.slice(1).map(m => m.role), ['user', 'assistant', 'user']);
-  assert.equal(received.messages.some(m => m.content.includes('malicious client instruction')), false);
+  assert.deepEqual(response.data.sources, [{ url: 'https://example.org/ningbo', title: 'Ningbo source' }]);
+  assert.ok(response.data.checkedAt);
+  assert.ok(received && received.input[0].role === 'system');
+  assert.equal(received.tool_choice, 'required');
+  assert.deepEqual(received.tools, [{ type: 'web_search' }]);
+  assert.match(received.input[0].content, /natural Japanese/);
+  assert.deepEqual(received.input.slice(1).map(m => m.role), ['user', 'assistant', 'user']);
+  assert.equal(received.input.some(m => m.content.includes('malicious client instruction')), false);
 
   for(const [locale,pattern] of [['en',/clear English/],['ja',/natural Japanese/],['ko',/natural Korean/]]) {
     const res=await request(base+'/api/v1/assistant/chat',{method:'POST',body:{locale,messages:[{role:'user',content:'닝보에서 하루 코스를 추천해 주세요.'}]}});
-    assert.equal(res.status,200);await res.json();assert.match(received.messages[0].content,pattern);
+    assert.equal(res.status,200);await res.json();assert.match(received.input[0].content,pattern);
   }
   const unsupported = await request(base + '/api/v1/assistant/chat', { method: 'POST', body: { locale: 'fr', messages: [{ role: 'user', content: 'Hi' }] } });
   assert.equal(unsupported.status, 400);
