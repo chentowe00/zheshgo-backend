@@ -50,7 +50,7 @@ async function main() {
       AI_PROVIDER: 'qwen',
       QWEN_API_KEY: 'LOCAL_MOCK_PLACEHOLDER_NOT_A_SECRET',
       QWEN_BASE_URL: `http://127.0.0.1:${upstreamPort}/compatible-mode/v1`,
-      QWEN_MODEL: 'mock-qwen-model',
+      QWEN_MODEL: 'qwen3.8-flash',
       ZSHG_BOOTSTRAP_TOKEN: 'LOCAL_TEST_ONLY',
       ZSHG_SESSION_SECRET: 'LOCAL_TEST_ONLY',
     },
@@ -68,7 +68,7 @@ async function main() {
   const status = await request(base + '/api/v1/assistant/status');
   assert.equal(status.status, 200);
   const statusJson = await status.json();
-  assert.deepEqual({ configured: statusJson.configured, provider: statusJson.provider, model: statusJson.model }, { configured: true, provider: 'qwen', model: 'mock-qwen-model' });
+  assert.deepEqual({ configured: statusJson.configured, provider: statusJson.provider, model: statusJson.model }, { configured: true, provider: 'qwen', model: 'qwen3.8-flash' });
   assert.equal(JSON.stringify(statusJson).includes('LOCAL_MOCK_PLACEHOLDER'), false, 'status never returns credentials');
 
   const chat = await request(base + '/api/v1/assistant/chat', { method: 'POST', body: {
@@ -83,11 +83,12 @@ async function main() {
   assert.equal(chat.status, 200);
   const response = await chat.json();
   assert.equal(response.data.provider, 'qwen');
-  assert.equal(response.data.model, 'mock-qwen-model');
+  assert.equal(response.data.model, 'qwen3.8-omni-flash');
   assert.match(response.data.reply, /寧波/);
   assert.deepEqual(response.data.sources, [{ url: 'https://example.org/ningbo', title: 'Ningbo source' }]);
   assert.ok(response.data.checkedAt);
   assert.ok(received && received.input[0].role === 'system');
+  assert.equal(received.model, 'qwen3.8-omni-flash');
   assert.equal(received.tool_choice, 'required');
   assert.deepEqual(received.tools, [{ type: 'web_search' }]);
   assert.match(received.input[0].content, /natural Japanese/);

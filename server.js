@@ -1170,10 +1170,14 @@ function callQwen(cfg, messages, cb) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 90000);
   const started = Date.now();
+  // The configured base flash model does not expose the Responses web-search
+  // tool. Keep the existing env setting compatible by selecting the agent
+  // variant only for this search-backed request.
+  const requestModel = cfg.model === "qwen3.8-flash" ? "qwen3.8-omni-flash" : cfg.model;
   fetch(cfg.baseUrl + "/responses", {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": "Bearer " + cfg.apiKey },
-    body: JSON.stringify({ model: cfg.model, input: messages, tools: [{ type: "web_search" }],
+    body: JSON.stringify({ model: requestModel, input: messages, tools: [{ type: "web_search" }],
       tool_choice: "required", stream: false, reasoning: { effort: "low" }, max_output_tokens: 1600 }),
     signal: controller.signal,
   }).then((up) => {
@@ -1184,7 +1188,7 @@ function callQwen(cfg, messages, cb) {
       const reply = responseText(data);
       if (!reply) return cb({ code: "AI_MODEL_ERROR", http: 502, detail: "empty reply" });
       const sources = responseSources(data);
-      cb(null, { reply, model: cfg.model, usage: data.usage || null,
+      cb(null, { reply, model: requestModel, usage: data.usage || null,
         sources, checkedAt: sources.length ? new Date().toISOString() : null });
     }).catch(() => cb({ code: "AI_MODEL_ERROR", http: 502, detail: "bad upstream json" }));
   }).catch((err) => {
