@@ -1057,7 +1057,7 @@ function handlePublicApi(req, res, parts) {
         // NOTE: full conversations are NOT persisted anywhere by design.
         sendJson(res, 200, { code: "OK", data: {
           reply: data.reply, model: data.model, provider: "qwen",
-          sources: data.sources, checkedAt: data.checkedAt,
+          sources: data.sources, checkedAt: data.checkedAt, evidence: data.evidence,
         } });
       });
     });
@@ -1095,7 +1095,7 @@ const AI_SYSTEM = [
   "You are ZheshGo's travel assistant for Shanghai and Zhejiang (China), serving international visitors.",
   "Combine three layers of information: (1) relevant published ZheshGo guides below as ZheshGo's own viewpoint; (2) live web search for facts and perspectives beyond the site; (3) general travel knowledge only to explain and compare. Distinguish these layers when they differ.",
   "Search by the traveler's topic and keywords using both Chinese and English search terms across publicly indexed Chinese-language and international websites. For substantive travel recommendations, seek relevant evidence from both source groups and connect it to relevant ZheshGo excerpts. Depending on the question, useful sources may include official sites, Ctrip/携程 and Trip.com, Tripadvisor, travel media and forums, and public YouTube or Instagram pages. These are examples, not required citations. Consider more than one independent source when useful. If either source group has no relevant result, disclose that gap. Never imply that search reaches private, login-only or unindexed platform content, or that a video or post was watched unless its contents were actually available to the tool.",
-  "Recommend specific candidates only when supported by relevant search results or ZheshGo's published guide. Explain the place, area, who it suits and why. Mention an external publisher, review score, price, video, post, date or URL as a checked source only if the web search actually returned that source and supports that claim. Never invent citations or present a generic destination listing as proof of a specific hotel fact. If search results are absent or inconclusive, state what could not be verified. Keep answers concise so they finish completely.",
+  "Recommend specific candidates only when supported by relevant search results or ZheshGo's published guide. Explain the place, area, who it suits and why. For each factual external claim, put its direct HTTPS source URL next to the claim; cite only a URL actually returned by the web search tool. Do not cite a search listing as proof of a specific hotel fact. Say whether your evidence is a search snippet or an extracted page, and never claim to have read a whole page without an extractor result. Mention an external publisher, review score, price, video, post or date only if that source supports the claim. If results are absent or inconclusive, state what could not be verified. Keep answers concise so they finish completely.",
   "Never fabricate a hotel, restaurant, facility, review, price or timetable. If you are not confident a place exists or a fact is right, say so instead of inventing it.",
   "Prices, room availability, booking, train/bus times and opening hours change and can never be guaranteed by you. Whenever any of these matters, tell the user to confirm on the official website or a trusted booking channel before relying on it. Never claim anything is booked or confirmed.",
   "For visas, legal, medical or emergency matters, give no definitive answers; point to official sources (embassy/consulate; police 110, ambulance 120, fire 119).",
@@ -1184,6 +1184,14 @@ function buildContextDigest(conversation) {
   }
   return parts.join("\n").slice(0, 4000);
 }
+function safeSourceUrl(raw) {
+  try {
+    const url = new URL(raw);
+    if (url.protocol !== "https:" || url.username || url.password) return null;
+    url.hash = "";
+    return url.href;
+  } catch (_) { return null; }
+}
 function responseSources(data) {
   const seen = new Set();
   const result = [];
@@ -1191,16 +1199,27 @@ function responseSources(data) {
     if (item.type !== "web_search_call") continue;
     for (const source of Array.isArray(item.action && item.action.sources) ? item.action.sources : []) {
       const raw = typeof source === "string" ? source : source && source.url;
-      try {
-        const url = new URL(raw);
-        if (url.protocol !== "https:" || url.username || url.password || seen.has(url.href)) continue;
-        seen.add(url.href);
-        result.push({ url: url.href, title: String(source && source.title || url.hostname).slice(0, 120) });
-      } catch (_) { /* Ignore malformed upstream source URLs. */ }
-      if (result.length >= 32) return result;
+      const url = safeSourceUrl(raw);
+      if (!url || seen.has(url)) continue;
+      seen.add(url);
+      result.push({ url, title: String(source && source.title || new URL(url).hostname).slice(0, 120) });
+      if (result.length >= 64) return result;
     }
   }
   return result;
+}
+function matchCitedSources(reply, sources) {
+  const allowed = new Set(sources.map((source) => source.url));
+  const cited = new Set();
+  const text = reply.replace(/https:\/\/[^\s<>"'`]+/g, (raw) => {
+    const trailing = raw.match(/[.,;:!?)}\]]+$/);
+    const suffix = trailing ? trailing[0] : "";
+    const url = safeSourceUrl(raw.slice(0, raw.length - suffix.length));
+    if (!url || !allowed.has(url)) return "[unverified link removed]" + suffix;
+    cited.add(url);
+    return raw;
+  });
+  return { reply: text, sources: sources.filter((source) => cited.has(source.url)).slice(0, 12) };
 }
 function responseText(data) {
   return (Array.isArray(data.output) ? data.output : [])
@@ -1225,22 +1244,31 @@ function responseDiagnostic(data, reply) {
     " unfinished_messages=" + unfinishedMessages + " output_tokens=" + count(usage.output_tokens) +
     " reasoning_tokens=" + count(reasoning.reasoning_tokens);
 }
+function needsPageExtraction(messages) {
+  const latest = [...messages].reverse().find((message) => message.role === "user");
+  return latest && /(?:full (?:page|article|text)|page (?:content|details)|read (?:the |this )?(?:page|article|url)|verify (?:the |this )?(?:page|source)|网页(?:正文|全文|内容)|原文|全文|ページ(?:本文|全文)|원문|본문)/i.test(latest.content);
+}
 function callQwen(cfg, messages, cb) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 90000);
   const started = Date.now();
-  // The configured base flash model does not expose the Responses web-search
-  // tool. Keep the existing env setting compatible by selecting the agent
-  // variant only for this search-backed request.
-  const requestModel = cfg.model === "qwen3.8-flash" ? "qwen3.8-omni-flash" : cfg.model;
-  fetch(cfg.baseUrl + "/responses", {
+  const extract = cfg.model === "qwen3.8-flash" && needsPageExtraction(messages);
+  const attempts = [{ model: cfg.model, tools: extract ? [{ type: "web_search" }, { type: "web_extractor" }] : [{ type: "web_search" }] }];
+  if (cfg.model === "qwen3.8-flash") attempts.push({ model: "qwen3.8-omni-flash", tools: [{ type: "web_search" }] });
+  function request(attempt) { return fetch(cfg.baseUrl + "/responses", {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": "Bearer " + cfg.apiKey },
-    body: JSON.stringify({ model: requestModel, input: messages, tools: [{ type: "web_search" }],
+    body: JSON.stringify({ model: attempt.model, input: messages, tools: attempt.tools,
       // Qwen3.8 counts reasoning and final text in the same output budget.
-      tool_choice: "required", stream: false, store: false, reasoning: { effort: "low" }, max_output_tokens: 4096 }),
+      tool_choice: "required", stream: false, store: false, reasoning: { effort: "low" },
+      ...(extract && attempt.model === cfg.model ? { enable_thinking: true } : {}), max_output_tokens: 2304 }),
     signal: controller.signal,
-  }).then((up) => {
+  }); }
+  function handle(attemptIndex) { return request(attempts[attemptIndex]).then((up) => {
+    if ([400, 422].includes(up.status) && attemptIndex + 1 < attempts.length) {
+      up.body && up.body.cancel();
+      return handle(attemptIndex + 1);
+    }
     if (up.status === 401 || up.status === 403) return cb({ code: "AI_AUTH_ERROR", http: 502, detail: "upstream auth " + up.status });
     if (up.status === 429) return cb({ code: "AI_RATE_LIMITED", http: 429, detail: "upstream rate limited" });
     if (!up.ok) return cb({ code: "AI_MODEL_ERROR", http: 502, detail: "upstream " + up.status });
@@ -1250,14 +1278,18 @@ function callQwen(cfg, messages, cb) {
           (data.output || []).some((item) => item.type === "message" && item.status && item.status !== "completed")) {
         return cb({ code: "AI_MODEL_ERROR", http: 502, detail: "empty, oversized or unfinished reply; " + responseDiagnostic(data, reply) });
       }
-      const sources = responseSources(data);
-      cb(null, { reply, model: requestModel, usage: data.usage || null,
-        sources, checkedAt: sources.length ? new Date().toISOString() : null });
+      const searchSources = responseSources(data);
+      const cited = matchCitedSources(reply, searchSources);
+      const extracted = (data.output || []).some((item) => item.type === "web_extractor_call" && item.status !== "failed");
+      cb(null, { reply: cited.reply, model: attempts[attemptIndex].model, usage: data.usage || null,
+        sources: cited.sources, checkedAt: searchSources.length ? new Date().toISOString() : null,
+        evidence: cited.sources.length ? (extracted ? "search_and_page_extract" : "search_snippet") : "unverified" });
     }).catch(() => cb({ code: "AI_MODEL_ERROR", http: 502, detail: "bad upstream json" }));
   }).catch((err) => {
     if (err && err.name === "AbortError") return cb({ code: "AI_TIMEOUT", http: 504, detail: "upstream timeout" });
     return cb({ code: "AI_MODEL_ERROR", http: 502, detail: "network" });
-  }).finally(() => clearTimeout(timer));
+  }); }
+  handle(0).finally(() => clearTimeout(timer));
   // eslint-disable-next-line no-unused-vars
   return started;
 }

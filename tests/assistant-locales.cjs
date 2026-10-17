@@ -24,16 +24,25 @@ fs.writeFileSync(path.join(temp, 'data/content.json'), JSON.stringify({
   faqs: [{ q: 'How to pay for a hotel?', a: 'FAQ_ANSWER: check the hotel payment methods.', tags: ['hotel', 'payment'] }],
 }));
 let received = null;
+let rejectedFlash = false;
+let attempts = [];
+let extractedPage = false;
 let responseStatus = 'completed';
 let messageStatus = 'completed';
 let diagnosticReason = 'max_output_tokens';
-let replyText = '寧波では、まず港町の街歩きから始めるのがおすすめです。';
+let replyText = '寧波では港町を歩くのがおすすめです。出典: https://example.org/ningbo';
 const upstream = http.createServer((req, res) => {
   let data = '';
   req.setEncoding('utf8');
   req.on('data', chunk => data += chunk);
   req.on('end', () => {
     received = JSON.parse(data);
+    attempts.push(received);
+    if (rejectedFlash && received.model === 'qwen3.8-flash') {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: { code: 'unsupported_tool' } }));
+      return;
+    }
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ status: responseStatus,
       incomplete_details: responseStatus === 'incomplete' ? { reason: diagnosticReason } : null,
@@ -45,14 +54,17 @@ const upstream = http.createServer((req, res) => {
         { url: 'https://user:password@example.org/private', title: 'Credentials' },
         { url: 'http://example.org/plain', title: 'Non TLS' },
       ] } },
+      ...(extractedPage ? [{ type: 'web_extractor_call', status: 'completed' }] : []),
       { type: 'message', status: messageStatus, content: [{ type: 'output_text', text: replyText }] },
     ] }));
   });
 });
 let app;
 function listen(server) { return new Promise(resolve => server.listen(0, '127.0.0.1', () => resolve(server.address().port))); }
+let testRequestCount = 0;
 function request(url, { method = 'GET', body, origin = 'https://zheshgo-travel.app.workbuddy.host' } = {}) {
-  return fetch(url, { method, headers: { ...(origin ? { Origin: origin } : {}), ...(body ? { 'Content-Type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
+  const testIp = '192.0.2.' + (1 + Math.floor(testRequestCount++ / 10));
+  return fetch(url, { method, headers: { 'X-Forwarded-For': testIp, ...(origin ? { Origin: origin } : {}), ...(body ? { 'Content-Type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
 }
 async function main() {
   const upstreamPort = await listen(upstream);
@@ -103,15 +115,16 @@ async function main() {
   assert.equal(chat.status, 200);
   const response = await chat.json();
   assert.equal(response.data.provider, 'qwen');
-  assert.equal(response.data.model, 'qwen3.8-omni-flash');
+  assert.equal(response.data.model, 'qwen3.8-flash');
   assert.match(response.data.reply, /寧波/);
   assert.deepEqual(response.data.sources, [{ url: 'https://example.org/ningbo', title: 'Ningbo source' }]);
   assert.ok(response.data.checkedAt);
+  assert.equal(response.data.evidence, 'search_snippet');
   assert.ok(received && received.input[0].role === 'system');
-  assert.equal(received.model, 'qwen3.8-omni-flash');
+  assert.equal(received.model, 'qwen3.8-flash');
   assert.equal(received.tool_choice, 'required');
   assert.equal(received.store, false);
-  assert.equal(received.max_output_tokens, 4096);
+  assert.equal(received.max_output_tokens, 2304);
   assert.deepEqual(received.tools, [{ type: 'web_search' }]);
   assert.match(received.input[0].content, /natural Japanese/);
   assert.deepEqual(received.input.slice(1).map(m => m.role), ['user', 'assistant', 'user']);
@@ -119,6 +132,19 @@ async function main() {
   assert.match(received.input[0].content, /using both Chinese and English search terms/);
   assert.match(received.input[0].content, /consolidate the facts and trade-offs in English internally/);
   assert.doesNotMatch(received.input[0].content, /OTHER_CITY_ONLY|UNPUBLISHED_ONLY|ARCHIVED_ONLY/);
+  extractedPage = true;
+  const page = await request(base + '/api/v1/assistant/chat', { method: 'POST', body: { locale: 'en', messages: [{ role: 'user', content: 'Read the full page of this hotel and compare it.' }] } });
+  assert.equal(page.status, 200);
+  assert.deepEqual(received.tools, [{ type: 'web_search' }, { type: 'web_extractor' }]);
+  assert.equal((await page.json()).data.evidence, 'search_and_page_extract');
+  extractedPage = false;
+  rejectedFlash = true;
+  attempts = [];
+  const fallback = await request(base + '/api/v1/assistant/chat', { method: 'POST', body: { locale: 'en', messages: [{ role: 'user', content: 'Ningbo hotels' }] } });
+  assert.equal(fallback.status, 200);
+  assert.equal((await fallback.json()).data.model, 'qwen3.8-omni-flash');
+  assert.deepEqual(attempts.map(a => a.model), ['qwen3.8-flash', 'qwen3.8-omni-flash']);
+  rejectedFlash = false;
 
   for(const [locale,pattern] of [['en',/clear English/],['ja',/natural Japanese/],['ko',/natural Korean/]]) {
     const res=await request(base+'/api/v1/assistant/chat',{method:'POST',body:{locale,messages:[{role:'user',content:'닝보에서 하루 코스를 추천해 주세요.'}]}});
@@ -139,6 +165,19 @@ async function main() {
   assert.equal(followup.status, 200); await followup.json();
   assert.match(received.input[0].content, /HOTEL_DETAIL/);
   assert.doesNotMatch(received.input[0].content, /OTHER_CITY_ONLY/);
+  replyText = 'A listed source supports this: https://example.org/ningbo. A made-up link https://example.org/fake is not evidence.';
+  const filtered = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
+  assert.equal(filtered.status, 200);
+  const filteredData = (await filtered.json()).data;
+  assert.deepEqual(filteredData.sources, [{ url: 'https://example.org/ningbo', title: 'Ningbo source' }]);
+  assert.doesNotMatch(filteredData.reply, /example\.org\/fake/);
+  replyText = 'A hotel has a review score of 9.0, according to an uncited source.';
+  const uncited = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
+  assert.equal(uncited.status, 200, 'missing citations must not disconnect the assistant');
+  const uncitedData = (await uncited.json()).data;
+  assert.deepEqual(uncitedData.sources, []);
+  assert.equal(uncitedData.evidence, 'unverified');
+  replyText = '寧波では港町を歩くのがおすすめです。出典: https://example.org/ningbo';
   responseStatus = 'incomplete';
   const incomplete = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
   assert.equal(incomplete.status, 502);
@@ -160,15 +199,15 @@ async function main() {
   assert.doesNotMatch(output, /UPSTREAM_PRIVATE_TEXT_MUST_NOT_BE_LOGGED|UPSTREAM_PRIVATE_REPLY_MUST_NOT_BE_LOGGED/);
   responseStatus = 'completed';
   messageStatus = 'completed';
-  replyText = 'A'.repeat(6500) + ' Complete ending.';
+  replyText = 'A'.repeat(6500) + ' Complete ending. https://example.org/ningbo';
   const longReply = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
   assert.equal(longReply.status, 200);
-  assert.ok((await longReply.json()).data.reply.endsWith('Complete ending.'), 'do not silently cut completed answers at 6000 characters');
+  assert.ok((await longReply.json()).data.reply.endsWith('Complete ending. https://example.org/ningbo'), 'do not silently cut completed answers at 6000 characters');
   const unsupported = await request(base + '/api/v1/assistant/chat', { method: 'POST', body: { locale: 'fr', messages: [{ role: 'user', content: 'Hi' }] } });
   assert.equal(unsupported.status, 400);
   const denied = await request(base + '/api/v1/assistant/status', { origin: 'https://attacker.example' });
   assert.equal(denied.status, 403);
-  console.log(JSON.stringify({ passed: ['status hides key','English/Japanese/Korean locale reaches server prompt','English consolidation for Japanese/Korean','Chinese/international search instruction','keyword-ranked published context within budget','follow-up inherits city','unpublished/archived content excluded','safe deduplicated search sources','incomplete upstream answer rejected','unfinished message rejected despite completed wrapper','diagnostic metadata allowlisted and reply text excluded','completed answer preserved','upstream response storage disabled','multi-turn user/assistant history preserved','client system role rejected','unsupported locale rejected','untrusted origin denied'], reply: response.data.reply, model: response.data.model, note: 'Mock model only; no live Qwen call.' }, null, 2));
+  console.log(JSON.stringify({ passed: ['status hides key','Flash web search','page extraction on explicit request','Omni fallback on Flash tool rejection','English/Japanese/Korean locale reaches server prompt','English consolidation for Japanese/Korean','Chinese/international search instruction','keyword-ranked published context within budget','follow-up inherits city','unpublished/archived content excluded','safe deduplicated search sources','incomplete upstream answer rejected','unfinished message rejected despite completed wrapper','diagnostic metadata allowlisted and reply text excluded','completed answer preserved','upstream response storage disabled','multi-turn user/assistant history preserved','client system role rejected','unsupported locale rejected','untrusted origin denied'], reply: response.data.reply, model: response.data.model, note: 'Mock model only; no live Qwen call.' }, null, 2));
 }
 main().catch(err => { console.error(err); process.exitCode = 1; }).finally(async () => {
   if (app && app.exitCode === null) {
