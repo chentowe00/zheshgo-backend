@@ -43,14 +43,23 @@ export CORS_ORIGINS="https://${stable_host},https://${alt_host},https://${instan
 node /app/server.js &
 
 # certbot standalone needs :80 to itself, so it runs before Caddy binds any port.
+# During a rollout the outgoing container keeps answering on the EIP for a short
+# while, and its Caddy redirects :80 to https, which makes the first attempt fail
+# with "remote error: tls: internal error". Retry until the old container drains.
 cert_dir="/etc/letsencrypt/live/${stable_host}"
 if [ ! -s "${cert_dir}/fullchain.pem" ]; then
-  echo '[public-https] Requesting one certificate for both names'
-  certbot certonly --standalone --non-interactive --agree-tos \
-    --register-unsafely-without-email --cert-name "${stable_host}" \
-    -d "${stable_host}" -d "${alt_host}" > /tmp/certbot.log 2>&1 || true
+  attempt=1
+  while [ "$attempt" -le 4 ]; do
+    echo "[public-https] certbot attempt ${attempt}"
+    certbot certonly --standalone --non-interactive --agree-tos \
+      --register-unsafely-without-email --cert-name "${stable_host}" \
+      -d "${stable_host}" -d "${alt_host}" > /tmp/certbot.log 2>&1 || true
+    if [ -s "${cert_dir}/fullchain.pem" ]; then break; fi
+    attempt=$((attempt + 1))
+    sleep 30
+  done
   echo '[public-https] certbot output (tail):'
-  tail -n 12 /tmp/certbot.log || true
+  tail -n 8 /tmp/certbot.log || true
 fi
 
 if [ -s "${cert_dir}/fullchain.pem" ]; then
