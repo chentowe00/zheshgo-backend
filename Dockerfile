@@ -7,9 +7,14 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Serve the existing visitor pages and the AI API from one HTTPS origin.
-# certbot obtains one certificate covering both hostnames (Caddy cannot: it
-# issues a separate certificate per name); Caddy then serves that certificate.
-RUN apk add --no-cache caddy curl certbot
+# lego obtains ONE certificate covering both hostnames in a single order — Caddy
+# cannot, it issues a separate certificate per name — and it can use the
+# TLS-ALPN-01 challenge, which is the only challenge that works here because
+# inbound port 80 does not reach the container.
+RUN apk add --no-cache caddy curl
+ARG LEGO_VERSION=4.31.0
+RUN curl -fsSL "https://github.com/go-acme/lego/releases/download/v${LEGO_VERSION}/lego_v${LEGO_VERSION}_linux_amd64.tar.gz" \
+  | tar -xz -C /usr/local/bin lego && lego --version
 
 # Copy the whole app (respects .dockerignore: secrets & runtime state excluded)
 COPY . .

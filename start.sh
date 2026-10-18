@@ -18,7 +18,7 @@ until public_ip=$(curl --fail --silent --max-time 5 https://api.ipify.org) &&
 done
 instance_host="$(printf '%s' "$public_ip" | tr . -).sslip.io"
 
-# One certificate covering both names, obtained with certbot.
+# One certificate covering both names, obtained with lego.
 #
 # Caddy cannot do this: it issues a separate certificate per hostname, which is
 # visible in the 2026-10-17 container log as two independent tls.obtain runs even
@@ -26,10 +26,13 @@ instance_host="$(printf '%s' "$public_ip" | tr . -).sslip.io"
 # rate-limits "new certificates per exact set of identifiers": {stable_host}
 # alone had been issued five times in 168h and was refused outright, leaving the
 # container with no certificate at all (TLS alert internal_error on 2026-10-17
-# and again on 2026-10-18, retry after 2026-10-19 19:04 UTC). Asking for one
-# certificate covering {stable_host, api.stable_host} is a set Let's Encrypt has
-# never counted, and the stable host stays inside it, so the visitor frontend
-# needs no change.
+# and again on 2026-10-18, retry after 2026-10-19 19:04 UTC). lego places both
+# names in a single order, which is a set Let's Encrypt has never counted, and
+# the stable host stays inside it, so the visitor frontend needs no change.
+#
+# TLS-ALPN-01 is used because inbound port 80 does not reach the container
+# (certbot's HTTP-01 fails there with "connection refused"). lego needs :443 to
+# itself, so it runs before Caddy binds any port.
 #
 # The instance host derived from the outbound IP is deliberately NOT served: it
 # changes on every restart and every extra name costs another issuance.
@@ -42,28 +45,30 @@ fi
 export CORS_ORIGINS="https://${stable_host},https://${alt_host},https://${instance_host}${CORS_ORIGINS:+,${CORS_ORIGINS}}"
 node /app/server.js &
 
-# certbot standalone needs :80 to itself, so it runs before Caddy binds any port.
-# During a rollout the outgoing container keeps answering on the EIP for a short
-# while, and its Caddy redirects :80 to https, which makes the first attempt fail
-# with "remote error: tls: internal error". Retry until the old container drains.
-cert_dir="/etc/letsencrypt/live/${stable_host}"
-if [ ! -s "${cert_dir}/fullchain.pem" ]; then
+lego_dir=/etc/lego
+cert_file=""
+if [ -s "${lego_dir}/certificates/${stable_host}.crt" ]; then
+  cert_file="${lego_dir}/certificates/${stable_host}.crt"
+else
   attempt=1
   while [ "$attempt" -le 4 ]; do
-    echo "[public-https] certbot attempt ${attempt}"
-    certbot certonly --standalone --non-interactive --agree-tos \
-      --register-unsafely-without-email --cert-name "${stable_host}" \
-      -d "${stable_host}" -d "${alt_host}" > /tmp/certbot.log 2>&1 || true
-    if [ -s "${cert_dir}/fullchain.pem" ]; then break; fi
+    echo "[public-https] lego attempt ${attempt}"
+    lego --path "${lego_dir}" --email "ops@zheshgo.app" \
+      --domains "${stable_host}" --domains "${alt_host}" \
+      --alpn --accept-tos --pem run > /tmp/lego.log 2>&1 || true
+    echo '[public-https] lego output (tail):'
+    tail -n 8 /tmp/lego.log || true
+    if [ -s "${lego_dir}/certificates/${stable_host}.crt" ]; then
+      cert_file="${lego_dir}/certificates/${stable_host}.crt"
+      break
+    fi
     attempt=$((attempt + 1))
-    sleep 30
+    sleep 20
   done
-  echo '[public-https] certbot output (tail):'
-  tail -n 8 /tmp/certbot.log || true
 fi
 
-if [ -s "${cert_dir}/fullchain.pem" ]; then
-  echo '[public-https] Serving the certbot certificate for both names'
+if [ -n "$cert_file" ]; then
+  echo '[public-https] Serving the certificate obtained by lego (both names)'
   cat > /tmp/caddy.json <<EOF
 {
   "admin": { "disabled": true },
@@ -97,7 +102,7 @@ if [ -s "${cert_dir}/fullchain.pem" ]; then
     },
     "tls": {
       "certificates": {
-        "load_files": [{ "certificate": "${cert_dir}/fullchain.pem", "key": "${cert_dir}/privkey.pem" }]
+        "load_files": [{ "certificate": "${cert_file}", "key": "${lego_dir}/certificates/${stable_host}.key" }]
       }
     }
   }
