@@ -55,7 +55,7 @@ else
     echo "[public-https] lego attempt ${attempt}"
     lego --path "${lego_dir}" --email "ops@zheshgo.app" \
       --domains "${stable_host}" --domains "${alt_host}" \
-      --alpn --accept-tos --pem run > /tmp/lego.log 2>&1 || true
+      --tls --accept-tos run > /tmp/lego.log 2>&1 || true
     echo '[public-https] lego output (tail):'
     tail -n 8 /tmp/lego.log || true
     if [ -s "${lego_dir}/certificates/${stable_host}.crt" ]; then
