@@ -7,8 +7,9 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Serve the existing visitor pages and the AI API from one HTTPS origin.
-# Caddy obtains a public certificate for the current instance EIP.
-RUN apk add --no-cache caddy curl
+# certbot obtains one certificate covering both hostnames (Caddy cannot: it
+# issues a separate certificate per name); Caddy then serves that certificate.
+RUN apk add --no-cache caddy curl certbot
 
 # Copy the whole app (respects .dockerignore: secrets & runtime state excluded)
 COPY . .

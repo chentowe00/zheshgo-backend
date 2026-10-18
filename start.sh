@@ -18,21 +18,21 @@ until public_ip=$(curl --fail --silent --max-time 5 https://api.ipify.org) &&
 done
 instance_host="$(printf '%s' "$public_ip" | tr . -).sslip.io"
 
-# One certificate for two names, issued from a single automation policy.
+# One certificate covering both names, obtained with certbot.
 #
-# A Caddyfile cannot express this: every comma-separated address is its own site
-# key, so Caddy obtains one certificate per name. That matters because Let's
-# Encrypt rate-limits "new certificates per exact set of identifiers" — the
-# single-name set {stable_host} had been issued 5 times in 168h and was refused
-# outright, leaving the container with no certificate at all (TLS alert
-# internal_error, 2026-10-17 and again 2026-10-18). A policy that names both
-# hosts asks for one certificate covering both, which is a set Let's Encrypt has
-# never counted, and the stable host stays inside it so the visitor frontend
+# Caddy cannot do this: it issues a separate certificate per hostname, which is
+# visible in the 2026-10-17 container log as two independent tls.obtain runs even
+# though both names shared one site block. That matters because Let's Encrypt
+# rate-limits "new certificates per exact set of identifiers": {stable_host}
+# alone had been issued five times in 168h and was refused outright, leaving the
+# container with no certificate at all (TLS alert internal_error on 2026-10-17
+# and again on 2026-10-18, retry after 2026-10-19 19:04 UTC). Asking for one
+# certificate covering {stable_host, api.stable_host} is a set Let's Encrypt has
+# never counted, and the stable host stays inside it, so the visitor frontend
 # needs no change.
 #
 # The instance host derived from the outbound IP is deliberately NOT served: it
-# changes on every restart and each name costs another issuance.
-stable_host="${stable_host}"
+# changes on every restart and every extra name costs another issuance.
 alt_host="${ALT_HTTPS_HOST:-api.${stable_host}}"
 if ! printf '%s' "$alt_host" | grep -Eq '^([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$'; then
   echo '[public-https] Invalid ALT_HTTPS_HOST' >&2
@@ -41,7 +41,60 @@ fi
 
 export CORS_ORIGINS="https://${stable_host},https://${alt_host},https://${instance_host}${CORS_ORIGINS:+,${CORS_ORIGINS}}"
 node /app/server.js &
-cat > /tmp/caddy.json <<EOF
+
+# certbot standalone needs :80 to itself, so it runs before Caddy binds any port.
+cert_dir="/etc/letsencrypt/live/${stable_host}"
+if [ ! -s "${cert_dir}/fullchain.pem" ]; then
+  echo '[public-https] Requesting one certificate for both names'
+  certbot certonly --standalone --non-interactive --agree-tos \
+    --register-unsafely-without-email --cert-name "${stable_host}" \
+    -d "${stable_host}" -d "${alt_host}" > /tmp/certbot.log 2>&1 || true
+fi
+
+if [ -s "${cert_dir}/fullchain.pem" ]; then
+  echo '[public-https] Serving the certbot certificate for both names'
+  cat > /tmp/caddy.json <<EOF
+{
+  "admin": { "disabled": true },
+  "apps": {
+    "http": {
+      "servers": {
+        "https": {
+          "listen": [":443"],
+          "routes": [
+            {
+              "match": [{ "host": ["${stable_host}", "${alt_host}"], "path": ["/api/v1/assistant/status", "/api/v1/assistant/chat", "/api/v1/health"] }],
+              "handle": [{ "handler": "reverse_proxy", "upstreams": [{ "dial": "127.0.0.1:8080" }] }]
+            },
+            {
+              "match": [{ "host": ["${stable_host}", "${alt_host}"] }],
+              "handle": [{ "handler": "file_server", "root": "/app/public" }]
+            }
+          ],
+          "tls_connection_policies": [{}]
+        },
+        "http": {
+          "listen": [":80"],
+          "routes": [
+            {
+              "match": [{ "host": ["${stable_host}", "${alt_host}"] }],
+              "handle": [{ "handler": "static_response", "status_code": 308, "headers": { "Location": ["https://{http.request.host}{http.request.uri}"] } }]
+            }
+          ]
+        }
+      }
+    },
+    "tls": {
+      "certificates": {
+        "load_files": [{ "certificate": "${cert_dir}/fullchain.pem", "key": "${cert_dir}/privkey.pem" }]
+      }
+    }
+  }
+}
+EOF
+else
+  echo '[public-https] certbot did not produce a certificate; falling back to Caddy ACME' >&2
+  cat > /tmp/caddy.json <<EOF
 {
   "admin": { "disabled": true },
   "apps": {
@@ -76,6 +129,7 @@ cat > /tmp/caddy.json <<EOF
   }
 }
 EOF
+fi
 
 echo "[public-https] Fixed ingress: https://${stable_host}/assistant.html"
 
@@ -95,7 +149,6 @@ ${stable_host} {
 EOF
 
 if caddy validate --config /tmp/caddy.json >/dev/null 2>&1; then
-  echo '[public-https] Using JSON config (single certificate, two names)'
   exec caddy run --config /tmp/caddy.json
 fi
 echo '[public-https] JSON config rejected; falling back to Caddyfile' >&2
