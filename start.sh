@@ -17,24 +17,12 @@ until public_ip=$(curl --fail --silent --max-time 5 https://api.ipify.org) &&
   sleep 5
 done
 instance_host="$(printf '%s' "$public_ip" | tr . -).sslip.io"
-
-# Let's Encrypt rate-limits issuance by the exact set of identifiers, so a second
-# SAN moves the request into a fresh bucket. The stable host stays covered by the
-# same certificate, therefore no frontend or API-base change is required.
-alt_host="${ALT_HTTPS_HOST:-api.${stable_host}}"
-if ! printf '%s' "$alt_host" | grep -Eq '^([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$'; then
-  echo '[public-https] Invalid ALT_HTTPS_HOST' >&2
-  exit 1
-fi
-
-site_hosts="$stable_host, $alt_host"
-cors_origins="https://${stable_host},https://${alt_host}"
+site_hosts="$stable_host"
 if [ "$instance_host" != "$stable_host" ]; then
-  site_hosts="$site_hosts, $instance_host"
-  cors_origins="$cors_origins,https://${instance_host}"
+  site_hosts="$stable_host, $instance_host"
 fi
 
-export CORS_ORIGINS="${cors_origins}${CORS_ORIGINS:+,${CORS_ORIGINS}}"
+export CORS_ORIGINS="https://${stable_host},https://${instance_host}${CORS_ORIGINS:+,${CORS_ORIGINS}}"
 node /app/server.js &
 cat > /tmp/Caddyfile <<EOF
 ${site_hosts} {
