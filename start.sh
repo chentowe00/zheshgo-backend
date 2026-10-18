@@ -49,6 +49,8 @@ if [ ! -s "${cert_dir}/fullchain.pem" ]; then
   certbot certonly --standalone --non-interactive --agree-tos \
     --register-unsafely-without-email --cert-name "${stable_host}" \
     -d "${stable_host}" -d "${alt_host}" > /tmp/certbot.log 2>&1 || true
+  echo '[public-https] certbot output (tail):'
+  tail -n 12 /tmp/certbot.log || true
 fi
 
 if [ -s "${cert_dir}/fullchain.pem" ]; then
