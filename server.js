@@ -1208,17 +1208,59 @@ function responseSources(data) {
   }
   return result;
 }
+/* Canonical form used only to compare a URL in the answer with a URL the search
+   tool actually returned. Search results and model prose rarely agree on
+   trailing slashes, "www.", http/https or tracking parameters, so comparing raw
+   strings silently drops genuine citations. */
+function urlKey(raw) {
+  try {
+    const url = new URL(raw);
+    if (url.protocol !== "https:" && url.protocol !== "http:") return "";
+    if (url.username || url.password) return "";
+    const host = url.hostname.toLowerCase().replace(/^www\./, "");
+    const path = url.pathname.replace(/\/+$/, "");
+    const params = Array.from(url.searchParams.entries())
+      .filter(([key]) => !/^(utm_|gclid|fbclid|mc_|ref$|ref_|spm)/i.test(key))
+      .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
+      .map(([key, value]) => key + "=" + value)
+      .join("&");
+    return host + path + (params ? "?" + params : "");
+  } catch (_) { return ""; }
+}
 function matchCitedSources(reply, sources) {
-  const allowed = new Set(sources.map((source) => source.url));
+  const allowed = new Map();
+  for (const source of sources) {
+    const key = urlKey(source.url);
+    if (key && !allowed.has(key)) allowed.set(key, source);
+  }
   const cited = new Set();
-  const text = reply.replace(/https:\/\/[^\s<>"'`]+/g, (raw) => {
-    const trailing = raw.match(/[.,;:!?)}\]]+$/);
-    const suffix = trailing ? trailing[0] : "";
-    const url = safeSourceUrl(raw.slice(0, raw.length - suffix.length));
-    if (!url || !allowed.has(url)) return "[unverified link removed]" + suffix;
-    cited.add(url);
-    return raw;
+  // Resolves one URL against the retrieved set; records it when it matches.
+  const resolve = (raw) => {
+    const hit = allowed.get(urlKey(raw));
+    if (!hit) return null;
+    cited.add(hit.url);
+    return hit.url;
+  };
+  // Markdown links first, so an unverifiable link keeps its label and loses only
+  // the URL instead of leaving a placeholder in the answer.
+  let text = reply.replace(/\[([^\]\n]{1,200})\]\((https?:\/\/[^)\s]+)\)/g, (match, label, raw) => {
+    const ok = resolve(raw);
+    return ok ? "[" + label + "](" + ok + ")" : label;
   });
+  // Then bare URLs.
+  text = text.replace(/https?:\/\/[^\s<>"'`]+/g, (raw) => {
+    const trailing = raw.match(/[.,;:!?)\]}]+$/);
+    const suffix = trailing ? trailing[0] : "";
+    const ok = resolve(raw.slice(0, raw.length - suffix.length));
+    return ok ? ok + suffix : "";
+  });
+  // Tidy the gaps left by removed URLs so the prose still reads cleanly.
+  text = text
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/[ \t]+([.,;:!?])/g, "$1")
+    .replace(/\(\s*\)/g, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
   return { reply: text, sources: sources.filter((source) => cited.has(source.url)).slice(0, 12) };
 }
 function responseText(data) {

@@ -171,6 +171,23 @@ async function main() {
   const filteredData = (await filtered.json()).data;
   assert.deepEqual(filteredData.sources, [{ url: 'https://example.org/ningbo', title: 'Ningbo source' }]);
   assert.doesNotMatch(filteredData.reply, /example\.org\/fake/);
+  assert.doesNotMatch(filteredData.reply, /unverified link removed/, 'no placeholder text may leak into the answer');
+  replyText = 'Book on [Booking.com](https://example.org/elsewhere) or read [the official page](https://example.org/ningbo).';
+  const markdownLink = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
+  assert.equal(markdownLink.status, 200);
+  const markdownData = (await markdownLink.json()).data;
+  assert.match(markdownData.reply, /Booking\.com/, 'label survives when the link itself cannot be verified');
+  assert.doesNotMatch(markdownData.reply, /example\.org\/elsewhere/);
+  assert.doesNotMatch(markdownData.reply, /unverified link removed/);
+  assert.match(markdownData.reply, /\[the official page\]\(https:\/\/example\.org\/ningbo\)/);
+  assert.deepEqual(markdownData.sources, [{ url: 'https://example.org/ningbo', title: 'Ningbo source' }]);
+  replyText = 'See https://www.example.org/ningbo/?utm_source=chat for details.';
+  const normalised = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
+  assert.equal(normalised.status, 200);
+  const normalisedData = (await normalised.json()).data;
+  assert.deepEqual(normalisedData.sources, [{ url: 'https://example.org/ningbo', title: 'Ningbo source' }],
+    'www/trailing slash/tracking parameters must not hide a genuine citation');
+  assert.equal(normalisedData.evidence, 'search_snippet');
   replyText = 'A hotel has a review score of 9.0, according to an uncited source.';
   const uncited = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
   assert.equal(uncited.status, 200, 'missing citations must not disconnect the assistant');
