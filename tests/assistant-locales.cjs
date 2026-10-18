@@ -151,6 +151,21 @@ async function main() {
     assert.equal(res.status,200);await res.json();assert.match(received.input[0].content,pattern);
   }
   const ask = async (messages, locale = 'en') => request(base + '/api/v1/assistant/chat', { method: 'POST', body: { locale, messages } });
+
+  // The upstream refuses tool_choice "required" when two tools are offered
+  // ("Please set one tool in required mode"), which used to downgrade every
+  // page-extraction question to the slower omni model.
+  const pageQuestion = await ask([{ role: 'user', content: 'Please read the full page at https://example.org/ningbo and summarise it.' }]);
+  assert.equal(pageQuestion.status, 200);
+  await pageQuestion.json();
+  assert.equal(received.model, 'qwen3.8-flash', 'a page question must stay on the primary model');
+  assert.equal(received.tools.length, 2);
+  assert.equal(received.tool_choice, 'auto', 'two tools cannot be requested with tool_choice=required');
+  const plainQuestion = await ask([{ role: 'user', content: 'Ningbo hotels' }]);
+  assert.equal(plainQuestion.status, 200);
+  await plainQuestion.json();
+  assert.equal(received.tools.length, 1);
+  assert.equal(received.tool_choice, 'required', 'a single search tool is still mandatory');
   for (const question of ['Ningbo hotel payment', '닝보 호텔 결제', '寧波 ホテル 支払い']) {
     const res = await ask([{ role: 'user', content: question }]);
     assert.equal(res.status, 200); await res.json();

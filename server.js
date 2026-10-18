@@ -1297,12 +1297,18 @@ function callQwen(cfg, messages, cb) {
   const extract = cfg.model === "qwen3.8-flash" && needsPageExtraction(messages);
   const attempts = [{ model: cfg.model, tools: extract ? [{ type: "web_search" }, { type: "web_extractor" }] : [{ type: "web_search" }] }];
   if (cfg.model === "qwen3.8-flash") attempts.push({ model: "qwen3.8-omni-flash", tools: [{ type: "web_search" }] });
-  function request(attempt) { return fetch(cfg.baseUrl + "/responses", {
+  function request(attempt) {
+    // The upstream rejects tool_choice "required" as soon as more than one tool
+    // is offered ("Please set one tool in required mode"), which used to turn
+    // every page-extraction question into a 400 and a downgrade to the slower
+    // omni model. With two tools the model chooses; with one it must use it.
+    const toolChoice = attempt.tools.length > 1 ? "auto" : "required";
+    return fetch(cfg.baseUrl + "/responses", {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": "Bearer " + cfg.apiKey },
     body: JSON.stringify({ model: attempt.model, input: messages, tools: attempt.tools,
       // Qwen3.8 counts reasoning and final text in the same output budget.
-      tool_choice: "required", stream: false, store: false, reasoning: { effort: "low" },
+      tool_choice: toolChoice, stream: false, store: false, reasoning: { effort: "low" },
       ...(extract && attempt.model === cfg.model ? { enable_thinking: true } : {}), max_output_tokens: 2304 }),
     signal: controller.signal,
   }); }
