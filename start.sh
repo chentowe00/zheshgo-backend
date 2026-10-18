@@ -17,10 +17,14 @@ until public_ip=$(curl --fail --silent --max-time 5 https://api.ipify.org) &&
   sleep 5
 done
 instance_host="$(printf '%s' "$public_ip" | tr . -).sslip.io"
+
+# Only the stable host is served. In a Caddyfile every comma-separated address is
+# its own site key and therefore gets its own certificate, and Caddy's storage
+# lives inside the container, so each restart re-requests every name. The
+# instance host is derived from an outbound IP that changes on every restart
+# (observed 8.210.44.250 -> 8.218.252.123), so keeping it doubled the Let's
+# Encrypt issuance rate and helped exhaust the duplicate-certificate limit.
 site_hosts="$stable_host"
-if [ "$instance_host" != "$stable_host" ]; then
-  site_hosts="$stable_host, $instance_host"
-fi
 
 export CORS_ORIGINS="https://${stable_host},https://${instance_host}${CORS_ORIGINS:+,${CORS_ORIGINS}}"
 node /app/server.js &
