@@ -1,6 +1,15 @@
 #!/bin/sh
 set -eu
 
+# Temporary emergency path: Cloudflare terminates public HTTPS and tunnels
+# requests to this Node server. The trycloudflare hostname is random and only
+# valid while this process remains connected; use only when explicitly enabled.
+if [ "${PUBLIC_TUNNEL_MODE:-}" = "quick" ]; then
+  echo '[quick-tunnel] Starting temporary HTTPS tunnel to the local Node service'
+  node /app/server.js &
+  exec cloudflared tunnel --no-autoupdate --protocol http2 --url "http://127.0.0.1:${PORT:-8080}"
+fi
+
 # A CLB ingress hostname stays fixed when SAE replaces its application instance.
 # This value is public configuration, never a credential.
 stable_host="${PUBLIC_HTTPS_HOST:-8-210-60-175.sslip.io}"
