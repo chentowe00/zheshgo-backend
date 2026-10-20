@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>写真ガイド · ZheshGo App</title>
+  <meta name="description" content="Appのみの機能。券売機やロッカーなどの操作を一つずつ案内するデモです。"/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/photo-guide.html"/><link rel="alternate" hreflang="ja" href="/ja/app/photo-guide.html"/><link rel="alternate" hreflang="ko" href="/ko/app/photo-guide.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="photoguide" data-app="app">
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">Appの機能 · 写真ガイド</p>
+        <h1>操作に迷ったら、手順を確かめる。</h1>
+        <p class="lead">券売機、ロッカー、注文端末、メニュー、標識を想定した操作案内です。現在はサンプル画像と模擬認識を使用します。画像のアップロードや実際の画像AI認識は行いません。</p>
+      </div>
+    </div>
+
+    <div class="wrap page">
+      <div class="note-box warn mb2" role="status">
+        <h4>模擬認識 · デモ機能</h4>施設の種類を選び、サンプル画像から案内を表示します。認識、手順の確認、完了までの流れを試すデモです。</div>
+
+      <div class="pg-stage">
+        <div class="pg-screen" id="pg-screen" aria-live="polite"></div>
+      </div>
+
+      <div class="note-box info mt2">
+        <h4>今後の写真機能について</h4>実際の写真認識はまだ提供していません。導入時には利用目的、送信先、保存・削除方法を明示します。パスワード、決済コード、旅券番号などを入力する必要はありません。</div>
+
+      <p class="small muted mt2">写真ガイドはApp版の機能です。ウェブ版では写真・画像認識は提供していません。</p>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Appメニュー"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var screen = document.getElementById("pg-screen");
+      var guides = ZW.CONTENT.photoGuides;
+      var current = null;
+      var stepIdx = 0;
+
+      function facilityIcon(g) {
+        if (g.id === "pg-locker") return "shield";
+        if (g.id === "pg-menu") return "trip";
+        if (g.id === "pg-signage") return "search";
+        return "camera";
+      }
+
+      function showPicker() {
+        current = null; stepIdx = 0;
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">どの施設で操作していますか？</h3>" +
+          "<p class=\"muted small\">種類を選ぶと、サンプルによる模擬認識を試せます。</p>" +
+          '<div class="pg-choices mt2">' +
+          guides.map(function (g) {
+            return (
+              '<button class="pg-choice" type="button" data-guide="' + g.id + '">' +
+              '<span class="ico">' + ZW.icon(facilityIcon(g)) + "</span>" +
+              "<span><b>" + ZW.esc(g.facility) + "</b><span>" + ZW.esc(g.scenario) + "</span></span>" +
+              "</button>"
+            );
+          }).join("") +
+          "</div></div>";
+        screen.querySelectorAll(".pg-choice").forEach(function (b) {
+          b.addEventListener("click", function () {
+            current = guides.find(function (g) { return g.id === b.getAttribute("data-guide"); });
+            showCapture();
+          });
+        });
+        ZW.log("photo_start", { phase: "picker" });
+      }
+
+      function showCapture() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">サンプル：" + ZW.esc(current.facility) + "</h3>" +
+          '<div class="pg-sample"><img src="' + ZW.esc(current.sampleImage) + '" alt="Sample illustration of ' + ZW.esc(current.facility) + '"/></div>' +
+          "<p class=\"small muted\">用意されたサンプル画像です。カメラを起動したり画像を送信したりしません。</p>" +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-scan\">このサンプルを照合</button>" +
+          "<button class=\"btn btn-ghost\" type=\"button\" id=\"pg-back\">別の種類を選ぶ</button>" +
+          "</div></div>";
+        document.getElementById("pg-scan").addEventListener("click", showScanning);
+        document.getElementById("pg-back").addEventListener("click", showPicker);
+      }
+
+      function showScanning() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">案内を探しています…</h3>" +
+          '<div class="pg-sample" style="opacity:.85"><img src="' + ZW.esc(current.sampleImage) + '" alt=""/></div>' +
+          '<div class="pg-progress"><i class="on"></i><i class="on"></i><i></i><i></i></div>' +
+          "<p class=\"small muted\">模擬認識中です。実際の画像AI認識ではありません。</p>" +
+          "</div>";
+        ZW.log("photo_scan", { facility: current.id });
+        setTimeout(function () {
+          if (current.confidence === "low") showLowConfidence();
+          else showMatched();
+        }, 1300);
+      }
+
+      function showLowConfidence() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">この画像だけでは判断しにくいようです</h3>" +
+          "<p class=\"muted\">メニューは店によって異なるため、このデモでは確実に判断できません。一般的な案内を見るか、別の操作をお試しください。</p>" +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-use-tutorial\">一般的なメニューの案内を見る</button>" +
+          "<button class=\"btn btn-secondary\" type=\"button\" id=\"pg-retake\">別のサンプルを試す</button>" +
+          "<a class=\"btn btn-ghost\" href=\"consult.html?topic=photo-guide\">相談フォームへ</a>" +
+          "</div></div>";
+        document.getElementById("pg-use-tutorial").addEventListener("click", showMatched);
+        document.getElementById("pg-retake").addEventListener("click", showCapture);
+        ZW.log("photo_low_confidence", { facility: current.id });
+      }
+
+      function showMatched() {
+        stepIdx = 0;
+        screen.innerHTML =
+          '<div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">' +
+          '<div class="pg-sample" style="max-width:180px;margin:0"><img src="' + ZW.esc(current.sampleImage) + '" alt=""/></div>' +
+          "<div style=\"flex:1;min-width:220px\">" +
+          "<span class=\"pill-demo\">模擬照合 · デモの判定：" + ZW.esc(current.confidence) + "</span>" +
+          '<h3 class="mt1" style="font-family:var(--sans)">' + ZW.esc(current.scenario) + "</h3>" +
+          '<p class="small muted mb0">' + ZW.esc(current.verifyNote) + "</p>" +
+          "</div></div>" +
+          '<div class="pg-progress" id="pg-progress" style="margin-top:20px"></div>' +
+          '<div id="pg-step"></div>' +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-secondary\" type=\"button\" id=\"pg-prev\" hidden>戻る</button>" +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-next\">次の手順へ</button>" +
+          "<button class=\"btn btn-ghost\" type=\"button\" id=\"pg-quit\">案内を終了</button>" +
+          "</div>";
+        renderStep();
+        document.getElementById("pg-prev").addEventListener("click", function () { stepIdx--; renderStep(); });
+        document.getElementById("pg-next").addEventListener("click", function () {
+          if (stepIdx < current.steps.length - 1) { stepIdx++; renderStep(); }
+          else showDone();
+        });
+        document.getElementById("pg-quit").addEventListener("click", function () {
+          ZW.log("photo_abandon", { facility: current.id, atStep: stepIdx + 1, total: current.steps.length });
+          showPicker();
+        });
+        ZW.log("photo_matched", { facility: current.id });
+      }
+
+      function renderStep() {
+        var s = current.steps[stepIdx];
+        var prog = document.getElementById("pg-progress");
+        prog.innerHTML = current.steps.map(function (_, i) { return '<i class="' + (i <= stepIdx ? "on" : "") + '"></i>'; }).join("");
+        document.getElementById("pg-step").innerHTML =
+          '<div class="pg-step"><span class="pg-step-num">' + (stepIdx + 1) + "</span><div>" +
+          "<h4>" + ZW.esc(s.title) + "</h4><p>" + ZW.esc(s.detail) + "</p>" +
+          (s.tip ? "<p class=\"tip\">ポイント：" + ZW.esc(s.tip) + "</p>" : "") +
+          "</div></div>";
+        document.getElementById("pg-prev").hidden = stepIdx === 0;
+        document.getElementById("pg-next").textContent =
+          stepIdx === current.steps.length - 1 ? "Done" : "次の手順へ";
+        ZW.log("photo_step", { facility: current.id, step: stepIdx + 1 });
+      }
+
+      function showDone() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          '<span class="pill-verify" style="background:var(--bamboo-soft);color:var(--bamboo);border-color:#C9D8C4">' + ZW.icon("check") + " 案内が完了しました</span>" +
+          "<h3 class=\"mt1\" style=\"font-family:var(--sans)\">操作の参考になりましたか？</h3>" +
+          "<p class=\"muted small\">回答は、この機能の改善に役立てるためのデモ記録です。</p>" +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-yes\">はい、解決しました</button>" +
+          "<button class=\"btn btn-secondary\" type=\"button\" id=\"pg-no\">まだ困っています</button>" +
+          "</div>" +
+          "<div id=\"pg-stuck\" class=\"note-box warn\" style=\"text-align:left\" hidden><h4>ほかの方法を試してみましょう</h4>実際の写真認識はまだありません。個別に相談したい場合は、受付状況を確認して<a href=\"consult.html?topic=photo-guide\">相談フォームへ</a>.</div>" +
+          "</div>";
+        document.getElementById("pg-yes").addEventListener("click", function () {
+          ZW.log("photo_complete", { facility: current.id, solved: true });
+          ZW.toast("解決として記録しました");
+          showPicker();
+        });
+        document.getElementById("pg-no").addEventListener("click", function () {
+          ZW.log("photo_complete", { facility: current.id, solved: false });
+          ZW.log("human_handoff", { from: "photo_guide", facility: current.id });
+          document.getElementById("pg-stuck").hidden = false;
+        });
+      }
+
+      showPicker();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Plan a trip · ZheshGo</title>
+  <meta name="description" content="Answer a few short questions and get a handful of draft Zhejiang and Shanghai routes matched to your pace, group and interests."/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/planner.html"/><link rel="alternate" hreflang="ja" href="/ja/planner.html"/><link rel="alternate" hreflang="ko" href="/ko/planner.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="plan">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">Plan a trip</p>
+        <h1>Two minutes, five questions, a few honest options</h1>
+        <p class="lead">We'll match our draft routes to your cities, days, pace and travel party — and tell you why each one fits (or where the trade-off is). No signup, no booking.</p>
+      </div>
+    </div>
+
+    <div class="wrap page">
+      <div class="detail-grid">
+        <div>
+          <form id="planner-form" class="planner-card">
+            <div class="field">
+              <label id="l-cities">Where are you going? <span class="hint">Pick any that apply.</span></label>
+              <div class="chip-row" role="group" aria-labelledby="l-cities" id="q-cities"></div>
+            </div>
+            <div class="field">
+              <label id="l-days">How many days in the region?</label>
+              <div class="chip-row" role="group" aria-labelledby="l-days" id="q-days"></div>
+            </div>
+            <div class="field">
+              <label id="l-interest">What are you into? <span class="hint">Pick up to three.</span></label>
+              <div class="chip-row" role="group" aria-labelledby="l-interest" id="q-interest"></div>
+            </div>
+            <div class="field">
+              <label id="l-group">Who's traveling?</label>
+              <div class="chip-row" role="group" aria-labelledby="l-group" id="q-group"></div>
+            </div>
+            <div class="field">
+              <label id="l-pace">What pace suits you?</label>
+              <div class="chip-row" role="group" aria-labelledby="l-pace" id="q-pace"></div>
+            </div>
+            <div class="flex">
+              <button class="btn btn-primary btn-lg" type="submit" id="go">Show me routes</button>
+              <button class="btn btn-secondary" type="button" id="reset">Reset</button>
+            </div>
+          </form>
+          <p class="small muted mt1">Preferences stay in your browser for this demo. Nothing here is a booked service — it's route guidance.</p>
+        </div>
+        <aside class="sticky-side">
+          <div class="side-card">
+            <h3>How matching works</h3>
+            <ul class="side-list">
+              <li>Routes are scored against your answers — city, theme, duration, group and pace.</li>
+              <li>Each match shows <strong>why</strong> it fits, so you can judge for yourself.</li>
+              <li>Close-but-not-perfect routes appear as “partial matches” with the gap named.</li>
+              <li>Save any route to My Trip, or ask the assistant to adjust the plan.</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <div id="results" hidden>
+        <hr class="divider"/>
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">Your matches</p>
+            <h2 id="results-title">Suggested routes</h2>
+          </div>
+        </div>
+        <div class="route-grid" id="match-grid"></div>
+        <div class="empty" id="no-match" hidden>
+          <div class="empty-art" id="nm-art"></div>
+          <h3>Nothing fits perfectly — yet</h3>
+          <p>We only publish a handful of draft routes. Try relaxing one filter, or ask the assistant to sketch an alternative.</p>
+          <div class="flex" style="justify-content:center">
+            <a class="btn btn-secondary" href="explore.html">Browse all routes</a>
+            <a class="btn btn-primary" href="assistant.html">Ask the assistant</a>
+          </div>
+        </div>
+        <div class="note-box warn mt2"><h4>Reality check</h4>These are draft routes, not verified itineraries. Confirm train times, opening hours and tickets before you commit anything — and save the ones you like to My Trip.</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var C = ZW.CONTENT;
+      var answers = { cities: [], days: null, interests: [], group: null, pace: null };
+
+      function chipGroup(el, options, isMulti, onchange) {
+        el._arr = [];
+        el._max = el.getAttribute("data-max") ? parseInt(el.getAttribute("data-max"), 10) : 99;
+        el.innerHTML = options.map(function (o) {
+          return '<button class="chip" type="button" role="checkbox" aria-checked="false" data-val="' + ZW.esc(o.v) + '">' + ZW.esc(o.l) + "</button>";
+        }).join("");
+        el.querySelectorAll("button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            var val = b.getAttribute("data-val");
+            var arr = el._arr;
+            if (isMulti) {
+              var i = arr.indexOf(val);
+              if (i === -1) { if (arr.length >= el._max) { ZW.toast("Pick up to " + el._max); return; } arr.push(val); }
+              else arr.splice(i, 1);
+            } else {
+              arr.length = 0; arr.push(val);
+            }
+            el.querySelectorAll("button").forEach(function (x) {
+              var on = arr.indexOf(x.getAttribute("data-val")) !== -1;
+              x.setAttribute("aria-checked", on);
+              x.classList.toggle("selected", on);
+            });
+            if (onchange) onchange();
+          });
+        });
+      }
+
+      var cities = chipGroup(document.getElementById("q-cities"),
+        C.cities.filter(function (c) { return !c.preview; }).map(function (c) { return { v: c.id, l: c.name }; }), true, function () { answers.cities = document.getElementById("q-cities")._arr.slice(); });
+      document.getElementById("q-days").setAttribute("data-max", 1);
+      var days = chipGroup(document.getElementById("q-days"),
+        [{ v: "1", l: "1–2 days" }, { v: "3", l: "3–4 days" }, { v: "5", l: "5–7 days" }, { v: "8", l: "8+ days" }], false, function () { answers.days = document.getElementById("q-days")._arr[0] || null; });
+      var interests = chipGroup(document.getElementById("q-interest"),
+        C.themes.map(function (t) { return { v: t.name, l: t.name }; }), true, function () { answers.interests = document.getElementById("q-interest")._arr.slice(); });
+      document.getElementById("q-interest").setAttribute("data-max", 3);
+      var group = chipGroup(document.getElementById("q-group"),
+        [{ v: "Solo", l: "Solo" }, { v: "Couples", l: "Couples" }, { v: "Friends", l: "Friends" }, { v: "Families", l: "Families" }], false, function () { answers.group = document.getElementById("q-group")._arr[0] || null; });
+      var pace = chipGroup(document.getElementById("q-pace"),
+        [{ v: "Gentle", l: "Gentle" }, { v: "Relaxed", l: "Relaxed" }, { v: "Moderate", l: "Moderate" }], false, function () { answers.pace = document.getElementById("q-pace")._arr[0] || null; });
+
+      function collect() {
+        answers.cities = document.getElementById("q-cities")._arr.slice();
+        answers.days = document.getElementById("q-days")._arr[0] || null;
+        answers.interests = document.getElementById("q-interest")._arr.slice();
+        answers.group = document.getElementById("q-group")._arr[0] || null;
+        answers.pace = document.getElementById("q-pace")._arr[0] || null;
+      }
+
+      document.getElementById("planner-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        collect();
+        if (answers.cities.length === 0 && answers.interests.length === 0) {
+          ZW.toast("Pick at least one city or interest.");
+          return;
+        }
+        run();
+      });
+      document.getElementById("reset").addEventListener("click", function () {
+        ["q-cities", "q-days", "q-interest", "q-group", "q-pace"].forEach(function (id) {
+          var el = document.getElementById(id);
+          el._arr = [];
+          el.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-checked", "false"); x.classList.remove("selected"); });
+        });
+        document.getElementById("results").hidden = true;
+      });
+      document.getElementById("nm-art").innerHTML = ZW.icon("search");
+
+      function run() {
+        var scored = C.routes.filter(function (r) { return r.status !== "archived"; }).map(function (r) {
+          var score = 0, reasons = [], gaps = [];
+          if (answers.cities.length && r.cities.some(function (cid) { return answers.cities.indexOf(cid) !== -1; })) { score += 3; reasons.push("covers " + r.cities.filter(function (cid) { return answers.cities.indexOf(cid) !== -1; }).map(ZW.cityName).join(" & ")); }
+          else if (answers.cities.length) gaps.push("outside your cities");
+          if (answers.interests.length && r.themes.some(function (t) { return answers.interests.indexOf(t) !== -1; })) { score += 3; reasons.push("matches " + r.themes.filter(function (t) { return answers.interests.indexOf(t) !== -1; }).join(" & ")); }
+          if (answers.days && r.days <= parseInt(answers.days, 10)) { score += 2; reasons.push(r.days + " day" + (r.days > 1 ? "s" : "") + " fits your window"); }
+          else if (answers.days) gaps.push("longer than your window");
+          if (answers.group && r.groups.indexOf(answers.group) !== -1) { score += 2; reasons.push("suits " + answers.group.toLowerCase()); }
+          else if (answers.group) gaps.push("not written for " + answers.group.toLowerCase());
+          if (answers.pace && r.pace === answers.pace) { score += 2; reasons.push(r.pace.toLowerCase() + " pace as you asked"); }
+          else if (answers.pace) gaps.push("pace differs from your preference");
+          if (answers.cities.length === 0) score -= 1;
+          return { r: r, score: score, reasons: reasons, gaps: gaps };
+        }).sort(function (a, b) { return b.score - a.score; });
+
+        var good = scored.filter(function (x) { return x.score >= 4; });
+        var partial = scored.filter(function (x) { return x.score >= 2 && x.score < 4; });
+        var list = good.concat(partial).slice(0, 6);
+
+        var grid = document.getElementById("match-grid");
+        var noMatch = document.getElementById("no-match");
+        document.getElementById("results-title").textContent =
+          "Suggested routes (" + good.length + " strong match" + (good.length === 1 ? "" : "es") + (partial.length ? ", " + partial.length + " partial" : "") + ")";
+        var resultsBox = document.getElementById("results");
+        resultsBox.hidden = false;
+        resultsBox.scrollIntoView({ behavior: "smooth", block: "start" });
+        grid.innerHTML = list.map(function (x) {
+          var card = document.createElement("div");
+          card.innerHTML = ZW.routeCard(x.r);
+          var article = card.firstElementChild;
+          var reasonsHtml = '<div class="match-reasons">✓ ' + ZW.esc(x.reasons.join(" · ")) +
+            (x.gaps.length ? " <span style=\"color:var(--muted)\">— note: " + ZW.esc(x.gaps.join(", ")) + "</span>" : "") + "</div>";
+          var body = article.querySelector(".card-body");
+          body.insertAdjacentHTML("afterbegin", reasonsHtml);
+          return card.innerHTML;
+        }).join("");
+        ZW.bindSaveButtons(grid);
+        noMatch.hidden = list.length > 0;
+        grid.style.display = list.length > 0 ? "" : "none";
+        ZW.log("save_plan_intent", answers);
+      }
+
+      // deep link from route pages
+      var q = ZW.param("route");
+      if (q) {
+        var rr = ZW.getRoute(q);
+        if (rr) {
+          var cityEl = document.getElementById("q-cities");
+          cityEl._arr = rr.cities.slice();
+          cityEl.querySelectorAll("button").forEach(function (x) {
+            var on = cityEl._arr.indexOf(x.getAttribute("data-val")) !== -1;
+            x.setAttribute("aria-checked", on);
+            x.classList.toggle("selected", on);
+          });
+          collect();
+          run();
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>서비스 소개 · ZheshGo</title>
+  <meta name="description" content="ZheshGo의 정보 확인 기준, 예시 콘텐츠와 AI 안내, 아직 검증 중인 가설을 소개해요."/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/about.html"/><link rel="alternate" hreflang="ja" href="/ja/about.html"/><link rel="alternate" hreflang="ko" href="/ko/about.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">서비스 소개</p>
+        <h1>확인하며 준비하는 여행</h1>
+        <p class="lead">ZheshGo는 상하이와 저장성을 찾는 여행자에게 실용적이고 솔직한 여행 정보를 제공하기 위한 초기 데모예요.</p>
+      </div>
+    </div>
+
+    <div class="wrap page page-narrow">
+      <h2>어떤 서비스인가요?</h2>
+      <p>여행 가이드와 여행 준비를 돕는 도구예요. 현재 상품 판매나 예약은 받지 않아요. 추천 코스와 이동 정보를 살펴보고 공식 채널에서 직접 예약하거나, 도움이 필요하면 상담을 요청할 수 있어요.</p>
+
+      <h2>콘텐츠 운영 기준</h2>
+      <ul>
+        <li><strong>확인하지 않은 정보는 표시해요.</strong> 열차 시간, 운영 시간, 입장권, 입국 규정은 확인 날짜가 없는 한 ‘출발 전 확인’으로 표시해요. 현재 콘텐츠는 검증 중인 데모 자료예요.</li>
+        <li><strong>후기와 이용 실적을 꾸며내지 않아요.</strong> 가상의 후기·평점·예약 수·할인이나 잔여 수량을 만들지 않아요. 설명용 콘텐츠에는 예시라고 표시해요.</li>
+        <li><strong>보유하지 않은 서비스를 약속하지 않아요.</strong> 실제로 확보하지 않은 팀, 가이드, 차량, 제휴나 운영 사례를 내세우지 않아요.</li>
+        <li><strong>확인할 수 없는 가격은 제시하지 않아요.</strong> 예산은 철도·입장권·식사 등 항목별로 안내하며, 확인되지 않은 금액을 만들지 않아요.</li>
+      </ul>
+
+      <h2>아직 확인 중인 가설</h2>
+      <p>아래 내용은 시장에서 입증된 사실이 아니라, 실제 이용을 통해 확인하려는 가설이에요.</p>
+      <div id="assumptions"></div>
+
+      <h2>AI 이용 안내</h2>
+      <p>페이지를 열면 서버 연결과 AI 설정 상태를 확인해요. 이용 가능할 때는 홍콩의 서버를 통해 Qwen을 호출해요. 연결에 문제가 있으면 오류를 알리며 모의 답변으로 바꾸지 않아요. App 사진 가이드는 아직 샘플 이미지와 모의 인식을 사용해요. AI 제안은 예약이나 여행 수배 완료를 뜻하지 않아요.</p>
+
+      <h2>이미지 안내</h2>
+      <p>사이트의 이미지는 데모를 위해 만든 강남 지역 모티프의 SVG 일러스트예요. 현장 사진이 아니며, 추후 실제 사진을 사용할 때는 출처를 표시할 예정이에요.</p>
+
+      <h2>버전과 운영 상태</h2>
+      <p class="small muted" id="status-line"></p>
+      <p>궁금한 점, 수정 의견, 소개를 원하는 코스가 있다면 <a href="consult.html">상담 양식</a>을 이용해 주세요.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="모바일 메뉴"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      document.getElementById("assumptions").innerHTML =
+        "<ul>" + ZW.CONTENT.assumptions.map(function (x) {
+          return "<li><strong>" + ZW.esc(x.a) + "</strong> — <span class='muted'>" + ZW.esc(x.s) + "</span></li>";
+        }).join("") + "</ul>";
+      document.getElementById("status-line").textContent =
+        ZW.CONTENT.meta.contentStatus + " · 기본 자료 기준일 " + ZW.CONTENT.meta.lastUpdated + " · 데모 자료, 현장 확인 전";
+    })();
+  </script>
+</body>
+</html>

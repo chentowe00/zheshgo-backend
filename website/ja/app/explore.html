@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>行き先・モデルコース · ZheshGo</title>
+  <meta name="description" content="上海と浙江の都市ガイドやモデルコースを、日数、ペース、一緒に旅する方などで探せます。"/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/explore.html"/><link rel="alternate" hreflang="ja" href="/ja/app/explore.html"/><link rel="alternate" hreflang="ko" href="/ko/app/explore.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore" data-app="app">
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">行き先・モデルコース</p>
+        <h1>どんな旅に出かけますか？</h1>
+        <p class="lead">行き先と旅のテーマから、あなたに合うコースを探せます。掲載内容は確認中です。出発前に、必要な情報をご確認ください。</p>
+      </div>
+    </div>
+
+    <div class="wrap page">
+      <div class="tabs" role="tablist" aria-label="都市またはモデルコースを探す">
+        <button role="tab" id="tab-dest" aria-selected="true" aria-controls="panel-dest">行き先から探す</button>
+        <button role="tab" id="tab-routes" aria-selected="false" aria-controls="panel-routes">モデルコース・テーマから探す</button>
+      </div>
+
+      <!-- Destinations panel -->
+      <section id="panel-dest" role="tabpanel" aria-labelledby="tab-dest">
+        <div class="dest-grid" id="dest-grid"></div>
+        <div class="mt3" id="preview-cities"></div>
+      </section>
+
+      <!-- Routes panel -->
+      <section id="panel-routes" role="tabpanel" aria-labelledby="tab-routes" hidden>
+        <div class="planner-card mb2" aria-label="コースの絞り込み">
+          <div class="field mb1">
+            <label id="f-city-label">都市</label>
+            <div class="chip-row" role="group" aria-labelledby="f-city-label" id="f-city"></div>
+          </div>
+          <div class="field mb1">
+            <label id="f-theme-label">旅のテーマ</label>
+            <div class="chip-row" role="group" aria-labelledby="f-theme-label" id="f-theme"></div>
+          </div>
+          <div class="field mb1">
+            <label id="f-days-label">日数の上限</label>
+            <div class="chip-row" role="group" aria-labelledby="f-days-label" id="f-days"></div>
+          </div>
+          <div class="field mb1">
+            <label id="f-pace-label">旅のペース</label>
+            <div class="chip-row" role="group" aria-labelledby="f-pace-label" id="f-pace"></div>
+          </div>
+          <div class="field mb0">
+            <label id="f-group-label">誰と旅しますか？</label>
+            <div class="chip-row" role="group" aria-labelledby="f-group-label" id="f-group"></div>
+          </div>
+          <p class="mt2 mb0"><button class="btn btn-secondary btn-sm" type="button" id="f-clear">絞り込みを解除</button></p>
+        </div>
+        <p class="small muted" id="f-count" aria-live="polite"></p>
+        <div class="route-grid" id="route-grid"></div>
+        <div class="empty" id="route-empty" hidden>
+          <div class="empty-art" id="re-art"></div>
+          <h3>条件に合うコースが見つかりませんでした</h3>
+          <p>掲載コースはまだ限られています。条件を減らして、もう一度お試しください。</p>
+          <button class="btn btn-primary" type="button" id="re-clear">絞り込みを解除</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="モバイルメニュー"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var C = ZW.CONTENT;
+      var qs = new URLSearchParams(location.search);
+
+      /* ---- tabs ---- */
+      var tabDest = document.getElementById("tab-dest");
+      var tabRoutes = document.getElementById("tab-routes");
+      var panelDest = document.getElementById("panel-dest");
+      var panelRoutes = document.getElementById("panel-routes");
+      function setTab(which) {
+        var routes = which === "routes";
+        tabDest.setAttribute("aria-selected", String(!routes));
+        tabRoutes.setAttribute("aria-selected", String(routes));
+        panelDest.hidden = !routes ? false : true;
+        panelRoutes.hidden = routes ? false : true;
+      }
+      tabDest.addEventListener("click", function () { setTab("dest"); });
+      tabRoutes.addEventListener("click", function () { setTab("routes"); });
+      document.querySelector(".tabs").addEventListener("keydown", function (e) {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        e.preventDefault();
+        var tabs = [tabDest, tabRoutes];
+        var idx = tabs.indexOf(document.activeElement);
+        var next = e.key === "ArrowRight" ? (idx + 1) % 2 : (idx + 1) % 2;
+        if (idx === -1) next = 0;
+        tabs[next].focus();
+        tabs[next].click();
+      });
+      if (qs.get("theme") || qs.get("city")) setTab("routes");
+
+      /* ---- destinations ---- */
+      var dg = document.getElementById("dest-grid");
+      dg.innerHTML = C.cities.filter(function (c) { return !c.preview; }).map(ZW.cityCard).join("");
+      var pv = document.getElementById("preview-cities");
+      pv.innerHTML =
+        "<h3 class=\"mt0\" style=\"font-size:1rem;font-family:var(--sans)\">これから紹介したい浙江の街</h3>" +
+        "<p class=\"small muted\">以下の都市は掲載準備中です。確認した内容から公開します。</p>" +
+        '<div class="flex">' +
+        C.cities.filter(function (c) { return c.preview; }).map(function (c) {
+          return '<a class="chip" href="city.html?id=' + c.id + '">' + ZW.esc(c.name) + " — 紹介準備中</a>";
+        }).join("") + "</div>";
+      ZW.bindSaveButtons(dg);
+
+      /* ---- route filters ---- */
+      var state = {
+        city: qs.get("city") || "any",
+        theme: qs.get("theme") || "any",
+        days: qs.get("days") || "any",
+        pace: qs.get("pace") || "any",
+        group: qs.get("group") || "any",
+      };
+      function chips(el, options, key, multi) {
+        el.innerHTML = options.map(function (o) {
+          var active = state[key] === o.v;
+          return '<button class="chip" type="button" role="checkbox" aria-checked="' + active + '" data-key="' + key + '" data-val="' + ZW.esc(o.v) + '">' + ZW.esc(ZW.label(o.l)) + "</button>";
+        }).join("");
+        el.querySelectorAll("button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            state[b.getAttribute("data-key")] = b.getAttribute("data-val");
+            apply();
+          });
+        });
+      }
+      var cityOpts = [{ v: "any", l: "都市を指定しない" }].concat(C.cities.filter(function (c) { return !c.preview; }).map(function (c) { return { v: c.id, l: c.name }; }));
+      var themeOpts = [{ v: "any", l: "すべてのテーマ" }].concat(C.themes.map(function (t) { return { v: t.name, l: ZW.label(t.name) }; }));
+      var dayOpts = [{ v: "any", l: "日数を指定しない" }, { v: 1, l: "1日" }, { v: 2, l: "2日以内" }, { v: 3, l: "3日以内" }];
+      var paceOpts = [{ v: "any", l: "ペースを指定しない" }, { v: "Gentle", l: "負担を抑えたペース" }, { v: "Moderate", l: "ほどよく巡る" }, { v: "Relaxed", l: "ゆったり過ごす" }];
+      var groupOpts = [{ v: "any", l: "同行者を指定しない" }, { v: "Solo", l: "ひとり旅" }, { v: "Couples", l: "ふたり旅" }, { v: "Friends", l: "友人と" }, { v: "Families", l: "家族と" }];
+      chips(document.getElementById("f-city"), cityOpts, "city");
+      chips(document.getElementById("f-theme"), themeOpts, "theme");
+      chips(document.getElementById("f-days"), dayOpts, "days");
+      chips(document.getElementById("f-pace"), paceOpts, "pace");
+      chips(document.getElementById("f-group"), groupOpts, "group");
+
+      function apply() {
+        // re-render chip states
+        document.querySelectorAll("#panel-routes [data-key]").forEach(function (b) {
+          var active = state[b.getAttribute("data-key")] === b.getAttribute("data-val");
+          b.setAttribute("aria-checked", active);
+          b.classList.toggle("selected", active);
+        });
+        var filter = {
+          city: state.city !== "any" ? state.city : null,
+          theme: state.theme !== "any" ? state.theme : null,
+          days: state.days !== "any" ? parseInt(state.days, 10) : null,
+          pace: state.pace,
+          group: state.group,
+        };
+        var list = ZW.getRoutes(filter);
+        var grid = document.getElementById("route-grid");
+        var empty = document.getElementById("route-empty");
+        document.getElementById("f-count").textContent = list.length + "件のモデルコース" + "" + "が見つかりました。";
+        grid.innerHTML = list.map(ZW.routeCard).join("");
+        ZW.bindSaveButtons(grid);
+        empty.hidden = list.length > 0;
+        grid.style.display = list.length > 0 ? "" : "none";
+        // sync URL
+        var u = new URL(location.href);
+        ["city", "theme", "days", "pace", "group"].forEach(function (k) {
+          if (state[k] !== "any") u.searchParams.set(k, state[k]); else u.searchParams.delete(k);
+        });
+        history.replaceState(null, "", u);
+        ZW.log("filter", state);
+      }
+      document.getElementById("f-clear").addEventListener("click", function () {
+        state = { city: "any", theme: "any", days: "any", pace: "any", group: "any" };
+        apply();
+      });
+      document.getElementById("re-clear").addEventListener("click", function () {
+        state = { city: "any", theme: "any", days: "any", pace: "any", group: "any" };
+        apply();
+      });
+      document.getElementById("re-art").innerHTML = ZW.icon("explore");
+      apply();
+    })();
+  </script>
+</body>
+</html>

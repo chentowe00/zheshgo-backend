@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>여행 코스 · ZheshGo</title>
+  <meta name="description" content="ZheshGo 추천 여행 코스 초안."/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/route.html"/><link rel="alternate" hreflang="ja" href="/ja/route.html"/><link rel="alternate" hreflang="ko" href="/ko/route.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <div id="detail"></div>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="모바일 메뉴"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var id = ZW.param("id");
+      var r = ZW.getRoute(id);
+      var el = document.getElementById("detail");
+      if (!r) { ZW.notFound("아직 준비 중인 코스예요"); return; }
+
+      document.title = r.title + " · ZheshGo";
+      var meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", r.summary);
+      var city = ZW.getCity(r.city);
+
+      var daysHtml = r.dayByDay.map(function (d) {
+        return (
+          '<div class="day-block">' +
+          '<div class="day-head"><span class="day-num">' + d.day + "</span>" +
+          "<h3>" + d.day + "일차 — " + ZW.esc(d.title) + "</h3></div>" +
+          d.stops.map(function (s) {
+            return (
+              '<div class="stop-item"><span class="stop-dot" aria-hidden="true"></span><div>' +
+              "<h4>" + ZW.esc(s.name) + "</h4><p>" + ZW.esc(s.note) + "</p></div></div>"
+            );
+          }).join("") +
+          "</div>"
+        );
+      }).join("");
+
+      var confirmHtml = r.confirmBefore && r.confirmBefore.length
+        ? "<div class=\"side-card\"><h3>출발 전 확인</h3><ul class=\"side-list\">" +
+          r.confirmBefore.map(function (x) { return "<li>" + ZW.icon("warn") + " " + ZW.esc(x) + "</li>"; }).join("") +
+          "</ul></div>"
+        : "";
+
+      var highlightHtml = r.highlights && r.highlights.length
+        ? "<div class=\"side-card\"><h3>주요 볼거리</h3><ul class=\"side-list\">" +
+          r.highlights.map(function (x) { return "<li>" + ZW.icon("check") + " " + ZW.esc(x) + "</li>"; }).join("") +
+          "</ul></div>"
+        : "";
+
+      var transportHtml = r.transportNotes && r.transportNotes.length
+        ? "<div class=\"note-box\"><h4>이동 팁</h4><ul style=\"margin:4px 0 0;padding-left:18px\">" +
+          r.transportNotes.map(function (x) { return "<li>" + ZW.esc(x) + "</li>"; }).join("") +
+          "</ul></div>"
+        : "";
+
+      var related = ZW.CONTENT.routes.filter(function (o) {
+        return o.id !== r.id && o.status !== "archived" && o.city === r.city;
+      }).slice(0, 3);
+
+      el.innerHTML =
+        '<div class="page-hero"><div class="wrap">' +
+        "<nav class=\"crumbs\" aria-label=\"Breadcrumb\"><a href=\"index.html\">홈</a><span class=\"sep\">/</span><a href=\"explore.html\">여행지·코스</a><span class=\"sep\">/</span>" +
+        (city ? '<a href="city.html?id=' + city.id + '">' + ZW.esc(city.name) + "</a>" : '<span>' + ZW.esc(r.city) + "</span>") +
+        '<span class="sep">/</span><span>' + ZW.esc(r.title) + "</span></nav>" +
+        '<span class="theme-tag" style="background:var(--celadon-mist);color:var(--celadon-deep)">' + ZW.esc(ZW.label(r.theme)) + "</span>" +
+        '<h1 style="max-width:760px">' + ZW.esc(r.title) + "</h1>" +
+        '<div class="route-facts" style="font-size:.92rem;gap:8px 22px">' +
+        "<span>" + ZW.icon("clock") + " " + r.days + "일" + "" + "</span>" +
+        "<span>" + ZW.icon("walk") + " " + ZW.esc(ZW.label(r.pace)) + " 여행 속도</span>" +
+        "<span>" + ZW.icon("users") + " " + ZW.esc(r.groups.map(ZW.label).join(" · ")) + "</span>" +
+        "</div>" +
+        '<div class="flex mt1">' + ZW.verifyBadge(r) +
+        "<span class=\"pill-demo\">코스 초안 · 예약 상품이 아니에요</span></div>" + ZW.provenance(r) +
+        "</div></div>" +
+        '<div class="wrap page">' +
+        '<div class="detail-grid">' +
+        "<div>" +
+        '<div class="flex mb1"><button class="btn btn-primary" type="button" id="save-route">' + ZW.icon("heart") + " <span id='save-label'>여행 목록에 저장</span></button>" +
+        '<a class="btn btn-secondary" href="planner.html?route=' + r.id + "\">내 일정에 넣어보기</a></div>" +
+        "<h2>이 코스를 고르는 이유</h2><p>" + ZW.esc(r.why) + "</p>" +
+        "<h2>전체 동선</h2>" + daysHtml +
+        transportHtml +
+        "<div class=\"note-box warn\"><h4>선택 전 고려할 점</h4>" + ZW.esc(r.notFor) + "</div>" +
+        "<div class=\"note-box info\"><h4>예산 항목</h4>확인되지 않은 가격은 제시하지 않아요. 철도·입장권·현지 교통·식사 비용을 나눠 준비하고 실제 금액은 출발 전에 확인해 주세요. 이 사이트에서 예약이 이루어지지는 않아요.</div>" +
+        "</div>" +
+        '<aside class="sticky-side">' +
+        "<div class=\"side-card\"><h3>한눈에 보기</h3><ul class=\"side-list\">" +
+        "<li>" + ZW.icon("explore") + " " + r.cities.map(function (cid) { return ZW.cityName(cid); }).join(" → ") + "</li>" +
+        "<li>" + ZW.icon("clock") + " " + r.days + "일" + "" + ", " + ZW.esc(ZW.label(r.pace)) + " 여행 속도</li>" +
+        "<li>" + ZW.icon("users") + " 추천 동행인: " + ZW.esc(r.groups.map(ZW.label).join(", ")) + "</li>" +
+        "</ul></div>" +
+        confirmHtml + highlightHtml +
+        "<div class=\"side-card\"><h3>담당자 도움이 필요한가요?</h3><p class=\"small\">날짜나 동행인에 맞지 않는 부분이 있다면 상담해 주세요.</p>" +
+        '<a class="btn btn-sandal btn-sm" href="consult.html?route=' + r.id + "\">여행 상담 요청</a></div>" +
+        "</aside></div>" +
+        (related.length
+          ? "<hr class=\"divider\"/><h2>다른 코스 · " + ZW.esc(city ? city.name : "the region") + "</h2>" +
+            '<div class="route-grid mt1">' + related.map(ZW.routeCard).join("") + "</div>"
+          : "") +
+        "</div>";
+
+      var saveBtn = document.getElementById("save-route");
+      var saveLabel = document.getElementById("save-label");
+      function paintSave() {
+        var saved = ZW.isSaved("routes", r.id);
+        saveLabel.textContent = saved ? "저장했어요" : "여행 목록에 저장";
+        saveBtn.setAttribute("aria-pressed", String(saved));
+      }
+      saveBtn.addEventListener("click", function () { ZW.toggleSave("routes", r.id); paintSave(); });
+      paintSave();
+      ZW.bindSaveButtons(el);
+      ZW.log("view_guide", { type: "route", id: r.id });
+    })();
+  </script>
+</body>
+</html>

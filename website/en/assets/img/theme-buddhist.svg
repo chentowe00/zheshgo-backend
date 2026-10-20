@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Buddhist culture">
+  <g fill="none" stroke="#3D6B5C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 50 L14 34 L28 24 L36 30 L52 20 L50 28 L30 40 L28 50 Z"/>
+    <path d="M22 44 h22 M28 50 h12"/>
+  </g>
+  <circle cx="47" cy="15" r="3" fill="#A67C52"/>
+</svg>

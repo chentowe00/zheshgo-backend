@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ZheshGo — Plan real travel in Shanghai &amp; Zhejiang</title>
+  <meta name="description" content="Honest, practical travel guides for international visitors: Shanghai, Hangzhou and Ningbo — routes, food, temples, and help when you're on the ground."/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/index.html"/><link rel="alternate" hreflang="ja" href="/ja/index.html"/><link rel="alternate" hreflang="ko" href="/ko/index.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="home">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-art" aria-hidden="true"><img src="assets/img/hero-art.svg" alt="" style="width:100%;height:100%;object-fit:cover"/></div>
+      <div class="wrap hero-inner">
+        <p class="hero-eyebrow">Shanghai · Hangzhou · Ningbo</p>
+        <h1>Plan real travel in Shanghai &amp; Zhejiang.</h1>
+        <p class="sub">Honest, practical guides for international visitors — from the familiar gateways of Shanghai and Hangzhou to the port city of Ningbo. Everything unverified is clearly marked; nothing here is a booking, and nothing pretends to be one.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="explore.html">Explore routes &amp; guides</a>
+          <a class="btn btn-secondary btn-lg" href="planner.html">Plan a trip</a>
+        </div>
+        <div class="search-pill">
+          <span id="home-search-icon" style="display:inline-flex"></span>
+          <input type="search" id="home-search" placeholder="Search: Ningbo seafood · train tickets · payment…" aria-label="Search guides and routes"/>
+          <button class="btn btn-primary" type="button" id="home-search-btn">Search</button>
+        </div>
+        <div class="hero-chips" style="margin-top:16px" aria-label="Popular searches">
+          <a class="chip" href="explore.html?theme=Port%20%26%20Maritime">Port &amp; Maritime</a>
+          <a class="chip" href="explore.html?theme=Local%20Food">Local Food</a>
+          <a class="chip" href="explore.html?theme=Buddhist%20Culture">Buddhist Culture</a>
+          <a class="chip" href="assistant.html">Ask the AI assistant</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Destinations -->
+    <section class="section" aria-labelledby="dest-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">Destinations</p>
+            <h2 id="dest-title">Two gateways, one port city</h2>
+          </div>
+          <a class="more" href="explore.html">All guides →</a>
+        </div>
+        <div class="dest-grid" id="dest-grid"></div>
+        <p class="small muted mt2">Shaoxing and Zhoushan are on our shortlist — preview pages only, no unverified detail published yet.</p>
+      </div>
+    </section>
+
+    <!-- Routes by theme -->
+    <section class="section section-alt" aria-labelledby="routes-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">Routes &amp; themes</p>
+            <h2 id="routes-title">Not checklist tours — routes with a point of view</h2>
+          </div>
+          <a class="more" href="explore.html">Filter all routes →</a>
+        </div>
+        <div class="flex mb2" id="theme-chips" aria-label="Browse by theme"></div>
+        <div class="route-grid" id="featured-routes"></div>
+      </div>
+    </section>
+
+    <!-- What you can do -->
+    <section class="section" aria-labelledby="do-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">Do more than read</p>
+            <h2 id="do-title">Plan it, ask about it, save it</h2>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <a class="feature-card" href="planner.html">
+            <span class="feature-icon" id="fi-plan"></span>
+            <h3>Plan a trip in two minutes</h3>
+            <p>Tell us your cities, days, pace and who's traveling. We'll match a handful of routes — and explain why each fits.</p>
+            <span class="arrow">Start planning →</span>
+          </a>
+          <a class="feature-card" href="assistant.html">
+            <span class="feature-icon" id="fi-assistant"></span>
+            <h3>Ask the travel assistant</h3>
+            <p>Questions about routes, trains, payment or what to eat in Ningbo — answered from this site's guides. A demo assistant, clearly labeled.</p>
+            <span class="arrow">Try the assistant →</span>
+          </a>
+          <a class="feature-card" href="app/index.html"
+             data-app-href="photo-guide.html"
+             data-app-title="Photo guide (app only)"
+             data-app-text="Point your phone at a ticket machine, locker, kiosk, menu or sign — and get English step-by-step help, one step at a time. Simulated in this demo.">
+            <span class="feature-icon" id="fi-app"></span>
+            <h3>Get the ZheshGo app</h3>
+            <p>Install the app on your phone and unlock the photo guide: step-by-step help for ticket machines, lockers, kiosks and menus. Simulated in this demo.</p>
+            <span class="arrow">Get the app →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust -->
+    <section class="section section-night" aria-labelledby="trust-title">
+      <div class="wrap">
+        <p class="section-eyebrow" style="color:#C7B08E">Why you can check us</p>
+        <h2 id="trust-title" style="color:var(--on-night)">We'd rather say “verify this” than fake certainty.</h2>
+        <div class="feature-grid" style="margin-top:28px">
+          <div class="feature-card" style="background:var(--night-2);border-color:rgba(233,228,213,.12);color:var(--on-night)">
+            <h3 style="color:var(--on-night)">Unverified facts are flagged</h3>
+            <p style="color:var(--on-night-muted)">Train times, opening hours, tickets and entry rules carry a “please verify before travel” marker unless we state a checked date. Demo seed content — not field-verified.</p>
+          </div>
+          <div class="feature-card" style="background:var(--night-2);border-color:rgba(233,228,213,.12);color:var(--on-night)">
+            <h3 style="color:var(--on-night)">No fake social proof</h3>
+            <p style="color:var(--on-night-muted)">No invented reviews, ratings, booking counts or prices. Anything illustrative is labeled as a demo sample. We'll earn trust the slow way.</p>
+          </div>
+          <div class="feature-card" style="background:var(--night-2);border-color:rgba(233,228,213,.12);color:var(--on-night)">
+            <h3 style="color:var(--on-night)">Suggestions aren't bookings</h3>
+            <p style="color:var(--on-night-muted)">AI answers and routes are guidance, not reserved services. When you need a real person, the consult form is there — no pressure, no countdowns.</p>
+          </div>
+        </div>
+        <p style="margin-top:22px"><a class="btn btn-ghost" style="border-color:rgba(233,228,213,.4);color:var(--on-night)" href="about.html">How we keep content honest</a></p>
+      </div>
+    </section>
+
+    <!-- Consult band -->
+    <section class="section" aria-labelledby="consult-title">
+      <div class="wrap">
+        <div class="planner-card" style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+          <div style="flex:1;min-width:260px">
+            <h2 id="consult-title" style="margin-bottom:6px">Stuck on a real trip? Ask a human.</h2>
+            <p class="mb0">For questions the guides and assistant can't settle — dates, groups, accessibility, a route that just doesn't fit — send us a short note. A real person follows up; we never promise unverified prices or availability.</p>
+          </div>
+          <a class="btn btn-sandal btn-lg" href="consult.html">Request human help</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var C = ZW.CONTENT;
+      // destination cards
+      var grid = document.getElementById("dest-grid");
+      var main = C.cities.filter(function (c) { return !c.preview; });
+      grid.innerHTML = main.map(ZW.cityCard).join("");
+      ZW.bindSaveButtons(grid);
+      // theme chips
+      var chips = document.getElementById("theme-chips");
+      chips.innerHTML = C.themes.map(function (t) {
+        return '<a class="chip" href="explore.html?theme=' + encodeURIComponent(t.name) + '">' +
+          '<img src="' + ZW.esc(t.art) + '" alt="" width="15" height="15" aria-hidden="true"/>' +
+          ZW.esc(t.name) + "</a>";
+      }).join("");
+      // featured routes (overridable from CMS UI config)
+      var uiCfg = (C.ui && typeof C.ui === "object") ? C.ui : {};
+      var featured = (uiCfg.featuredRouteIds || ["nb-port-books", "hz-slow-lake", "sh-nb-link"])
+        .map(ZW.getRoute).filter(Boolean);
+      var fr = document.getElementById("featured-routes");
+      fr.innerHTML = featured.map(ZW.routeCard).join("");
+      ZW.bindSaveButtons(fr);
+      // hero copy (overridable from CMS UI config; plain text only)
+      if (uiCfg.heroEyebrow) document.querySelector(".hero-eyebrow").textContent = uiCfg.heroEyebrow;
+      if (uiCfg.heroTitle) document.querySelector(".hero h1").textContent = uiCfg.heroTitle;
+      if (uiCfg.heroSub) document.querySelector(".hero .sub").textContent = uiCfg.heroSub;
+      // search pill
+      var input = document.getElementById("home-search");
+      var go = function () { if (input.value.trim()) { ZW.openSearch(); var si = document.getElementById("zw-search-input"); if (si) { si.value = input.value; ZW.runSearch(si.value); } } else { ZW.openSearch(); } };
+      document.getElementById("home-search-btn").addEventListener("click", go);
+      input.addEventListener("keydown", function (e) { if (e.key === "Enter") go(); });
+      // feature icons
+      document.getElementById("fi-plan").innerHTML = ZW.icon("plan");
+      document.getElementById("fi-assistant").innerHTML = ZW.icon("assistant");
+      document.getElementById("fi-app").innerHTML = ZW.icon("camera");
+      document.getElementById("home-search-icon").innerHTML = ZW.icon("search");
+    })();
+  </script>
+</body>
+</html>

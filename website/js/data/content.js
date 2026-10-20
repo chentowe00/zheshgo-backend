@@ -1,0 +1,945 @@
+/* ============================================================
+   ZheshGo — centralized demo content
+   Every fact that can change (transport, hours, prices, entry
+   rules) carries a status: "verify" (please verify before
+   travel) unless marked verified with a date. Nothing here is
+   fabricated as confirmed — demo seed content only.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  const VERIFY = "Please verify before travel.";
+  const T = {
+    architecture: "Architecture & History",
+    food: "Local Food",
+    buddhist: "Buddhist Culture",
+    port: "Port & Maritime",
+    walk: "Neighborhood Walks",
+    family: "Family-friendly",
+    slow: "Slow Travel",
+  };
+
+  const CONTENT = {
+    meta: {
+      brand: "ZheshGo",
+      zh: "浙沪 · 行",
+      tagline: "Plan real travel in Shanghai & Zhejiang.",
+      contentStatus: "Demo seed content",
+      contentNote:
+        "This demo contains draft, editorial content. Transport times, opening hours, ticket prices and entry rules change often and are marked “verify before travel” unless we state a checked date. Nothing on this site is a booking or a promise of service.",
+      lastUpdated: "2026-10-08",
+    },
+
+    /* ---------------- Cities ---------------- */
+    cities: [
+      {
+        id: "shanghai",
+        name: "Shanghai",
+        zh: "沪",
+        art: "assets/img/city-shanghai.svg",
+        gateway: true,
+        role: "The gateway city",
+        tagline: "A global arrival point, and a city of layered neighborhoods worth slowing down for.",
+        intro:
+          "Most international visitors land here, and for good reason: Shanghai has the region's most complete travel infrastructure for non-Chinese speakers — metro signage in English throughout, easy airport links, and a dense core of walkable historic streets. It's also a very different city from the Jiangnan countryside an hour away. Use Shanghai for arrival, orientation and one or two unhurried neighborhood days, then point the second half of your trip toward Zhejiang.",
+        facts: [
+          { k: "Arrival", v: "Two international airports (PVG and SHA) with metro links to the center. Rail hub at Hongqiao for Zhejiang connections.", s: VERIFY },
+          { k: "Getting around", v: "Metro is extensive, cheap and signposted in English; ride-hailing apps are the easiest door-to-door option.", s: VERIFY },
+          { k: "Paying", v: "Mobile payment (Alipay / WeChat Pay) is dominant; international cards can be linked in recent versions.", s: VERIFY },
+          { k: "Base idea", v: "1–3 days: one day of classic sights and one day of neighborhood walking, or a family day." },
+          { k: "Best seasons", v: "Spring and autumn are mildest. July–August is hot and humid.", s: VERIFY },
+        ],
+        places: ["bund", "ffc", "yuyuan"],
+        routes: ["sh-two-banks", "sh-family"],
+        verified: false,
+      },
+      {
+        id: "hangzhou",
+        name: "Hangzhou",
+        zh: "杭",
+        art: "assets/img/city-hangzhou.svg",
+        gateway: true,
+        role: "Lake, tea and old city",
+        tagline: "The classic Jiangnan city — best in the early morning, before the crowds wake up.",
+        intro:
+          "Hangzhou is the region's most famous postcard: West Lake, tea hills and temple lanes. It works well as a first Zhejiang stop after Shanghai — about an hour by high-speed rail. The honest advice: the lake rewards slow, early starts and walking rather than checklist sightseeing, and the city connects cleanly onward to Ningbo if you want to trade the famous scenery for a working port city with book culture and seafood.",
+        facts: [
+          { k: "Arrival", v: "High-speed rail from Shanghai Hongqiao and connections from major hubs; East Railway Station is the main gateway.", s: VERIFY },
+          { k: "Getting around", v: "Metro plus walking; the lake ring is best on foot or by bike share.", s: VERIFY },
+          { k: "Base idea", v: "1–3 days: one slow lake day, one tea-and-temple day if time allows." },
+          { k: "Peak times", v: "The lakefront is busiest 10:00–16:00 on weekends and holidays. Go early.", s: VERIFY },
+          { k: "Best seasons", v: "Spring (tea season) and autumn; summer is hot, winter can be misty and quiet." },
+        ],
+        places: ["westlake", "longjing", "lingyin"],
+        routes: ["hz-slow-lake", "hz-tea-temples"],
+        verified: false,
+      },
+      {
+        id: "ningbo",
+        name: "Ningbo",
+        zh: "甬",
+        art: "assets/img/city-ningbo.svg",
+        gateway: false,
+        role: "Port city & pilot",
+        tagline: "A working harbor city of books, seafood and old streets — our first pilot city.",
+        intro:
+          "Ningbo is our early pilot city. It is not a lakes-and-pagodas postcard like Hangzhou; it is a real, working port — China's oldest surviving private library (Tianyi Pavilion, founded 1561), early treaty-port streets along the old Bund, a deep seafood tradition, and easy access toward Buddhist temples and the Putuoshan ferry route. We are testing whether a well-explained Ningbo story earns two extra days from visitors who land in Shanghai or Hangzhou. That is an assumption to validate, not a proven demand — but the material is strong.",
+        facts: [
+          { k: "Arrival", v: "High-speed rail from Shanghai Hongqiao (around 2 hours) and from Hangzhou East (around 1 hour).", s: VERIFY },
+          { k: "Getting around", v: "Metro lines plus walking for the historic core; taxis or ride-hailing for Dongqian Lake and the temples.", s: VERIFY },
+          { k: "Base idea", v: "2 days: one day of Tianyi Pavilion, Moon Lake, the old Bund and seafood; one day at Dongqian Lake or the Zen temples." },
+          { k: "Onward", v: "The Putuoshan ferry route runs from nearby ports (e.g., Zhujiajian); sailings depend on weather.", s: VERIFY },
+          { k: "Best seasons", v: "Spring and autumn; seafood is best in autumn and winter months.", s: VERIFY },
+        ],
+        places: ["tianyige", "laowaitan", "moonlake", "nantang", "dongqianhu", "tiantong", "asoka", "nb-museum"],
+        routes: ["nb-port-books", "nb-buddhist"],
+        verified: false,
+      },
+      {
+        id: "shaoxing",
+        name: "Shaoxing",
+        zh: "绍",
+        art: "assets/img/city-shaoxing.svg",
+        gateway: false,
+        role: "Preview",
+        tagline: "Canals, yellow-wine culture and a quieter old town — a preview, not yet a guide.",
+        intro:
+          "Shaoxing is on our shortlist for future coverage: water-town streets, wine-cellars that produce Shaoxing rice wine, and a strong literary heritage. We are still gathering and verifying local detail, so for now this is a preview only — no routes, timetables or prices are published here.",
+        facts: [],
+        places: [],
+        routes: [],
+        verified: false,
+        preview: true,
+      },
+      {
+        id: "zhoushan",
+        name: "Zhoushan",
+        zh: "舟",
+        art: "assets/img/city-zhoushan.svg",
+        gateway: false,
+        role: "Preview",
+        tagline: "Islands and the ferry route to Putuoshan — a preview, not yet a guide.",
+        intro:
+          "Zhoushan is the island prefecture that includes the Putuoshan ferry gateway. It matters for our Buddhist-route logic (see the Ningbo temples route), but we have not yet verified ferry schedules, seasons or island logistics to a standard we would publish. Preview only for now.",
+        facts: [],
+        places: [],
+        routes: [],
+        verified: false,
+        preview: true,
+      },
+    ],
+
+    /* ---------------- Places ---------------- */
+    places: [
+      {
+        id: "bund",
+        city: "shanghai",
+        name: "The Bund (Waitan)",
+        type: "Waterfront · Architecture",
+        theme: T.architecture,
+        blurb:
+          "A riverside parade of early-20th-century bank and trading-house facades facing today's skyline across the Huangpu. Best walked once, at a quiet hour — not queued for.",
+        practical: {
+          hours: "Public promenade, always open.",
+          ticket: "Free.",
+          transport: "Metro East Nanjing Road station is a short walk away.",
+        },
+        verifyNote: "Opening and crowd conditions change; verify before travel.",
+      },
+      {
+        id: "ffc",
+        city: "shanghai",
+        name: "Former French Concession",
+        type: "Neighborhood walk",
+        theme: T.walk,
+        blurb:
+          "Plane-tree streets, lane houses and cafes around Wukang Road and Anfu Road. This is Shanghai's best slow afternoon: no single sight, just walking, windows and small shops.",
+        practical: {
+          hours: "Streets always open; shops keep their own hours.",
+          ticket: "Free.",
+          transport: "Metro Jiaotong University or Shanghai Library area; walking is the point.",
+        },
+        verifyNote: "Individual cafes and museums vary; verify before travel.",
+      },
+      {
+        id: "yuyuan",
+        city: "shanghai",
+        name: "Yuyuan Garden & Old City",
+        type: "Garden · Old town",
+        theme: T.architecture,
+        blurb:
+          "A Ming-dynasty garden in the old walled-city core. The surrounding bazaar is tourist-dense; the garden itself is the reason to come, early.",
+        practical: {
+          hours: "Typical garden hours are daytime; check before going.",
+          ticket: "Garden entrance fee applies.",
+          transport: "Metro Yuyuan Garden station.",
+        },
+        verifyNote: "Hours and ticket price change; verify before travel.",
+      },
+      {
+        id: "westlake",
+        city: "hangzhou",
+        name: "West Lake",
+        type: "Lake · Scenery",
+        theme: T.slow,
+        blurb:
+          "The lake that defines Hangzhou. The classic experience is the early-morning north and west shores — Bai Causeway, Solitary Hill, a ferry or a slow walk — before the tour groups arrive.",
+        practical: {
+          hours: "Public area, always open.",
+          ticket: "Free (boat rides and some island stops are paid).",
+          transport: "Metro to Longxiangqiao or Fengqi Road; walk or bike the ring.",
+        },
+        verifyNote: "Ferry routes and schedules vary; verify on site.",
+      },
+      {
+        id: "longjing",
+        city: "hangzhou",
+        name: "Longjing Tea Village",
+        type: "Tea hills",
+        theme: T.slow,
+        blurb:
+          "Terraced tea fields above the lake. Spring picking season is the famous time; the rest of the year offers quiet walking trails between tea terraces and small teahouses.",
+        practical: {
+          hours: "Village always accessible; teahouses keep their own hours.",
+          ticket: "Free to walk; tea tasting is paid.",
+          transport: "Bus or taxi from the lake area; verify routes.",
+        },
+        verifyNote: "Teahouse hours and picking-season crowds vary; verify.",
+      },
+      {
+        id: "lingyin",
+        city: "hangzhou",
+        name: "Lingyin Temple",
+        type: "Buddhist temple",
+        theme: T.buddhist,
+        blurb:
+          "One of China's best-known monasteries, with cliff carvings beside it. Famous and therefore crowded; worth planning for opening time or a weekday.",
+        practical: {
+          hours: "Daytime hours; verify before going.",
+          ticket: "Park ticket plus temple ticket.",
+          transport: "Metro and bus combinations; taxi is simplest.",
+        },
+        verifyNote: "Hours, ticket structure and crowd rules change; verify.",
+      },
+      {
+        id: "tianyige",
+        city: "ningbo",
+        name: "Tianyi Pavilion (Tianyi Ge)",
+        type: "Library · History",
+        theme: T.architecture,
+        blurb:
+          "Founded in 1561, Tianyi Pavilion is among the oldest private libraries still standing — and the heart of Ningbo's book culture. A quiet courtyard complex of halls, ponds and stone inscriptions. This is Ningbo's anchor site.",
+        practical: {
+          hours: "Typical daytime museum hours; verify before going.",
+          ticket: "Entrance fee applies.",
+          transport: "Short walk from Moon Lake / Yuehu metro area.",
+        },
+        verifyNote: "Hours and fees change; verify before travel.",
+      },
+      {
+        id: "moonlake",
+        city: "ningbo",
+        name: "Moon Lake (Yuehu)",
+        type: "Lake · Old city",
+        theme: T.walk,
+        blurb:
+          "A small historic lake ringed by old streets, small temples and tea houses — Ningbo's old-city core, next to Tianyi Pavilion. Gentle walking, no big-ticket sights.",
+        practical: {
+          hours: "Public area, always open.",
+          ticket: "Free.",
+          transport: "Walking distance from the city center metro area.",
+        },
+        verifyNote: null,
+      },
+      {
+        id: "laowaitan",
+        city: "ningbo",
+        name: "The Old Bund (Laowaitan)",
+        type: "Riverside · Heritage",
+        theme: T.port,
+        blurb:
+          "Ningbo's early treaty-port district on the Yong River — converted warehouses, 19th-century facades and evening bars and restaurants. Walk it at dusk for the riverside light.",
+        practical: {
+          hours: "Public streets always open; venues keep their own hours.",
+          ticket: "Free.",
+          transport: "Metro line to Laowaitan area; verify exit.",
+        },
+        verifyNote: "Venue hours vary; verify if you plan a specific dinner.",
+      },
+      {
+        id: "nantang",
+        city: "ningbo",
+        name: "Nantang Old Street",
+        type: "Food street · Heritage",
+        theme: T.food,
+        blurb:
+          "A rebuilt old street that leans touristy but is the easy place to try Ningbo staples in one walk: tangyuan (sweet rice balls), seafood snacks and preserved vegetables. Go hungry, go early evening.",
+        practical: {
+          hours: "Shops generally open late morning to night.",
+          ticket: "Free entry; food paid.",
+          transport: "Metro to Nantang area; verify exit.",
+        },
+        verifyNote: "Stall hours and offerings change; verify on the ground.",
+      },
+      {
+        id: "dongqianhu",
+        city: "ningbo",
+        name: "Dongqian Lake",
+        type: "Lake · Day trip",
+        theme: T.slow,
+        blurb:
+          "A large lake on Ningbo's east edge — cycle paths, boats, lakeside tea houses and mountain views. Ningbo's answer to a scenery day; less famous, less crowded, more local.",
+        practical: {
+          hours: "Public area; attractions keep their own hours.",
+          ticket: "Free entry; bikes and boats are paid.",
+          transport: "Metro to the Dongqian Lake area or taxi from the center; verify.",
+        },
+        verifyNote: "Bike rental points and boat docks change; verify on site.",
+      },
+      {
+        id: "tiantong",
+        city: "ningbo",
+        name: "Tiantong Temple",
+        type: "Zen temple",
+        theme: T.buddhist,
+        blurb:
+          "One of China's oldest Chan (Zen) monasteries, founded in the 4th century, set in a forested valley east of the city. A pilgrimage site with a working monastic rhythm — visit respectfully and quietly.",
+        practical: {
+          hours: "Daytime hours; verify before going.",
+          ticket: "Entrance fee applies.",
+          transport: "Bus or taxi from Ningbo city; verify routes.",
+        },
+        verifyNote: "Hours, fees and etiquette rules change; verify before travel.",
+      },
+      {
+        id: "asoka",
+        city: "ningbo",
+        name: "Asoka Temple (Ayuwang Si)",
+        type: "Buddhist temple",
+        theme: T.buddhist,
+        blurb:
+          "Famous for its relic hall and long monastic history, pairing naturally with Tiantong Temple on a temple day out of Ningbo.",
+        practical: {
+          hours: "Daytime hours; verify before going.",
+          ticket: "Entrance fee applies.",
+          transport: "Between Ningbo city and Tiantong Temple; combine by taxi or bus.",
+        },
+        verifyNote: "Hours and fees change; verify before travel.",
+      },
+      {
+        id: "nb-museum",
+        city: "ningbo",
+        name: "Ningbo Museum",
+        type: "Museum · Architecture",
+        theme: T.architecture,
+        blurb:
+          "The building itself is the draw — a Wang Shu design in recycled brick and stone that reimagines Jiangnan villages — plus a solid regional collection covering the port's maritime history.",
+        practical: {
+          hours: "Museum hours; typically closed Mondays.",
+          ticket: "Free with ID/passport registration.",
+          transport: "Metro or taxi from the center.",
+        },
+        verifyNote: "Opening days and registration rules change; verify before travel.",
+      },
+    ],
+
+    /* ---------------- Routes ---------------- */
+    routes: [
+      {
+        id: "nb-port-books",
+        city: "ningbo",
+        cities: ["ningbo"],
+        title: "Ningbo in Two Days: Port, Books & Seafood",
+        theme: T.port,
+        themes: [T.port, T.architecture, T.food],
+        days: 2,
+        pace: "Moderate",
+        groups: ["Solo", "Couples", "Friends", "Families"],
+        summary:
+          "Two honest days in a working port city: China's oldest surviving private library, a treaty-port waterfront, lake-and-temple quiet, and seafood at every meal. Draft route — not field-verified.",
+        why:
+          "Shanghai and Hangzhou are the familiar gateways. Ningbo shows a different Zhejiang: less lakeside scenery, more harbor, streets, libraries and meals. It is two hours by rail from Shanghai and one from Hangzhou — close enough to be a considered add-on, far enough to feel like a real second destination.",
+        dayByDay: [
+          {
+            day: 1,
+            title: "Old city: books, lake and the riverside",
+            stops: [
+              { name: "Tianyi Pavilion", placeId: "tianyige", note: "Start here — the 1561 library sets up Ningbo's book-culture story. Allow 1.5–2 hours." },
+              { name: "Moon Lake", placeId: "moonlake", note: "Walk the lake ring afterward; small temples and tea houses, no crowds." },
+              { name: "Lunch: Ningbo tangyuan & seafood", note: "Sweet rice balls (tangyuan) are the signature; pair with a light seafood dish. Nantang Old Street is the easy place." },
+              { name: "Nantang Old Street", placeId: "nantang", note: "Touristy but efficient for tasting many local staples in one walk." },
+              { name: "The Old Bund at dusk", placeId: "laowaitan", note: "Riverside warehouses and facades; dinner with river views." },
+            ],
+          },
+          {
+            day: 2,
+            title: "Pick one: lake, temples or museum",
+            stops: [
+              { name: "Option A — Dongqian Lake", placeId: "dongqianhu", note: "Cycle paths and boats; Ningbo's scenery day. Half to full day." },
+              { name: "Option B — Tiantong & Asoka Temples", placeId: "tiantong", note: "Two of the region's most important monasteries, east of the city. Combine by taxi or bus." },
+              { name: "Option C — Ningbo Museum", placeId: "nb-museum", note: "The Wang Shu building plus the maritime collection; pair with the Old Bund if you skipped it." },
+              { name: "Evening: seafood dinner", note: "Ningbo seafood is best in autumn and winter months; ask for the day's catch." },
+            ],
+          },
+        ],
+        transportNotes: [
+          "Shanghai Hongqiao to Ningbo by high-speed rail takes roughly 2 hours.",
+          "Hangzhou East to Ningbo takes roughly 1 hour.",
+        ],
+        confirmBefore: [
+          "Rail times and station names for your date.",
+          "Tianyi Pavilion and temple opening hours (weekday vs. weekend).",
+          "Dongqian Lake bike rental and boat dock locations.",
+          "Restaurant hours if you plan a specific seafood dinner.",
+        ],
+        highlights: ["Tianyi Pavilion's courtyards", "Moon Lake morning walk", "The Old Bund at dusk", "A full Ningbo seafood dinner"],
+        notFor:
+          "Skip Ningbo if your priority is classic lake-and-pagoda scenery (that is Hangzhou) or if two days of walking in a working city sounds tiring. It is a city of streets, docks, libraries and meals — not a theme park.",
+        status: "draft",
+        verified: false,
+      },
+      {
+        id: "nb-buddhist",
+        city: "ningbo",
+        cities: ["ningbo", "zhoushan"],
+        title: "Buddhist Zhejiang: Temples & the Road to Putuoshan",
+        theme: T.buddhist,
+        themes: [T.buddhist, T.slow],
+        days: 2,
+        pace: "Relaxed",
+        groups: ["Solo", "Couples"],
+        summary:
+          "Tiantong and Asoka temples from a Ningbo base, with the logic for continuing toward Putuoshan by ferry — a route that depends heavily on weather and schedules. Draft, not verified.",
+        why:
+          "Eastern Zhejiang is one of China's densest Buddhist regions. Ningbo's temples are accessible, quieter than Hangzhou's famous monastery, and the natural first stop on the way to Putuoshan, one of China's four sacred Buddhist mountains.",
+        dayByDay: [
+          {
+            day: 1,
+            title: "The two great temples",
+            stops: [
+              { name: "Tiantong Temple", placeId: "tiantong", note: "Forest valley, monastic rhythm, one of the oldest Chan monasteries. Visit quietly; cover shoulders and knees." },
+              { name: "Asoka Temple", placeId: "asoka", note: "The relic hall and courtyards; a short hop from Tiantong by taxi or bus." },
+            ],
+          },
+          {
+            day: 2,
+            title: "Toward the island",
+            stops: [
+              { name: "Option — continue to Putuoshan", note: "Ferries to Putuoshan run from nearby ports such as Zhujiajian. Sailing depends on weather; island stays need booking." },
+              { name: "Option — stay in Ningbo", note: "Return to the old city for Moon Lake or the museum if the ferry does not fit your dates." },
+            ],
+          },
+        ],
+        transportNotes: [
+          "Temple day: taxi or public bus east of the city; verify routes and return options.",
+          "Putuoshan: ferry from Zhujiajian (nearby port); sailings are weather-dependent.",
+        ],
+        confirmBefore: [
+          "Ferry schedule and weather for your dates.",
+          "Temple opening hours and etiquette rules.",
+          "Island accommodation if staying on Putuoshan.",
+        ],
+        highlights: ["Tiantong's forest setting", "Asoka's relic hall", "The ferry approach to Putuoshan"],
+        notFor: "Not ideal for young children or travelers with limited walking stamina; the ferry leg needs flexible planning.",
+        status: "draft",
+        verified: false,
+      },
+      {
+        id: "sh-two-banks",
+        city: "shanghai",
+        cities: ["shanghai"],
+        title: "Two Banks of Shanghai: 1920s Facades & Skyline",
+        theme: T.architecture,
+        themes: [T.architecture, T.walk],
+        days: 1,
+        pace: "Moderate",
+        groups: ["Solo", "Couples", "Friends", "Families"],
+        summary:
+          "One day, two Shanghais: the Bund's bank facades in the morning light, the old city's garden, then the plane-tree lanes of the former French Concession. Draft route — not field-verified.",
+        why:
+          "This is the honest version of classic Shanghai sightseeing: two hours of iconic waterfront, then the parts of the city that reward walking slowly.",
+        dayByDay: [
+          {
+            day: 1,
+            title: "Facades, garden, lanes",
+            stops: [
+              { name: "The Bund early", placeId: "bund", note: "Morning light on the western facades; cross the river for the skyline view only if you want it." },
+              { name: "Yuyuan Garden", placeId: "yuyuan", note: "The garden itself, early if possible; the bazaar around it is skippable." },
+              { name: "Lunch in the old city or nearby", note: "Shanghainese classics: soup dumplings, scallion noodles." },
+              { name: "Former French Concession", placeId: "ffc", note: "Wukang Road and Anfu Road; no schedule, just walking." },
+            ],
+          },
+        ],
+        transportNotes: ["Metro between zones; the concession leg is on foot."],
+        confirmBefore: ["Yuyuan Garden hours and ticket.", "Any cafe or shop you plan to visit."],
+        highlights: ["The Bund before 9am", "Yuyuan's rockeries", "Wukang Road lanes"],
+        notFor: "Not for travelers who dislike city walking; July–August heat makes the afternoon leg hard.",
+        status: "draft",
+        verified: false,
+      },
+      {
+        id: "sh-family",
+        city: "shanghai",
+        cities: ["shanghai"],
+        title: "Shanghai with Kids: Museums, Parks & an Optional Big Day",
+        theme: T.family,
+        themes: [T.family],
+        days: 2,
+        pace: "Easy",
+        groups: ["Families"],
+        summary:
+          "A low-stress family base: one museum-and-park day, one big-day option (a theme park or the riverside). Draft route.",
+        why:
+          "Shanghai's infrastructure is the friendliest in the region for families: indoor museums for bad weather, big parks for good weather, and world-class family attractions if your budget allows.",
+        dayByDay: [
+          {
+            day: 1,
+            title: "Museum and green space",
+            stops: [
+              { name: "Shanghai Natural History Museum", note: "Strong dinosaur and habitat halls; book tickets online in advance." },
+              { name: "A park afternoon", note: "Century Park or a neighborhood park — low stakes, kids' energy out." },
+            ],
+          },
+          {
+            day: 2,
+            title: "Choose your big day",
+            stops: [
+              { name: "Option A — Disneyland", note: "A full-day commitment with real ticket cost; book ahead and check crowd calendars." },
+              { name: "Option B — Riverside day", note: "The Bund, a Huangpu river cruise and the aquarium; cheaper and slower." },
+            ],
+          },
+        ],
+        transportNotes: ["Metro everywhere; Disney is on its own line (far out)."],
+        confirmBefore: ["Museum tickets and opening days.", "Disney tickets, prices and crowd levels if chosen."],
+        highlights: ["Natural History Museum", "A car-free park afternoon", "The river view"],
+        notFor: "Families wanting scenery — head to Hangzhou or Dongqian Lake instead.",
+        status: "draft",
+        verified: false,
+      },
+      {
+        id: "hz-slow-lake",
+        city: "hangzhou",
+        cities: ["hangzhou"],
+        title: "West Lake, Slowly: A One-Day Morning Route",
+        theme: T.slow,
+        themes: [T.slow, T.walk],
+        days: 1,
+        pace: "Gentle",
+        groups: ["Solo", "Couples", "Friends", "Families"],
+        summary:
+          "The lake the way it deserves: Bai Causeway and Solitary Hill in the early morning, a ferry crossing, tea on the hillside. Draft route.",
+        why:
+          "West Lake's failure mode is mid-day crowds and checklist sightseeing. The same lake at 7am is a different place — mist, fishermen, empty causeways.",
+        dayByDay: [
+          {
+            day: 1,
+            title: "Before the crowds",
+            stops: [
+              { name: "Bai Causeway at dawn", placeId: "westlake", note: "Start by 7am; the causeway is the classic walk." },
+              { name: "Solitary Hill", placeId: "westlake", note: "Small pavilions, seal and museum corners; quiet in the morning." },
+              { name: "Ferry or slow boat", note: "A paid boat across to the Three Pools area if the water is calm." },
+              { name: "Tea on the hillside", note: "Late morning tea somewhere above the lake — Longjing or a lakeside teahouse." },
+            ],
+          },
+        ],
+        transportNotes: ["Metro to the lake ring, then on foot; bike share for the eastern shore."],
+        confirmBefore: ["Ferry routes for the day.", "Teahouse opening hours."],
+        highlights: ["Mist over the lake at 7am", "The causeway's willows", "First cup of Longjing"],
+        notFor: "Anyone who needs packed sightseeing schedules — this is intentionally slow.",
+        status: "draft",
+        verified: false,
+      },
+      {
+        id: "hz-tea-temples",
+        city: "hangzhou",
+        cities: ["hangzhou"],
+        title: "Tea, Temples & Old Hangzhou: Two Days",
+        theme: T.buddhist,
+        themes: [T.buddhist, T.food, T.walk],
+        days: 2,
+        pace: "Moderate",
+        groups: ["Solo", "Couples", "Friends"],
+        summary:
+          "A second-day Hangzhou: Longjing tea terraces, Lingyin Temple's monastery and carvings, and an evening of old-street food. Draft route.",
+        why:
+          "If one lake day leaves you wanting more Hangzhou, this is the depth layer — the working side of the city's tea and temple culture rather than the postcard side.",
+        dayByDay: [
+          {
+            day: 1,
+            title: "Tea country",
+            stops: [
+              { name: "Longjing village", placeId: "longjing", note: "Walk the terraces; spring picking season is busiest and most photogenic." },
+              { name: "A teahouse lunch", placeId: "longjing", note: "Longjing shrimp and tea eggs are the local staples." },
+            ],
+          },
+          {
+            day: 2,
+            title: "Temple day & old streets",
+            stops: [
+              { name: "Lingyin Temple", placeId: "lingyin", note: "Go at opening time; the cliff carvings are beside the monastery." },
+              { name: "Afternoon: old city streets", note: "He Fang Street area for snacks and crafts — crowded but atmospheric." },
+            ],
+          },
+        ],
+        transportNotes: ["Bus or taxi to Longjing; taxi simplest for Lingyin."],
+        confirmBefore: ["Lingyin hours and ticket structure.", "Tea-picking season timing if that matters to you."],
+        highlights: ["Tea terraces above the lake", "Lingyin's carvings", "A proper Longjing tea session"],
+        notFor: "Travelers avoiding temple crowds — Lingyin is genuinely busy.",
+        status: "draft",
+        verified: false,
+      },
+      {
+        id: "sh-nb-link",
+        city: "ningbo",
+        cities: ["shanghai", "ningbo"],
+        title: "From Shanghai: Add a Port City (2 Days)",
+        theme: T.port,
+        themes: [T.port, T.food],
+        days: 2,
+        pace: "Moderate",
+        groups: ["Solo", "Couples", "Friends"],
+        summary:
+          "The logic for extending a Shanghai trip with two Ningbo days — what you gain, what it costs in travel time, and how to decide. Draft plan.",
+        why:
+          "Two hours on the train buys you a genuinely different Zhejiang: a working harbor, a 450-year-old library, and seafood. It is the cheapest 'second destination' available from Shanghai, but it is not for everyone — this route explains the trade-off honestly.",
+        dayByDay: [
+          {
+            day: 1,
+            title: "South by rail, old city by afternoon",
+            stops: [
+              { name: "Morning train Shanghai → Ningbo", note: "About 2 hours; book the seat you need." },
+              { name: "Afternoon: Tianyi Pavilion & Moon Lake", placeId: "tianyige", note: "The library complex and the lake walk." },
+              { name: "Evening: Old Bund riverside", placeId: "laowaitan", note: "Dinner overlooking the Yong River." },
+            ],
+          },
+          {
+            day: 2,
+            title: "One full Ningbo day, back by night",
+            stops: [
+              { name: "Pick one: Dongqian Lake or the temples or the museum", note: "See the main Ningbo route for details." },
+              { name: "Seafood dinner", note: "Before the evening train back to Shanghai." },
+            ],
+          },
+        ],
+        transportNotes: ["High-speed rail, about 2 hours each way.", "Evening return trains exist; verify the last departure."],
+        confirmBefore: ["Rail times both ways, especially the last return.", "Accommodation if you stay overnight in Ningbo."],
+        highlights: ["A two-hour train to a different Zhejiang", "Tianyi Pavilion", "Riverside dinner"],
+        notFor: "Short-trip visitors who should stay in Shanghai/Hangzhou rather than burn four hours on trains.",
+        status: "draft",
+        verified: false,
+      },
+      {
+        id: "hz-nb-link",
+        city: "ningbo",
+        cities: ["hangzhou", "ningbo"],
+        title: "From Hangzhou: Lake to Sea (1–2 Days)",
+        theme: T.port,
+        themes: [T.port, T.walk],
+        days: 1,
+        pace: "Moderate",
+        groups: ["Solo", "Couples", "Friends"],
+        summary:
+          "After the lake, the sea: a one-hour rail hop from Hangzhou to Ningbo for the port-city contrast. Works as a day trip or an overnight. Draft plan.",
+        why:
+          "Hangzhou gives you the postcard Jiangnan; Ningbo gives you the working version — cranes, docks, book culture and seafood. Together they are the strongest one-two in the region, and the rail distance is short.",
+        dayByDay: [
+          {
+            day: 1,
+            title: "Contrast day",
+            stops: [
+              { name: "Morning train Hangzhou → Ningbo", note: "About 1 hour." },
+              { name: "Tianyi Pavilion", placeId: "tianyige", note: "The anchor stop — 1.5–2 hours." },
+              { name: "Old Bund + seafood lunch", placeId: "laowaitan", note: "The riverside and a Ningbo seafood meal." },
+              { name: "Return or stay", note: "Evening train back, or overnight for the Dongqian Lake / temple day." },
+            ],
+          },
+        ],
+        transportNotes: ["High-speed rail, about 1 hour each way."],
+        confirmBefore: ["Rail times.", "Whether you want the overnight extension."],
+        highlights: ["Lake morning, sea evening", "Tianyi Pavilion", "Seafood lunch"],
+        notFor: "Travelers on a strict Hangzhou-only schedule.",
+        status: "draft",
+        verified: false,
+      },
+    ],
+
+    /* ---------------- Assistant FAQ (seed knowledge) ---------------- */
+    faqs: [
+      {
+        id: "f-transport-nb",
+        q: "How do I get from Shanghai to Ningbo?",
+        a: "High-speed rail from Shanghai Hongqiao takes roughly 2 hours; from Hangzhou East it's roughly 1 hour. Times and stations change, so verify the schedule for your date before booking — this is a demo seed answer, not a live timetable.",
+        tags: ["ningbo", "transport", "train"],
+      },
+      {
+        id: "f-pay",
+        q: "Can I pay with my international card in China?",
+        a: "Mobile payment is dominant. Recent versions of Alipay and WeChat Pay allow linking international cards, which is the most practical route for tourists; card acceptance at physical shops varies. Set this up and test it before you travel, and carry some cash as backup. Verify current rules — payment policies change.",
+        tags: ["payment", "money", "alipay", "wechat"],
+      },
+      {
+        id: "f-esim",
+        q: "How do I stay connected / get data?",
+        a: "Most international travelers use a travel eSIM or a roaming plan before arrival. Note that many foreign apps and services behave differently on Chinese networks. Arranging connectivity in advance is the common approach — verify your provider's current China coverage.",
+        tags: ["connectivity", "esim", "sim", "internet"],
+      },
+      {
+        id: "f-hsr",
+        q: "How do I book high-speed train tickets?",
+        a: "Tickets can be bought on the official railway app (12306) and at station counters with a passport. Booking ahead is wise on weekends and holidays. Counter queues can be long, so the app with an English-friendly payment setup is usually easier. Verify current booking rules.",
+        tags: ["train", "transport", "booking"],
+      },
+      {
+        id: "f-lockers",
+        q: "Are there luggage lockers at train stations?",
+        a: "Major stations generally offer luggage storage services, sometimes staffed counters rather than coin lockers. Sizes, prices and hours vary by station — check on arrival, and keep valuables with you.",
+        tags: ["locker", "luggage", "station"],
+      },
+      {
+        id: "f-ningbo-why",
+        q: "Is Ningbo worth two days?",
+        a: "It depends on what you want. Ningbo offers a working port city with Tianyi Pavilion (a library from 1561), a treaty-port riverside, and serious seafood — a different Zhejiang from Hangzhou's lake scenery. If your priority is postcard landscapes, stay at the lake. We're testing this question ourselves; treat our recommendation as an assumption, not a proven fact.",
+        tags: ["ningbo", "planning"],
+      },
+      {
+        id: "f-ningbo-eat",
+        q: "What should I eat in Ningbo?",
+        a: "The signatures: tangyuan (sweet glutinous rice balls, the city's most famous dish), fresh seafood (best in autumn and winter months), and preserved-vegetable dishes. Nantang Old Street is the easiest place to try several staples in one walk; for seafood, ask for the day's catch.",
+        tags: ["ningbo", "food"],
+      },
+      {
+        id: "f-dongqian",
+        q: "Is Dongqian Lake a good day trip?",
+        a: "For a scenery day without leaving Ningbo, yes — cycle paths, boats and lakeside tea houses. Bike rental points and boat docks change; verify on site. Give it a half to full day.",
+        tags: ["ningbo", "dongqian", "daytrip"],
+      },
+      {
+        id: "f-putuoshan",
+        q: "How do I get to Putuoshan?",
+        a: "Ferries to Putuoshan run from nearby ports such as Zhujiajian; sailings depend on weather and season. Plan flexibly, verify the schedule for your dates, and book island accommodation if staying. See our Buddhist Zhejiang route for the full logic.",
+        tags: ["putuoshan", "ferry", "buddhist"],
+      },
+      {
+        id: "f-temple",
+        q: "What should I know before visiting temples?",
+        a: "Dress modestly (shoulders and knees covered), keep voices low, and don't photograph inside halls where signs prohibit it. Hours and entrance fees vary; check before going. Tiantong and Asoka temples near Ningbo are quieter than Hangzhou's Lingyin but just as meaningful.",
+        tags: ["temple", "etiquette", "buddhist"],
+      },
+      {
+        id: "f-weather",
+        q: "When is the best time to visit?",
+        a: "Spring (tea season, mild) and autumn (seafood season, clear skies) are the most comfortable. July–August is hot and humid; winter is cold and can be misty — atmospheric at the lake, hard on long walking days.",
+        tags: ["weather", "season", "planning"],
+      },
+      {
+        id: "f-tipping",
+        q: "Should I tip in restaurants?",
+        a: "Tipping is not expected in China. Service charges, where they exist, are added to the bill. Just pay the bill.",
+        tags: ["tipping", "etiquette"],
+      },
+      {
+        id: "f-language",
+        q: "How do I handle the language barrier?",
+        a: "Metro and major sights are signposted in English; small restaurants and taxis often aren't. A translation app on your phone, plus showing destination names in Chinese characters (we include them in our guides), sorts out most situations. If you're stuck, ask the assistant here for phrasing — or use the consult form and a real person will help you sort it out.",
+        tags: ["language", "translation"],
+      },
+      {
+        id: "f-emergency",
+        q: "What are the emergency numbers?",
+        a: "Police 110, ambulance 120, fire 119. If you're unsure about anything medical, legal or visa-related, seek official sources or local help — we cannot make those judgments for you.",
+        tags: ["emergency", "safety"],
+      },
+      {
+        id: "f-visa",
+        q: "Do I need a visa?",
+        a: "Visa and entry rules depend on your nationality and current policy — they change and we cannot judge your personal eligibility. Check your country's Chinese embassy or consulate website and official announcements for the rules that apply to you. This site does not replace official immigration information.",
+        tags: ["visa", "entry"],
+      },
+      {
+        id: "f-booking",
+        q: "Can you book hotels, trains or tours for me?",
+        a: "No — this demo does not sell or book anything. We give you route logic, transport notes and what to verify. For bookings, use official channels (railway app, hotels directly). If you'd like human help planning, use the consult form — a real person will follow up, and we never promise unverified prices or availability.",
+        tags: ["booking", "consult"],
+      },
+    ],
+
+    /* ---------------- Photo guides (App-mode demo) ---------------- */
+    photoGuides: [
+      {
+        id: "pg-ticket",
+        facility: "Metro ticket machine",
+        scenario: "Buying a single-ride metro ticket",
+        sampleImage: "assets/img/sample-ticket-machine.svg",
+        confidence: "high",
+        steps: [
+          { title: "Choose English on the home screen", detail: "Most machines show a language button, usually a flag icon or the word English, in a corner of the screen.", tip: "If the screen is already in English, skip this step." },
+          { title: "Select your destination line or station", detail: "Metro systems in Shanghai, Hangzhou and Ningbo sell tickets by destination station. Tap the line, then the station name.", tip: "Your destination names in Chinese are included in our city guides — show them to a staff member if needed." },
+          { title: "Pay at the machine", detail: "Machines accept cash and mobile payment. International card acceptance varies by machine and city.", tip: "Carry small banknotes as backup." },
+          { title: "Take your ticket and change", detail: "Collect the ticket and any coins from the tray. Your ticket is used at both entry and exit gates.", tip: "Keep it — you need it to exit." },
+        ],
+        verifyNote: "Machine interfaces and payment methods differ by city and station. This is a simulated demo tutorial.",
+      },
+      {
+        id: "pg-locker",
+        facility: "Station luggage locker",
+        scenario: "Storing bags at a train station",
+        sampleImage: "assets/img/sample-locker.svg",
+        confidence: "mid",
+        steps: [
+          { title: "Look for a staffed counter or locker bank", detail: "Major stations often have staffed luggage storage rather than coin lockers. Follow luggage or baggage symbols.", tip: "Allow extra time before a train if you plan to store bags." },
+          { title: "Show your passport and ticket", detail: "Staffed counters typically record your ID and a fee is charged by item and size.", tip: "Have small cash or a working mobile payment ready." },
+          { title: "Photograph your receipt or token", detail: "If you receive a numbered tag or receipt, photograph it in case it is lost.", tip: "This also helps staff help you later." },
+          { title: "Note the closing time", detail: "Storage counters close, often earlier than the station. Collect bags before the stated time.", tip: "Ask the closing time in writing or on screen before you leave." },
+        ],
+        verifyNote: "Storage availability varies by station. This is a simulated demo tutorial.",
+      },
+      {
+        id: "pg-kiosk",
+        facility: "Self-ordering kiosk",
+        scenario: "Ordering at a fast-food or casual restaurant",
+        sampleImage: "assets/img/sample-kiosk.svg",
+        confidence: "mid",
+        steps: [
+          { title: "Check for an English option", detail: "Many chain kiosks have a language switch. If none, use a translation app's camera mode on the screen.", tip: "Chains are the most predictable place to practice." },
+          { title: "Order by category", detail: "Menus are usually organized by category: mains, drinks, desserts. Tap an item, then a size or quantity.", tip: "Photos on the screen are your best guide." },
+          { title: "Review the order screen", detail: "Confirm items and quantities before paying. A red button usually confirms; verify the total.", tip: "If something looks wrong, tap back or ask staff." },
+          { title: "Pay and take the receipt", detail: "Pay by mobile or cash per the machine; take the numbered receipt and wait for your number.", tip: "The receipt number is shown on a screen when your order is ready." },
+        ],
+        verifyNote: "Interfaces vary by brand. This is a simulated demo tutorial.",
+      },
+      {
+        id: "pg-menu",
+        facility: "Restaurant menu",
+        scenario: "Reading a seafood or local menu",
+        sampleImage: "assets/img/sample-menu.svg",
+        confidence: "low",
+        steps: [
+          { title: "Photograph the menu with a translation app", detail: "Camera translation handles printed menus well. Check the dish before ordering if you have allergies.", tip: "Screenshots or photos work offline in some apps." },
+          { title: "Identify the sections", detail: "Look for headings: seafood, vegetables, soup, rice/noodles. Our Ningbo food notes tell you what to look for.", tip: "Seafood menus often list 'market price' — ask the price before confirming." },
+          { title: "Order the day's catch", detail: "For seafood, the day's catch is usually the best and often cheapest. Ask for a recommendation.", tip: "Point at the item and show the Chinese name from our guide." },
+          { title: "Confirm price and quantity", detail: "Seafood is often priced by weight. Agree the price and weight before it is cooked.", tip: "This is normal practice, not a negotiation tactic — but always confirm first." },
+        ],
+        verifyNote: "This guide is the lowest-confidence demo: menus vary completely by restaurant. When unsure, ask staff or switch to the kiosk/consult paths.",
+      },
+      {
+        id: "pg-signage",
+        facility: "Station signage",
+        scenario: "Reading signs at a metro or rail station",
+        sampleImage: "assets/img/sample-signage.svg",
+        confidence: "high",
+        steps: [
+          { title: "Follow the line color, not just the name", detail: "Metro lines have distinct colors and numbers; signs show both. Match color + number to your route.", tip: "Our city guides list the lines for key places." },
+          { title: "Look for exit letters or numbers", detail: "Stations label exits with letters or numbers. The exit matters — check which one your destination needs.", tip: "A wrong exit can mean a 10-minute detour." },
+          { title: "Confirm direction on the platform", detail: "Platform signs list terminal stations in both directions. Match your destination's terminal name before boarding.", tip: "Trains run frequently; waiting for the next one is fine." },
+          { title: "Ask staff with the Chinese name", detail: "If lost, show the destination name in Chinese (from our guides) to any staff member at a service desk.", tip: "Station staff see lost travelers daily — this is normal." },
+        ],
+        verifyNote: "Signage styles differ by city. This is a simulated demo tutorial.",
+      },
+    ],
+
+    /* ---------------- Practical info ---------------- */
+    practical: {
+      entry: {
+        title: "Entry & visas",
+        body:
+          "Entry rules depend on your nationality and current policy, and change often. Check your country's Chinese embassy or consulate website and official announcements before booking anything. This site never judges your personal eligibility.",
+        source: "Official government sources only",
+        status: VERIFY,
+      },
+      payment: {
+        title: "Payment",
+        body:
+          "China runs on mobile payment. Recent versions of Alipay and WeChat Pay support linking international cards — the most practical setup for tourists. Card acceptance in physical shops varies. Set up payment apps and test them before arrival; carry some cash.",
+        source: "Payment app official documentation",
+        status: VERIFY,
+      },
+      connectivity: {
+        title: "Connectivity",
+        body:
+          "Arrange a travel eSIM or roaming plan before arrival. Note that some foreign apps behave differently on Chinese networks; downloading offline maps and translation packs in advance is sensible.",
+        source: "Common traveler practice",
+        status: VERIFY,
+      },
+      transport: {
+        title: "Getting around",
+        body:
+          "Metro systems in Shanghai, Hangzhou and Ningbo are extensive and signposted in English. Ride-hailing apps are easiest door-to-door. High-speed rail connects the three cities in roughly 1–2 hours.",
+        source: "Demo seed note",
+        status: VERIFY,
+      },
+      emergency: {
+        title: "Emergency",
+        body: "Police 110 · Ambulance 120 · Fire 119. For medical, legal or visa issues, seek official sources — we cannot make those judgments.",
+        source: "Public emergency numbers",
+        status: "Public information",
+      },
+    },
+
+    /* ---------------- Assumptions (honesty ledger) ---------------- */
+    assumptions: [
+      { a: "Ningbo demand from Shanghai/Hangzhou visitors is real", s: "Assumption — the whole pilot exists to test this." },
+      { a: "An AI assistant and a photo guide are the right differentiators", s: "Assumption — to be validated by usage behavior, not signups." },
+      { a: "Travelers will trust visibly-flagged 'verify before travel' content", s: "Assumption — trust signals are a hypothesis too." },
+      { a: "Users want to save routes into a simple trip list", s: "Assumption — measured by save events in the demo log." },
+      { a: "Human consult should be low-pressure and gradual", s: "Design principle — to be checked against consult form drop-off." },
+    ],
+
+    /* ---------------- Themes ---------------- */
+    themes: [
+      { id: "architecture", name: T.architecture, art: "assets/img/theme-architecture.svg" },
+      { id: "food", name: T.food, art: "assets/img/theme-food.svg" },
+      { id: "buddhist", name: T.buddhist, art: "assets/img/theme-buddhist.svg" },
+      { id: "port", name: T.port, art: "assets/img/theme-port.svg" },
+      { id: "walk", name: T.walk, art: "assets/img/theme-walk.svg" },
+      { id: "family", name: T.family, art: "assets/img/theme-family.svg" },
+      { id: "slow", name: T.slow, art: "assets/img/theme-slow.svg" },
+    ],
+  };
+
+  var ZW = (window.ZW = window.ZW || {});
+
+  /* ---- asset path helper (single data file serves both shells) ----
+     Web pages live at root; App pages live under /app/. Asset paths in
+     this file are page-relative, so when the page is inside /app/ we
+     prefix with "../". Keeps ONE source of truth for both products. */
+  var IS_APP = typeof location !== "undefined" && location.pathname.split("/").indexOf("app") !== -1;
+  function asset(p) {
+    if (!p) return p;
+    return IS_APP ? p.replace(/^assets\//, "../assets/") : p;
+  }
+
+  /* ---- schema normalization (trust fields + status, per tech plan §4.0) ----
+     Every entity gets status / lastVerifiedDate / source after load.
+     Demo defaults: needs-verification · no date · "Demo seed content
+     (unverified)". Editors flip verified:true + set real fields. */
+  function normalizeEntities() {
+    var lists = [CONTENT.cities, CONTENT.routes, CONTENT.places, CONTENT.faqs, CONTENT.photoGuides];
+    lists.forEach(function (list) {
+      list.forEach(function (e) {
+        if (e.status === undefined) e.status = e.verified ? "verified" : "needs-verification";
+        if (e.lastVerifiedDate === undefined) e.lastVerifiedDate = e.verified ? CONTENT.meta.lastUpdated : null;
+        if (e.source === undefined) e.source = e.verified ? "Official source (link to be added)" : "Demo seed content (unverified)";
+      });
+    });
+    // page-relative asset paths (see asset() above)
+    CONTENT.cities.forEach(function (c) { c.art = asset(c.art); });
+    CONTENT.themes.forEach(function (t) { t.art = asset(t.art); });
+    CONTENT.photoGuides.forEach(function (g) { g.sampleImage = asset(g.sampleImage); });
+    // validate placeId foreign keys on route stops
+    var placeIds = {};
+    CONTENT.places.forEach(function (p) { placeIds[p.id] = true; });
+    CONTENT.routes.forEach(function (r) {
+      r.dayByDay.forEach(function (d) {
+        d.stops.forEach(function (s) {
+          if (s.placeId && !placeIds[s.placeId]) {
+            if (window.console && console.warn) console.warn("route " + r.id + ": unknown placeId " + s.placeId);
+          }
+        });
+      });
+    });
+  }
+  normalizeEntities();
+
+  ZW.CONTENT = CONTENT;
+  ZW.THEMES = T;
+})();

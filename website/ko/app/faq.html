@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>여행 FAQ · ZheshGo</title>
+  <meta name="description" content="상하이·저장성 여행의 교통, 결제, 통신, 먹거리, 사찰 방문과 안전에 관한 질문을 모았어요."/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/faq.html"/><link rel="alternate" hreflang="ja" href="/ja/app/faq.html"/><link rel="alternate" hreflang="ko" href="/ko/app/faq.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore" data-app="app">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">자주 묻는 질문</p>
+        <h1>여행 준비 중 궁금한 것들</h1>
+        <p class="lead">가이드의 기본 정보를 모았어요. 아직 확인 중인 정보는 표시해 두었고, 대화로 묻고 싶다면 AI를 이용할 수 있어요.</p>
+      </div>
+    </div>
+
+    <div class="wrap page page-narrow">
+      <div class="flex mb2">
+        <a class="chip" href="assistant.html">AI에게 물어보기</a>
+        <a class="chip" href="consult.html">원하는 답이 없나요? 상담 요청하기</a>
+      </div>
+      <div id="faq-list"></div>
+      <div class="note-box info mt2"><h4>이곳에서 판단하지 않는 내용</h4>비자·법률·의료 판단은 관련 공식 기관에 확인해 주세요. 중국 긴급 신고: 경찰 110 · 구급 120 · 소방 119.</div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="모바일 메뉴"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var list = document.getElementById("faq-list");
+      list.innerHTML = ZW.CONTENT.faqs.map(function (f) {
+        return (
+          '<details class="card mb1" id="q-' + f.id + '" style="border-radius:14px">' +
+          '<summary style="cursor:pointer;padding:16px 18px;font-weight:600;color:var(--ink);font-size:.98rem;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center">' +
+          "<span>" + ZW.esc(f.q) + "</span><span aria-hidden=\"true\" style=\"color:var(--sandal)\">+</span></summary>" +
+          '<div style="padding:0 18px 16px;font-size:.93rem;color:var(--ink-2)">' + ZW.esc(f.a) + ZW.provenance(f) + "</div>" +
+          "</details>"
+        );
+      }).join("");
+      list.querySelectorAll("details").forEach(function (d) {
+        d.addEventListener("toggle", function () {
+          var s = d.querySelector("summary span:last-child");
+          if (s) s.textContent = d.open ? "−" : "+";
+          if (d.open) ZW.log("faq_open", { id: d.id });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

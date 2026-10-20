@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480" role="img" aria-label="Sample illustration of a restaurant menu">
+  <rect width="600" height="480" fill="#F2EEE4"/>
+  <rect x="90" y="40" width="420" height="400" rx="10" fill="#FFFDF8" stroke="#22302E" stroke-width="5"/>
+  <rect x="130" y="80" width="150" height="26" rx="4" fill="#3D6B5C"/>
+  <g fill="#22302E" opacity="0.75">
+    <rect x="130" y="135" width="200" height="12" rx="4"/>
+    <rect x="130" y="160" width="160" height="10" rx="4" opacity="0.6"/>
+    <rect x="130" y="182" width="180" height="10" rx="4" opacity="0.6"/>
+    <rect x="130" y="222" width="120" height="12" rx="4"/>
+    <rect x="130" y="247" width="190" height="10" rx="4" opacity="0.6"/>
+    <rect x="130" y="269" width="150" height="10" rx="4" opacity="0.6"/>
+    <rect x="130" y="309" width="140" height="12" rx="4"/>
+    <rect x="130" y="334" width="170" height="10" rx="4" opacity="0.6"/>
+  </g>
+  <g fill="#A67C52">
+    <rect x="360" y="135" width="90" height="12" rx="4"/>
+    <rect x="360" y="160" width="70" height="10" rx="4" opacity="0.6"/>
+    <rect x="360" y="222" width="80" height="12" rx="4"/>
+    <rect x="360" y="247" width="90" height="10" rx="4" opacity="0.6"/>
+    <rect x="360" y="309" width="80" height="12" rx="4"/>
+  </g>
+  <circle cx="455" cy="330" r="26" fill="none" stroke="#22302E" stroke-width="3"/>
+  <g stroke="#22302E" stroke-width="3" stroke-linecap="round">
+    <line x1="441" y1="330" x2="469" y2="330"/>
+    <line x1="455" y1="316" x2="455" y2="344"/>
+  </g>
+  <text x="300" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#77837C" letter-spacing="2">SAMPLE ILLUSTRATION — DEMO ONLY</text>
+</svg>

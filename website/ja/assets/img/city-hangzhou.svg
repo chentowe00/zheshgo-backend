@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 760" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: West Lake with pagoda and misty hills">
+  <defs>
+    <linearGradient id="hsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E4EBE2"/>
+      <stop offset="1" stop-color="#F1EDE3"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="760" fill="url(#hsky)"/>
+  <circle cx="150" cy="130" r="44" fill="#FBF8F1"/>
+  <path d="M0 300 L110 190 L210 280 L320 180 L430 290 L540 200 L600 250 L600 520 L0 520 Z" fill="#DCE4DB"/>
+  <path d="M0 380 L150 290 L280 370 L420 300 L600 400 L600 520 L0 520 Z" fill="#B9CBC0"/>
+  <g transform="translate(330 240)">
+    <rect x="-14" y="-70" width="28" height="70" fill="#22302E" opacity="0.85"/>
+    <path d="M-30 -70 L0 -96 L30 -70 Z" fill="#22302E" opacity="0.9"/>
+    <path d="M-30 -70 Q0 -52 30 -70" fill="#3D6B5C"/>
+    <rect x="-10" y="-56" width="8" height="10" fill="#F6F2E9" opacity="0.8"/>
+    <rect x="4" y="-56" width="8" height="10" fill="#F6F2E9" opacity="0.8"/>
+    <rect x="-2" y="-78" width="5" height="7" fill="#F6F2E9" opacity="0.8"/>
+  </g>
+  <rect y="500" width="600" height="260" fill="#A9BFB0"/>
+  <g stroke="#F6F2E9" stroke-width="2.4" opacity="0.5">
+    <path d="M70 540 h180" fill="none"/>
+    <path d="M330 570 h200" fill="none"/>
+    <path d="M120 610 h260" fill="none"/>
+    <path d="M420 640 h120" fill="none"/>
+  </g>
+  <g transform="translate(430 520)">
+    <path d="M0 30 Q28 -6 56 30 Z" fill="#3D6B5C"/>
+    <line x1="28" y1="2" x2="28" y2="-20" stroke="#22302E" stroke-width="2.4"/>
+    <rect x="22" y="-34" width="12" height="14" fill="#22302E"/>
+  </g>
+  <g fill="#A67C52" opacity="0.85">
+    <circle cx="180" cy="690" r="5"/><circle cx="198" cy="690" r="5"/><circle cx="216" cy="690" r="5"/>
+  </g>
+</svg>

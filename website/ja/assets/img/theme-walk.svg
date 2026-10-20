@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Neighborhood walks">
+  <g fill="none" stroke="#3D6B5C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 12 L24 12 M19 12 v-0.5"/>
+    <circle cx="19" cy="8" r="3.4"/>
+    <path d="M24 12 q8 8 4 16 l-4 10 l6 14"/>
+    <path d="M28 28 l14 -4 l-2 8 l-14 4 z" opacity="0.4"/>
+    <path d="M10 54 h44 M14 54 q4 -8 12 -8 t12 0"/>
+  </g>
+  <circle cx="49" cy="14" r="3" fill="#A67C52"/>
+</svg>

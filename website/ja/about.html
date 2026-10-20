@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ZheshGoについて</title>
+  <meta name="description" content="ZheshGoの情報掲載方針、確認状況の表示、AIの利用、検証中の内容について。"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/about.html"/><link rel="alternate" hreflang="ja" href="/ja/about.html"/><link rel="alternate" hreflang="ko" href="/ko/about.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore">
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">ZheshGoについて</p>
+        <h1>確かめながら、旅を考える</h1>
+        <p class="lead">ZheshGoは、上海と浙江を旅する方のためのガイドと旅行助手です。まずはモデルコースや実用情報を使っていただき、旅に必要なことを一緒に確かめていきます。</p>
+      </div>
+    </div>
+
+    <div class="wrap page page-narrow">
+      <h2>このサイトでできること</h2>
+      <p>モデルコース、移動のポイント、旅の疑問への回答を掲載しています。現時点で予約・販売は行っていません。手配は各施設や公式窓口で行ってください。個別の相談はフォームの受付状況をご確認ください。</p>
+
+      <h2>情報を掲載するときの方針</h2>
+      <ul>
+        <li><strong>未確認の情報は、そのように表示します。</strong> 列車の時刻、営業時間、料金、入国条件には確認状況を表示します。現在の掲載情報は、現地確認が済んでいないモデルコンテンツです。</li>
+        <li><strong>実在しない評価は掲載しません。</strong> 架空の口コミ、予約数、割引、残数などは使いません。説明用の内容にはサンプル表示を付けます。</li>
+        <li><strong>手配できないサービスを約束しません。</strong> 未確認のガイド、車両、提携先や実績を、提供可能なサービスとして表示しません。</li>
+        <li><strong>確認できない料金を作りません。</strong> 予算は鉄道・入場・食事などの費用項目から考え、確認できない金額を表示しません。</li>
+      </ul>
+
+      <h2>これから検証していくこと</h2>
+      <p>次の項目は検証中の仮説です。実際に使っていただいた結果から、改善していきます。</p>
+      <div id="assumptions"></div>
+
+      <h2>AIについて</h2>
+      <p>旅行助手はページを開いた際に接続状況を確認します。接続できる場合は香港のサーバーで千問（Qwen）を利用します。利用できない場合はエラーを表示します。Appの写真ガイドはサンプル画像と模擬認識を使用しています。AIの提案で予約や手配は完了しません。</p>
+
+      <h2>画像について</h2>
+      <p>現在の画像は、このデモ用に制作したSVGイラストです。現地の写真ではありません。今後写真を掲載する際は、適切に出典を記載します。</p>
+
+      <h2>バージョン・掲載状況</h2>
+      <p class="small muted" id="status-line"></p>
+      <p>質問や訂正、掲載してほしいコースがあれば、<a href="consult.html">相談フォーム</a>の受付状況をご確認ください。</p>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="モバイルメニュー"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      document.getElementById("assumptions").innerHTML =
+        "<ul>" + ZW.CONTENT.assumptions.map(function (x) {
+          return "<li><strong>" + ZW.esc(x.a) + "</strong> — <span class='muted'>" + ZW.esc(x.s) + "</span></li>";
+        }).join("") + "</ul>";
+      document.getElementById("status-line").textContent =
+        ZW.CONTENT.meta.contentStatus + " · 内容更新日：" + ZW.CONTENT.meta.lastUpdated + " · 現地確認前のモデルコンテンツです。";
+    })();
+  </script>
+</body>
+</html>

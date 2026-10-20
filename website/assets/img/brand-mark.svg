@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Zheway mark">
+  <circle cx="32" cy="32" r="30" fill="#3D6B5C"/>
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#F6F2E9" stroke-width="2" opacity="0.35"/>
+  <g stroke="#F6F2E9" stroke-width="2.6" stroke-linecap="round" fill="none">
+    <path d="M10 30 q7 -9 14 0 t14 0"/>
+    <path d="M10 38 q7 -9 14 0 t14 0"/>
+  </g>
+  <circle cx="46" cy="24" r="3.2" fill="#E8D9C0"/>
+</svg>

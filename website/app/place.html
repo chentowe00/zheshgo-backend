@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Place · ZheshGo</title>
+  <meta name="description" content="ZheshGo place guide."/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore" data-app="app">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <div id="detail"></div>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var id = ZW.param("id");
+      var p = ZW.getPlace(id);
+      var el = document.getElementById("detail");
+      if (!p) { ZW.notFound("This place guide doesn't exist yet"); return; }
+
+      document.title = p.name + " · ZheshGo";
+      var meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", p.blurb);
+      var city = ZW.getCity(p.city);
+
+      var practical = p.practical || {};
+      var facts = [
+        { k: "Type", v: p.type, s: null },
+        { k: "Hours", v: practical.hours || "Not stated", s: p.verifyNote },
+        { k: "Tickets", v: practical.ticket || "Not stated", s: p.verifyNote },
+        { k: "Getting there", v: practical.transport || "See the city guide", s: p.verifyNote },
+      ];
+
+      var inRoutes = ZW.CONTENT.routes.filter(function (r) {
+        return r.status !== "archived" &&
+          r.dayByDay.some(function (d) { return d.stops.some(function (s) { return s.placeId === p.id; }); });
+      });
+
+      el.innerHTML =
+        '<div class="page-hero"><div class="wrap">' +
+        '<nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">/</span>' +
+        (city ? '<a href="city.html?id=' + city.id + '">' + ZW.esc(city.name) + "</a>" : "") +
+        '<span class="sep">/</span><span>' + ZW.esc(p.name) + "</span></nav>" +
+        '<span class="theme-tag" style="background:var(--celadon-mist);color:var(--celadon-deep)">' + ZW.esc(p.type) + "</span>" +
+        "<h1>" + ZW.esc(p.name) + "</h1>" +
+        '<p class="lead">' + ZW.esc(p.blurb) + "</p>" +
+        ((p.originalName || p.latinName) ? '<p class="small muted place-name-aliases">中国語表記：' + (p.originalName ? ZW.esc(p.originalName) : '') + (p.originalName && p.latinName ? ' · ' : '') + (p.latinName ? 'ローマ字・英語名：' + ZW.esc(p.latinName) : '') + '</p>' : '') +
+        '<div class="flex mt1">' + ZW.verifyBadge(p) + "</div>" + ZW.provenance(p) +
+        "</div></div>" +
+        '<div class="wrap page">' +
+        '<div class="detail-grid">' +
+        "<div>" +
+        '<div class="flex mb1"><button class="btn btn-primary" type="button" id="save-place">' + ZW.icon("heart") + ' <span id="save-label">Save to My Trip</span></button></div>' +
+        '<div class="note-box info"><h4>Content status</h4>Demo seed content. Hours, tickets and transport change — verify before you go. We don\u2019t publish numbers we can\u2019t check.</div>' +
+        (inRoutes.length
+          ? "<h2>Appears in</h2>" + inRoutes.map(function (r) {
+            return '<p class="mb1"><a href="route.html?id=' + r.id + '">' + ZW.esc(r.title) + "</a> <span class='small muted'>(" + r.days + " day" + (r.days > 1 ? "s" : "") + ")</span></p>";
+          }).join("")
+          : "") +
+        "</div>" +
+        '<aside class="sticky-side"><div class="side-card"><h3>Practical</h3><table class="fact-table"><tbody>' +
+        facts.map(function (f) {
+          return "<tr><th>" + ZW.esc(f.k) + "</th><td>" + ZW.esc(f.v) +
+            (f.s ? ' <span class="small muted">(' + ZW.esc(f.s) + ")</span>" : "") + "</td></tr>";
+        }).join("") +
+        "</tbody></table></div>" +
+        '<div class="side-card"><h3>Questions about this place?</h3><p class="small">Ask the assistant, or send us a note.</p><div class="flex"><a class="btn btn-secondary btn-sm" href="assistant.html?q=' + encodeURIComponent("What should I know before visiting " + p.name + "?") + '">Ask assistant</a><a class="btn btn-ghost btn-sm" href="consult.html">Human help</a></div></div>' +
+        "</aside></div></div>";
+
+      var saveBtn = document.getElementById("save-place");
+      var saveLabel = document.getElementById("save-label");
+      function paint() {
+        var saved = ZW.isSaved("places", p.id);
+        saveLabel.textContent = saved ? "Saved to My Trip" : "Save to My Trip";
+        saveBtn.setAttribute("aria-pressed", String(saved));
+      }
+      saveBtn.addEventListener("click", function () { ZW.toggleSave("places", p.id); paint(); });
+      paint();
+      ZW.bindSaveButtons(el);
+      ZW.log("view_guide", { type: "place", id: p.id });
+    })();
+  </script>
+</body>
+</html>

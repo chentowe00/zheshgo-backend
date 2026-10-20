@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Photo guide · ZheshGo App</title>
+  <meta name="description" content="App-only: point your phone at a ticket machine, locker, kiosk, menu or station sign for English step-by-step help. Simulated in this demo."/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/photo-guide.html"/><link rel="alternate" hreflang="ja" href="/ja/app/photo-guide.html"/><link rel="alternate" hreflang="ko" href="/ko/app/photo-guide.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="photoguide" data-app="app">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">App feature · photo guide</p>
+        <h1>Stuck at a machine? Point and tap.</h1>
+        <p class="lead">Photograph a ticket machine, locker, ordering kiosk, menu or station sign — get English step-by-step help, one step at a time. This demo uses sample images and a simulated matcher: nothing is uploaded, nothing is real vision AI. A real camera-recognition version is the app's next stage.</p>
+      </div>
+    </div>
+
+    <div class="wrap page">
+      <div class="note-box warn mb2" role="status">
+        <h4>Simulated recognition — demonstration only</h4>
+        In the demo you pick a facility and use a preset sample image. The interface flow (scan → match → one step at a time → confirm) is what the real feature would look like.
+      </div>
+
+      <div class="pg-stage">
+        <div class="pg-screen" id="pg-screen" aria-live="polite"></div>
+      </div>
+
+      <div class="note-box info mt2">
+        <h4>Privacy, when this becomes real</h4>
+        Your photos would be used only to match a facility and show the right guide — never sold, never public, never used for training by default, deletable at any time. We would never ask for passwords, payment codes, passports or full ID numbers.
+      </div>
+
+      <p class="small muted mt2">This feature is available only in the ZheshGo app — the website intentionally does not offer camera or image recognition.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="App navigation"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var screen = document.getElementById("pg-screen");
+      var guides = ZW.CONTENT.photoGuides;
+      var current = null;
+      var stepIdx = 0;
+
+      function facilityIcon(g) {
+        if (g.id === "pg-locker") return "shield";
+        if (g.id === "pg-menu") return "trip";
+        if (g.id === "pg-signage") return "search";
+        return "camera";
+      }
+
+      function showPicker() {
+        current = null; stepIdx = 0;
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">What are you looking at?</h3>" +
+          "<p class=\"muted small\">Pick a facility, then we’ll simulate matching it to a guide.</p>" +
+          '<div class="pg-choices mt2">' +
+          guides.map(function (g) {
+            return (
+              '<button class="pg-choice" type="button" data-guide="' + g.id + '">' +
+              '<span class="ico">' + ZW.icon(facilityIcon(g)) + "</span>" +
+              "<span><b>" + ZW.esc(g.facility) + "</b><span>" + ZW.esc(g.scenario) + "</span></span>" +
+              "</button>"
+            );
+          }).join("") +
+          "</div></div>";
+        screen.querySelectorAll(".pg-choice").forEach(function (b) {
+          b.addEventListener("click", function () {
+            current = guides.find(function (g) { return g.id === b.getAttribute("data-guide"); });
+            showCapture();
+          });
+        });
+        ZW.log("photo_start", { phase: "picker" });
+      }
+
+      function showCapture() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">Photo of: " + ZW.esc(current.facility) + "</h3>" +
+          '<div class="pg-sample"><img src="' + ZW.esc(current.sampleImage) + '" alt="Sample illustration of ' + ZW.esc(current.facility) + '"/></div>' +
+          "<p class=\"small muted\">This is a preset sample image — the demo does not open your camera or upload anything.</p>" +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-scan\">Recognize this sample</button>" +
+          "<button class=\"btn btn-ghost\" type=\"button\" id=\"pg-back\">Choose another</button>" +
+          "</div></div>";
+        document.getElementById("pg-scan").addEventListener("click", showScanning);
+        document.getElementById("pg-back").addEventListener("click", showPicker);
+      }
+
+      function showScanning() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">Matching to a guide…</h3>" +
+          '<div class="pg-sample" style="opacity:.85"><img src="' + ZW.esc(current.sampleImage) + '" alt=""/></div>' +
+          '<div class="pg-progress"><i class="on"></i><i class="on"></i><i></i><i></i></div>' +
+          "<p class=\"small muted\">Simulated recognition — in the real app this is where vision AI would run.</p>" +
+          "</div>";
+        ZW.log("photo_scan", { facility: current.id });
+        setTimeout(function () {
+          if (current.confidence === "low") showLowConfidence();
+          else showMatched();
+        }, 1300);
+      }
+
+      function showLowConfidence() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">Not confident about this one</h3>" +
+          "<p class=\"muted\">Menus vary too much to match reliably — even the real feature would often ask here. What helps?</p>" +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-use-tutorial\">Show the general menu guide anyway</button>" +
+          "<button class=\"btn btn-secondary\" type=\"button\" id=\"pg-retake\">Simulate another photo</button>" +
+          "<a class=\"btn btn-ghost\" href=\"consult.html?topic=photo-guide\">Talk to a human</a>" +
+          "</div></div>";
+        document.getElementById("pg-use-tutorial").addEventListener("click", showMatched);
+        document.getElementById("pg-retake").addEventListener("click", showCapture);
+        ZW.log("photo_low_confidence", { facility: current.id });
+      }
+
+      function showMatched() {
+        stepIdx = 0;
+        screen.innerHTML =
+          '<div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">' +
+          '<div class="pg-sample" style="max-width:180px;margin:0"><img src="' + ZW.esc(current.sampleImage) + '" alt=""/></div>' +
+          "<div style=\"flex:1;min-width:220px\">" +
+          "<span class=\"pill-demo\">Simulated match · confidence: " + ZW.esc(current.confidence) + "</span>" +
+          '<h3 class="mt1" style="font-family:var(--sans)">' + ZW.esc(current.scenario) + "</h3>" +
+          '<p class="small muted mb0">' + ZW.esc(current.verifyNote) + "</p>" +
+          "</div></div>" +
+          '<div class="pg-progress" id="pg-progress" style="margin-top:20px"></div>' +
+          '<div id="pg-step"></div>' +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-secondary\" type=\"button\" id=\"pg-prev\" hidden>Back</button>" +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-next\">Next step</button>" +
+          "<button class=\"btn btn-ghost\" type=\"button\" id=\"pg-quit\">Exit guide</button>" +
+          "</div>";
+        renderStep();
+        document.getElementById("pg-prev").addEventListener("click", function () { stepIdx--; renderStep(); });
+        document.getElementById("pg-next").addEventListener("click", function () {
+          if (stepIdx < current.steps.length - 1) { stepIdx++; renderStep(); }
+          else showDone();
+        });
+        document.getElementById("pg-quit").addEventListener("click", function () {
+          ZW.log("photo_abandon", { facility: current.id, atStep: stepIdx + 1, total: current.steps.length });
+          showPicker();
+        });
+        ZW.log("photo_matched", { facility: current.id });
+      }
+
+      function renderStep() {
+        var s = current.steps[stepIdx];
+        var prog = document.getElementById("pg-progress");
+        prog.innerHTML = current.steps.map(function (_, i) { return '<i class="' + (i <= stepIdx ? "on" : "") + '"></i>'; }).join("");
+        document.getElementById("pg-step").innerHTML =
+          '<div class="pg-step"><span class="pg-step-num">' + (stepIdx + 1) + "</span><div>" +
+          "<h4>" + ZW.esc(s.title) + "</h4><p>" + ZW.esc(s.detail) + "</p>" +
+          (s.tip ? "<p class=\"tip\">Tip: " + ZW.esc(s.tip) + "</p>" : "") +
+          "</div></div>";
+        document.getElementById("pg-prev").hidden = stepIdx === 0;
+        document.getElementById("pg-next").textContent =
+          stepIdx === current.steps.length - 1 ? "Done" : "Next step";
+        ZW.log("photo_step", { facility: current.id, step: stepIdx + 1 });
+      }
+
+      function showDone() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          '<span class="pill-verify" style="background:var(--bamboo-soft);color:var(--bamboo);border-color:#C9D8C4">' + ZW.icon("check") + " Guide complete</span>" +
+          "<h3 class=\"mt1\" style=\"font-family:var(--sans)\">Did that solve it?</h3>" +
+          "<p class=\"muted small\">Your answer helps us decide whether a real version of this feature is worth building.</p>" +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-yes\">Yes, sorted</button>" +
+          "<button class=\"btn btn-secondary\" type=\"button\" id=\"pg-no\">No — still stuck</button>" +
+          "</div>" +
+          "<div id=\"pg-stuck\" class=\"note-box warn\" style=\"text-align:left\" hidden><h4>Sorry about that</h4>In the real app we’d offer a re-take, a facility picker, or a person. Here’s the human path: <a href=\"consult.html?topic=photo-guide\">ask us directly</a>.</div>" +
+          "</div>";
+        document.getElementById("pg-yes").addEventListener("click", function () {
+          ZW.log("photo_complete", { facility: current.id, solved: true });
+          ZW.toast("Thanks — logged as solved");
+          showPicker();
+        });
+        document.getElementById("pg-no").addEventListener("click", function () {
+          ZW.log("photo_complete", { facility: current.id, solved: false });
+          ZW.log("human_handoff", { from: "photo_guide", facility: current.id });
+          document.getElementById("pg-stuck").hidden = false;
+        });
+      }
+
+      showPicker();
+    })();
+  </script>
+</body>
+</html>

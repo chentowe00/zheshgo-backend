@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>旅のプランを考える · ZheshGo</title>
+  <meta name="description" content="都市、日数、ペース、同行者、興味に合わせて上海・浙江のモデルコースを探せます。"/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/planner.html"/><link rel="alternate" hreflang="ja" href="/ja/app/planner.html"/><link rel="alternate" hreflang="ko" href="/ko/app/planner.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="plan" data-app="app">
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">旅のプランを考える</p>
+        <h1>希望を選んで、旅の候補を見つける</h1>
+        <p class="lead">都市、日数、ペース、同行者に合わせたモデルコースを表示します。条件に合う理由と、合わない点も確認できます。登録や予約は不要です。</p>
+      </div>
+    </div>
+
+    <div class="wrap page">
+      <div class="detail-grid">
+        <div>
+          <form id="planner-form" class="planner-card">
+            <div class="field">
+              <label id="l-cities">行きたい都市は？ <span class="hint">複数選べます。</span></label>
+              <div class="chip-row" role="group" aria-labelledby="l-cities" id="q-cities"></div>
+            </div>
+            <div class="field">
+              <label id="l-days">この地域で何日過ごしますか？</label>
+              <div class="chip-row" role="group" aria-labelledby="l-days" id="q-days"></div>
+            </div>
+            <div class="field">
+              <label id="l-interest">興味のあるテーマは？ <span class="hint">3つまで選べます。</span></label>
+              <div class="chip-row" role="group" aria-labelledby="l-interest" id="q-interest"></div>
+            </div>
+            <div class="field">
+              <label id="l-group">誰と旅しますか？</label>
+              <div class="chip-row" role="group" aria-labelledby="l-group" id="q-group"></div>
+            </div>
+            <div class="field">
+              <label id="l-pace">どんなペースで過ごしたいですか？</label>
+              <div class="chip-row" role="group" aria-labelledby="l-pace" id="q-pace"></div>
+            </div>
+            <div class="flex">
+              <button class="btn btn-primary btn-lg" type="submit" id="go">コースを探す</button>
+              <button class="btn btn-secondary" type="button" id="reset">選択をリセット</button>
+            </div>
+          </form>
+          <p class="small muted mt1">希望条件はこのブラウザに保存されます。表示するのは旅の参考案で、予約されたサービスではありません。</p>
+        </div>
+        <aside class="sticky-side">
+          <div class="side-card">
+            <h3>候補の選び方</h3>
+            <ul class="side-list">
+              <li>都市、テーマ、日数、同行者、ペースをもとにコースを比較します。</li>
+              <li>各コースには、<strong>選ばれた理由</strong>を表示します。ご自身の希望に合うか確認してください。</li>
+              <li>完全には合わないコースも、条件との違いを添えて表示します。</li>
+              <li>気になるコースを保存したり、AIに予定の調整を相談したりできます。</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <div id="results" hidden>
+        <hr class="divider"/>
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">あなたの旅の候補</p>
+            <h2 id="results-title">候補のコース</h2>
+          </div>
+        </div>
+        <div class="route-grid" id="match-grid"></div>
+        <div class="empty" id="no-match" hidden>
+          <div class="empty-art" id="nm-art"></div>
+          <h3>すべての条件に合うコースはまだありません</h3>
+          <p>掲載コースは限られています。条件を一つ減らすか、AIに別のプランを相談してください。</p>
+          <div class="flex" style="justify-content:center">
+            <a class="btn btn-secondary" href="explore.html">すべてのコースを見る</a>
+            <a class="btn btn-primary" href="assistant.html">AIに相談する</a>
+          </div>
+        </div>
+        <div class="note-box warn mt2"><h4>出発前の確認を忘れずに</h4>現地検証前のモデルコースです。列車、営業時間、チケットなどを確認してから手配してください。気になるコースは保存して比較できます。</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="モバイルメニュー"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var C = ZW.CONTENT;
+      var answers = { cities: [], days: null, interests: [], group: null, pace: null };
+
+      function chipGroup(el, options, isMulti, onchange) {
+        el._arr = [];
+        el._max = el.getAttribute("data-max") ? parseInt(el.getAttribute("data-max"), 10) : 99;
+        el.innerHTML = options.map(function (o) {
+          return '<button class="chip" type="button" role="checkbox" aria-checked="false" data-val="' + ZW.esc(o.v) + '">' + ZW.esc(ZW.label(o.l)) + "</button>";
+        }).join("");
+        el.querySelectorAll("button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            var val = b.getAttribute("data-val");
+            var arr = el._arr;
+            if (isMulti) {
+              var i = arr.indexOf(val);
+              if (i === -1) { if (arr.length >= el._max) { ZW.toast("選択できる上限：" + el._max); return; } arr.push(val); }
+              else arr.splice(i, 1);
+            } else {
+              arr.length = 0; arr.push(val);
+            }
+            el.querySelectorAll("button").forEach(function (x) {
+              var on = arr.indexOf(x.getAttribute("data-val")) !== -1;
+              x.setAttribute("aria-checked", on);
+              x.classList.toggle("selected", on);
+            });
+            if (onchange) onchange();
+          });
+        });
+      }
+
+      var cities = chipGroup(document.getElementById("q-cities"),
+        C.cities.filter(function (c) { return !c.preview; }).map(function (c) { return { v: c.id, l: c.name }; }), true, function () { answers.cities = document.getElementById("q-cities")._arr.slice(); });
+      document.getElementById("q-days").setAttribute("data-max", 1);
+      var days = chipGroup(document.getElementById("q-days"),
+        [{ v: "1", l: "1〜2日" }, { v: "3", l: "3〜4日" }, { v: "5", l: "5〜7日" }, { v: "8", l: "8日以上" }], false, function () { answers.days = document.getElementById("q-days")._arr[0] || null; });
+      var interests = chipGroup(document.getElementById("q-interest"),
+        C.themes.map(function (t) { return { v: t.name, l: ZW.label(t.name) }; }), true, function () { answers.interests = document.getElementById("q-interest")._arr.slice(); });
+      document.getElementById("q-interest").setAttribute("data-max", 3);
+      var group = chipGroup(document.getElementById("q-group"),
+        [{ v: "Solo", l: "ひとり旅" }, { v: "Couples", l: "ふたり旅" }, { v: "Friends", l: "友人と" }, { v: "Families", l: "家族と" }], false, function () { answers.group = document.getElementById("q-group")._arr[0] || null; });
+      var pace = chipGroup(document.getElementById("q-pace"),
+        [{ v: "Gentle", l: "負担を抑えたペース" }, { v: "Relaxed", l: "ゆったり過ごす" }, { v: "Moderate", l: "ほどよく巡る" }], false, function () { answers.pace = document.getElementById("q-pace")._arr[0] || null; });
+
+      function collect() {
+        answers.cities = document.getElementById("q-cities")._arr.slice();
+        answers.days = document.getElementById("q-days")._arr[0] || null;
+        answers.interests = document.getElementById("q-interest")._arr.slice();
+        answers.group = document.getElementById("q-group")._arr[0] || null;
+        answers.pace = document.getElementById("q-pace")._arr[0] || null;
+      }
+
+      document.getElementById("planner-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        collect();
+        if (answers.cities.length === 0 && answers.interests.length === 0) {
+          ZW.toast("都市またはテーマを一つ以上選んでください。");
+          return;
+        }
+        run();
+      });
+      document.getElementById("reset").addEventListener("click", function () {
+        ["q-cities", "q-days", "q-interest", "q-group", "q-pace"].forEach(function (id) {
+          var el = document.getElementById(id);
+          el._arr = [];
+          el.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-checked", "false"); x.classList.remove("selected"); });
+        });
+        document.getElementById("results").hidden = true;
+      });
+      document.getElementById("nm-art").innerHTML = ZW.icon("search");
+
+      function run() {
+        var scored = C.routes.filter(function (r) { return r.status !== "archived"; }).map(function (r) {
+          var score = 0, reasons = [], gaps = [];
+          if (answers.cities.length && r.cities.some(function (cid) { return answers.cities.indexOf(cid) !== -1; })) { score += 3; reasons.push("対応する都市：" + r.cities.filter(function (cid) { return answers.cities.indexOf(cid) !== -1; }).map(ZW.cityName).join(" & ")); }
+          else if (answers.cities.length) gaps.push("outside your cities");
+          if (answers.interests.length && r.themes.some(function (t) { return answers.interests.indexOf(t) !== -1; })) { score += 3; reasons.push("合うテーマ：" + r.themes.filter(function (t) { return answers.interests.indexOf(t) !== -1; }).map(ZW.label).join(" & ")); }
+          if (answers.days && r.days <= parseInt(answers.days, 10)) { score += 2; reasons.push(r.days + "日" + "" + "：希望の日数以内"); }
+          else if (answers.days) gaps.push("longer than your window");
+          if (answers.group && r.groups.indexOf(answers.group) !== -1) { score += 2; reasons.push("同行者の条件：" + ZW.label(answers.group)); }
+          else if (answers.group) gaps.push("想定する同行者と異なります：" + ZW.label(answers.group));
+          if (answers.pace && r.pace === answers.pace) { score += 2; reasons.push(ZW.label(r.pace) + "：希望のペースに対応"); }
+          else if (answers.pace) gaps.push("pace differs from your preference");
+          if (answers.cities.length === 0) score -= 1;
+          return { r: r, score: score, reasons: reasons, gaps: gaps };
+        }).sort(function (a, b) { return b.score - a.score; });
+
+        var good = scored.filter(function (x) { return x.score >= 4; });
+        var partial = scored.filter(function (x) { return x.score >= 2 && x.score < 4; });
+        var list = good.concat(partial).slice(0, 6);
+
+        var grid = document.getElementById("match-grid");
+        var noMatch = document.getElementById("no-match");
+        document.getElementById("results-title").textContent =
+          "候補のコース（" + good.length + "件は条件に合う候補" + "" + (partial.length ? ", " + partial.length + "件は一部の条件に対応" : "") + ")";
+        var resultsBox = document.getElementById("results");
+        resultsBox.hidden = false;
+        resultsBox.scrollIntoView({ behavior: "smooth", block: "start" });
+        grid.innerHTML = list.map(function (x) {
+          var card = document.createElement("div");
+          card.innerHTML = ZW.routeCard(x.r);
+          var article = card.firstElementChild;
+          var reasonsHtml = '<div class="match-reasons">✓ ' + ZW.esc(x.reasons.join(" · ")) +
+            (x.gaps.length ? " <span style=\"color:var(--muted)\"> — 条件との違い：" + ZW.esc(x.gaps.join(", ")) + "</span>" : "") + "</div>";
+          var body = article.querySelector(".card-body");
+          body.insertAdjacentHTML("afterbegin", reasonsHtml);
+          return card.innerHTML;
+        }).join("");
+        ZW.bindSaveButtons(grid);
+        noMatch.hidden = list.length > 0;
+        grid.style.display = list.length > 0 ? "" : "none";
+        ZW.log("save_plan_intent", answers);
+      }
+
+      // deep link from route pages
+      var q = ZW.param("route");
+      if (q) {
+        var rr = ZW.getRoute(q);
+        if (rr) {
+          var cityEl = document.getElementById("q-cities");
+          cityEl._arr = rr.cities.slice();
+          cityEl.querySelectorAll("button").forEach(function (x) {
+            var on = cityEl._arr.indexOf(x.getAttribute("data-val")) !== -1;
+            x.setAttribute("aria-checked", on);
+            x.classList.toggle("selected", on);
+          });
+          collect();
+          run();
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

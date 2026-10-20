@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Request human help · ZheshGo</title>
+  <meta name="description" content="Send ZheshGo a short note when the guides and assistant can't settle your trip question. Progressive, skippable, no pressure."/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="plan" data-app="app">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">Human help</p>
+        <h1>When a guide isn't enough</h1>
+        <p class="lead">A short note is all we need to start. Skip anything you'd rather not answer — and browse freely; nothing here requires an account.</p>
+      </div>
+    </div>
+
+    <div class="wrap page page-narrow">
+      <div class="consult-intro">
+        We'll use this only to understand your trip and reply. <strong>We don't promise unverified routes, prices, tickets or availability</strong> — a real person confirms things with you after this form. This demo stores your submission in your browser only; it is not sent anywhere yet.
+      </div>
+
+      <div class="form-steps" aria-hidden="true">
+        <span class="step-pill on" id="sp-1">1 · Basics</span>
+        <span class="step-pill" id="sp-2">2 · Where &amp; pace</span>
+        <span class="step-pill" id="sp-3">3 · Budget &amp; contact</span>
+      </div>
+
+      <form id="consult-form">
+        <!-- Step 1 -->
+        <fieldset id="step-1" style="border:0;padding:0;margin:0">
+          <div class="field">
+            <label for="f-dates">Rough dates <span class="hint">(optional — “mid-April 2026” is fine)</span></label>
+            <input class="input" type="text" id="f-dates" placeholder="e.g. mid-April 2026, or leave blank"/>
+          </div>
+          <div class="field">
+            <label id="l-dur">How long in the region?</label>
+            <div class="chip-row" role="group" aria-labelledby="l-dur" id="f-duration"></div>
+          </div>
+          <div class="field">
+            <label for="f-group">Who's traveling? <span class="hint">(party size, rough ages if relevant)</span></label>
+            <input class="input" type="text" id="f-group" placeholder="e.g. 2 adults, one child (6)"/>
+          </div>
+          <div class="flex">
+            <button class="btn btn-primary" type="button" data-next="2">Continue</button>
+            <button class="btn btn-ghost" type="button" data-skip="2">Skip this step</button>
+          </div>
+        </fieldset>
+
+        <!-- Step 2 -->
+        <fieldset id="step-2" style="border:0;padding:0;margin:0" hidden>
+          <div class="field">
+            <label for="f-arrive">Arriving in / leaving from</label>
+            <input class="input" type="text" id="f-arrive" placeholder="e.g. land Shanghai PVG, leave from Shanghai"/>
+          </div>
+          <div class="field">
+            <label id="l-cities">Cities you're interested in <span class="hint">(multi-select)</span></label>
+            <div class="chip-row" role="group" aria-labelledby="l-cities" id="f-cities"></div>
+          </div>
+          <div class="field">
+            <label id="l-pace">Preferred pace</label>
+            <div class="chip-row" role="group" aria-labelledby="l-pace" id="f-pace"></div>
+          </div>
+          <div class="field">
+            <label for="f-needs">Special needs or must-dos <span class="hint">(accessibility, food restrictions, an obsession with temples…)</span></label>
+            <textarea class="input" id="f-needs" rows="3" placeholder="Anything we should know"></textarea>
+          </div>
+          <div class="flex">
+            <button class="btn btn-secondary" type="button" data-back="1">Back</button>
+            <button class="btn btn-primary" type="button" data-next="3">Continue</button>
+            <button class="btn btn-ghost" type="button" data-skip="3">Skip this step</button>
+          </div>
+        </fieldset>
+
+        <!-- Step 3 -->
+        <fieldset id="step-3" style="border:0;padding:0;margin:0" hidden>
+          <div class="field">
+            <label id="l-budget">Budget range per person, excluding flights <span class="hint">(optional — guides your options, never a minimum spend)</span></label>
+            <div class="chip-row" role="group" aria-labelledby="l-budget" id="f-budget"></div>
+          </div>
+          <div class="field">
+            <label for="f-contact">How can we reply? <span class="hint">(email, WhatsApp, or WeChat — we can only reply if you leave one)</span></label>
+            <input class="input" type="text" id="f-contact" placeholder="e.g. email@example.com"/>
+          </div>
+          <div class="field">
+            <label for="f-note">Anything else?</label>
+            <textarea class="input" id="f-note" rows="2" placeholder="Optional"></textarea>
+          </div>
+          <p class="small muted">By submitting you agree we may use these details to reply to this request — nothing else. No account is created.</p>
+          <div class="flex">
+            <button class="btn btn-secondary" type="button" data-back="2">Back</button>
+            <button class="btn btn-sandal btn-lg" type="submit">Send the note</button>
+          </div>
+        </fieldset>
+      </form>
+
+      <div id="consult-done" hidden>
+        <div class="empty" style="padding:30px 20px">
+          <div class="empty-art" id="done-art"></div>
+          <h3>Note received</h3>
+          <p id="done-note">In production, this would reach our human team and they'd reply at the contact you gave — confirming details with you rather than promising anything unverified.</p>
+          <div class="flex" style="justify-content:center">
+            <a class="btn btn-primary" href="explore.html">Keep browsing</a>
+            <button class="btn btn-secondary" type="button" id="done-again">Send another</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var DRAFT = "zheway:consultDraft";
+      var step = 1;
+      var form = document.getElementById("consult-form");
+
+      function chipGroup(el, options) {
+        el._arr = [];
+        el.innerHTML = options.map(function (o) {
+          return '<button class="chip" type="button" role="checkbox" aria-checked="false" data-val="' + ZW.esc(o.v) + '">' + ZW.esc(o.l) + "</button>";
+        }).join("");
+        el.querySelectorAll("button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            var arr = el._arr;
+            var val = b.getAttribute("data-val");
+            var i = arr.indexOf(val);
+            if (i === -1) arr.push(val); else arr.splice(i, 1);
+            el.querySelectorAll("button").forEach(function (x) {
+              var on = arr.indexOf(x.getAttribute("data-val")) !== -1;
+              x.setAttribute("aria-checked", on);
+              x.classList.toggle("selected", on);
+            });
+            saveDraft();
+          });
+        });
+        return el;
+      }
+      var dur = chipGroup(document.getElementById("f-duration"),
+        [{ v: "1-2 days", l: "1–2 days" }, { v: "3-4 days", l: "3–4 days" }, { v: "5-7 days", l: "5–7 days" }, { v: "8+ days", l: "8+ days" }]);
+      var cities = chipGroup(document.getElementById("f-cities"),
+        ZW.CONTENT.cities.map(function (c) { return { v: c.name, l: c.name }; }));
+      var pace = chipGroup(document.getElementById("f-pace"),
+        [{ v: "Gentle", l: "Gentle" }, { v: "Relaxed", l: "Relaxed" }, { v: "Moderate", l: "Moderate" }]);
+      var budget = chipGroup(document.getElementById("f-budget"),
+        [{ v: "Economy", l: "Economy" }, { v: "Mid-range", l: "Mid-range" }, { v: "Comfort", l: "Comfort" }, { v: "Prefer not to say", l: "Prefer not to say" }]);
+
+      function setStep(n) {
+        step = n;
+        [1, 2, 3].forEach(function (i) {
+          var fs = document.getElementById("step-" + i);
+          fs.hidden = i !== n;
+          var sp = document.getElementById("sp-" + i);
+          sp.className = "step-pill" + (i === n ? " on" : i < n ? " done" : "");
+        });
+        saveDraft();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      form.addEventListener("click", function (e) {
+        var t = e.target;
+        if (t.hasAttribute("data-next")) setStep(parseInt(t.getAttribute("data-next"), 10));
+        if (t.hasAttribute("data-back")) setStep(parseInt(t.getAttribute("data-back"), 10));
+        if (t.hasAttribute("data-skip")) setStep(parseInt(t.getAttribute("data-skip"), 10));
+      });
+
+      function gather() {
+        return {
+          dates: document.getElementById("f-dates").value.trim(),
+          duration: dur._arr.slice(),
+          group: document.getElementById("f-group").value.trim(),
+          arrive: document.getElementById("f-arrive").value.trim(),
+          cities: cities._arr.slice(),
+          pace: pace._arr.slice(),
+          needs: document.getElementById("f-needs").value.trim(),
+          budget: budget._arr.slice(),
+          contact: document.getElementById("f-contact").value.trim(),
+          note: document.getElementById("f-note").value.trim(),
+        };
+      }
+      function saveDraft() {
+        try { localStorage.setItem(DRAFT, JSON.stringify({ step: step, data: gather() })); } catch (e) {}
+      }
+      function loadDraft() {
+        try {
+          var d = JSON.parse(localStorage.getItem(DRAFT));
+          if (!d || !d.data) return;
+          var data = d.data;
+          var fieldMap = {
+            "f-dates": data.dates, "f-group": data.group, "f-arrive": data.arrive,
+            "f-needs": data.needs, "f-contact": data.contact, "f-note": data.note,
+          };
+          Object.keys(fieldMap).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el && fieldMap[id] !== undefined && fieldMap[id] !== null) el.value = fieldMap[id];
+          });
+          var chipMap = {
+            "f-duration": dur, "f-cities": cities, "f-pace": pace, "f-budget": budget,
+          };
+          var dataMap = {
+            "f-duration": data.duration, "f-cities": data.cities, "f-pace": data.pace, "f-budget": data.budget,
+          };
+          Object.keys(chipMap).forEach(function (id) {
+            var el = chipMap[id];
+            if (!el) return;
+            el._arr = Array.isArray(dataMap[id]) ? dataMap[id].slice() : [];
+            el.querySelectorAll("button").forEach(function (x) {
+              var on = el._arr.indexOf(x.getAttribute("data-val")) !== -1;
+              x.setAttribute("aria-checked", on);
+              x.classList.toggle("selected", on);
+            });
+          });
+          if (d.step && d.step > 1) setStep(d.step);
+        } catch (e) { /* corrupt draft — start fresh */ }
+      }
+      ["f-dates", "f-group", "f-arrive", "f-needs", "f-contact", "f-note"].forEach(function (id) {
+        document.getElementById(id).addEventListener("input", saveDraft);
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var d = gather();
+        if (!d.contact) {
+          if (!confirm("You haven't left a way to reply — continue anyway? (We can only answer if we can reach you.)")) return;
+        }
+        ZW.log("submit_consult", {
+          duration: d.duration.join(","), cities: d.cities.join(","), budget: d.budget.join(","),
+          hasContact: !!d.contact, from: ZW.param("topic") || ZW.param("route") || "direct",
+        });
+        var doneNote = document.getElementById("done-note");
+        form.hidden = true;
+        document.getElementById("consult-done").hidden = false;
+        document.getElementById("done-art").innerHTML = ZW.icon("check");
+        // try to send to the team server; fall back to local demo storage
+        fetch("/api/v1/consult", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(d),
+        }).then(function (res) {
+          if (!res.ok) throw new Error("http " + res.status);
+          if (doneNote) doneNote.innerHTML =
+            "Your note has reached our team. A real person will follow up at the contact you gave — and we'll confirm any routes, prices or availability with you rather than promising anything unverified.";
+        }).catch(function () {
+          try { localStorage.setItem("zheway:consultSubmitted", JSON.stringify({ at: new Date().toISOString(), demo: true, data: d })); } catch (err) {}
+          if (doneNote) doneNote.innerHTML =
+            "Saved locally — <strong>demo mode</strong>: the note was not sent to our team (this browser couldn't reach the server). Please email us directly instead.";
+        });
+        try { localStorage.removeItem(DRAFT); } catch (err) {}
+      });
+      document.getElementById("done-again").addEventListener("click", function () {
+        form.hidden = false;
+        document.getElementById("consult-done").hidden = true;
+        form.reset();
+        dur._arr = []; cities._arr = []; pace._arr = []; budget._arr = [];
+        setStep(1);
+      });
+
+      ZW.log("open_consult", { from: ZW.param("topic") || ZW.param("route") || "direct" });
+      loadDraft();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>여행지·추천 코스 · ZheshGo</title>
+  <meta name="description" content="상하이·저장성의 여행지와 테마 코스를 찾아보세요. 여행 일수·속도·동행인에 따라 골라볼 수 있어요."/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/explore.html"/><link rel="alternate" hreflang="ja" href="/ja/app/explore.html"/><link rel="alternate" hreflang="ko" href="/ko/app/explore.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore" data-app="app">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">여행지·코스</p>
+        <h1>나에게 맞는 여행을 찾아보세요</h1>
+        <p class="lead">여행지와 테마 코스를 비교하고 이동과 체력에 맞게 골라보세요. 확인 중인 정보는 출발 전에 다시 확인해 주세요.</p>
+      </div>
+    </div>
+
+    <div class="wrap page">
+      <div class="tabs" role="tablist" aria-label="여행지 또는 코스 찾기">
+        <button role="tab" id="tab-dest" aria-selected="true" aria-controls="panel-dest">여행지</button>
+        <button role="tab" id="tab-routes" aria-selected="false" aria-controls="panel-routes">코스·테마</button>
+      </div>
+
+      <!-- Destinations panel -->
+      <section id="panel-dest" role="tabpanel" aria-labelledby="tab-dest">
+        <div class="dest-grid" id="dest-grid"></div>
+        <div class="mt3" id="preview-cities"></div>
+      </section>
+
+      <!-- Routes panel -->
+      <section id="panel-routes" role="tabpanel" aria-labelledby="tab-routes" hidden>
+        <div class="planner-card mb2" aria-label="코스 필터">
+          <div class="field mb1">
+            <label id="f-city-label">도시</label>
+            <div class="chip-row" role="group" aria-labelledby="f-city-label" id="f-city"></div>
+          </div>
+          <div class="field mb1">
+            <label id="f-theme-label">테마</label>
+            <div class="chip-row" role="group" aria-labelledby="f-theme-label" id="f-theme"></div>
+          </div>
+          <div class="field mb1">
+            <label id="f-days-label">최대 여행 일수</label>
+            <div class="chip-row" role="group" aria-labelledby="f-days-label" id="f-days"></div>
+          </div>
+          <div class="field mb1">
+            <label id="f-pace-label">여행 속도</label>
+            <div class="chip-row" role="group" aria-labelledby="f-pace-label" id="f-pace"></div>
+          </div>
+          <div class="field mb0">
+            <label id="f-group-label">동행인</label>
+            <div class="chip-row" role="group" aria-labelledby="f-group-label" id="f-group"></div>
+          </div>
+          <p class="mt2 mb0"><button class="btn btn-secondary btn-sm" type="button" id="f-clear">필터 초기화</button></p>
+        </div>
+        <p class="small muted" id="f-count" aria-live="polite"></p>
+        <div class="route-grid" id="route-grid"></div>
+        <div class="empty" id="route-empty" hidden>
+          <div class="empty-art" id="re-art"></div>
+          <h3>조건에 맞는 코스가 없어요</h3>
+          <p>필터를 줄여서 다시 찾아보세요. 현재는 일부 코스부터 소개하고 있어요.</p>
+          <button class="btn btn-primary" type="button" id="re-clear">필터 초기화</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="모바일 메뉴"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var C = ZW.CONTENT;
+      var qs = new URLSearchParams(location.search);
+
+      /* ---- tabs ---- */
+      var tabDest = document.getElementById("tab-dest");
+      var tabRoutes = document.getElementById("tab-routes");
+      var panelDest = document.getElementById("panel-dest");
+      var panelRoutes = document.getElementById("panel-routes");
+      function setTab(which) {
+        var routes = which === "routes";
+        tabDest.setAttribute("aria-selected", String(!routes));
+        tabRoutes.setAttribute("aria-selected", String(routes));
+        panelDest.hidden = !routes ? false : true;
+        panelRoutes.hidden = routes ? false : true;
+      }
+      tabDest.addEventListener("click", function () { setTab("dest"); });
+      tabRoutes.addEventListener("click", function () { setTab("routes"); });
+      document.querySelector(".tabs").addEventListener("keydown", function (e) {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        e.preventDefault();
+        var tabs = [tabDest, tabRoutes];
+        var idx = tabs.indexOf(document.activeElement);
+        var next = e.key === "ArrowRight" ? (idx + 1) % 2 : (idx + 1) % 2;
+        if (idx === -1) next = 0;
+        tabs[next].focus();
+        tabs[next].click();
+      });
+      if (qs.get("theme") || qs.get("city")) setTab("routes");
+
+      /* ---- destinations ---- */
+      var dg = document.getElementById("dest-grid");
+      dg.innerHTML = C.cities.filter(function (c) { return !c.preview; }).map(ZW.cityCard).join("");
+      var pv = document.getElementById("preview-cities");
+      pv.innerHTML =
+        "<h3 class=\"mt0\" style=\"font-size:1rem;font-family:var(--sans)\">저장성의 다른 도시 · 미리보기</h3>" +
+        "<p class=\"small muted\">다음 도시들은 현지 정보를 확인하며 가이드를 준비하고 있어요.</p>" +
+        '<div class="flex">' +
+        C.cities.filter(function (c) { return c.preview; }).map(function (c) {
+          return '<a class="chip" href="city.html?id=' + c.id + '">' + ZW.esc(c.name) + " · 미리보기</a>";
+        }).join("") + "</div>";
+      ZW.bindSaveButtons(dg);
+
+      /* ---- route filters ---- */
+      var state = {
+        city: qs.get("city") || "any",
+        theme: qs.get("theme") || "any",
+        days: qs.get("days") || "any",
+        pace: qs.get("pace") || "any",
+        group: qs.get("group") || "any",
+      };
+      function chips(el, options, key, multi) {
+        el.innerHTML = options.map(function (o) {
+          var active = state[key] === o.v;
+          return '<button class="chip" type="button" role="checkbox" aria-checked="' + active + '" data-key="' + key + '" data-val="' + ZW.esc(o.v) + '">' + ZW.esc(ZW.label(o.l)) + "</button>";
+        }).join("");
+        el.querySelectorAll("button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            state[b.getAttribute("data-key")] = b.getAttribute("data-val");
+            apply();
+          });
+        });
+      }
+      var cityOpts = [{ v: "any", l: "도시 무관" }].concat(C.cities.filter(function (c) { return !c.preview; }).map(function (c) { return { v: c.id, l: c.name }; }));
+      var themeOpts = [{ v: "any", l: "모든 테마" }].concat(C.themes.map(function (t) { return { v: t.name, l: ZW.label(t.name) }; }));
+      var dayOpts = [{ v: "any", l: "일수 제한 없음" }, { v: 1, l: "1일" }, { v: 2, l: "2일 이내" }, { v: 3, l: "3일 이내" }];
+      var paceOpts = [{ v: "any", l: "속도 무관" }, { v: "Gentle", l: "가볍게 걷기" }, { v: "Moderate", l: "적당히 둘러보기" }, { v: "Relaxed", l: "여유롭게 머물기" }];
+      var groupOpts = [{ v: "any", l: "동행인 무관" }, { v: "Solo", l: "혼자" }, { v: "Couples", l: "둘이서" }, { v: "Friends", l: "친구와" }, { v: "Families", l: "가족과" }];
+      chips(document.getElementById("f-city"), cityOpts, "city");
+      chips(document.getElementById("f-theme"), themeOpts, "theme");
+      chips(document.getElementById("f-days"), dayOpts, "days");
+      chips(document.getElementById("f-pace"), paceOpts, "pace");
+      chips(document.getElementById("f-group"), groupOpts, "group");
+
+      function apply() {
+        // re-render chip states
+        document.querySelectorAll("#panel-routes [data-key]").forEach(function (b) {
+          var active = state[b.getAttribute("data-key")] === b.getAttribute("data-val");
+          b.setAttribute("aria-checked", active);
+          b.classList.toggle("selected", active);
+        });
+        var filter = {
+          city: state.city !== "any" ? state.city : null,
+          theme: state.theme !== "any" ? state.theme : null,
+          days: state.days !== "any" ? parseInt(state.days, 10) : null,
+          pace: state.pace,
+          group: state.group,
+        };
+        var list = ZW.getRoutes(filter);
+        var grid = document.getElementById("route-grid");
+        var empty = document.getElementById("route-empty");
+        document.getElementById("f-count").textContent = list.length + "개 코스" + "" + " — 선택한 조건에 맞아요.";
+        grid.innerHTML = list.map(ZW.routeCard).join("");
+        ZW.bindSaveButtons(grid);
+        empty.hidden = list.length > 0;
+        grid.style.display = list.length > 0 ? "" : "none";
+        // sync URL
+        var u = new URL(location.href);
+        ["city", "theme", "days", "pace", "group"].forEach(function (k) {
+          if (state[k] !== "any") u.searchParams.set(k, state[k]); else u.searchParams.delete(k);
+        });
+        history.replaceState(null, "", u);
+        ZW.log("filter", state);
+      }
+      document.getElementById("f-clear").addEventListener("click", function () {
+        state = { city: "any", theme: "any", days: "any", pace: "any", group: "any" };
+        apply();
+      });
+      document.getElementById("re-clear").addEventListener("click", function () {
+        state = { city: "any", theme: "any", days: "any", pace: "any", group: "any" };
+        apply();
+      });
+      document.getElementById("re-art").innerHTML = ZW.icon("explore");
+      apply();
+    })();
+  </script>
+</body>
+</html>

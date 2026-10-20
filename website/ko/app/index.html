@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ZheshGo — 상하이·저장성 여행 가이드</title>
+  <meta name="description" content="상하이·항저우·닝보를 찾는 여행자를 위한 실용 가이드. 코스와 먹거리, 사찰 탐방, 현지에서 필요한 도움을 담았어요."/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/index.html"/><link rel="alternate" hreflang="ja" href="/ja/app/index.html"/><link rel="alternate" hreflang="ko" href="/ko/app/index.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="home" data-app="app">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-art" aria-hidden="true"><img src="../assets/img/hero-art.svg" alt="" style="width:100%;height:100%;object-fit:cover"/></div>
+      <div class="wrap hero-inner">
+        <p class="hero-eyebrow">상하이 · 항저우 · 닝보</p>
+        <h1>상하이에서 저장성까지, 나만의 속도로.</h1>
+        <p class="sub">익숙한 상하이와 항저우를 출발점으로 닝보의 항구와 골목까지 만나보세요. 여행 준비에 필요한 정보를 담고, 아직 확인하지 못한 내용은 분명하게 표시해요. 코스 제안은 예약 상품이 아니에요.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="explore.html">코스·가이드 둘러보기</a>
+          <a class="btn btn-secondary btn-lg" href="planner.html">여행 계획하기</a>
+        </div>
+        <div class="search-pill">
+          <span id="home-search-icon" style="display:inline-flex"></span>
+          <input type="search" id="home-search" placeholder="검색: 닝보 먹거리 · 기차표 · 결제…" aria-label="가이드와 코스 검색"/>
+          <button class="btn btn-primary" type="button" id="home-search-btn">검색</button>
+        </div>
+        <div class="hero-chips" style="margin-top:16px" aria-label="많이 찾는 주제">
+          <a class="chip" href="explore.html?theme=Port%20%26%20Maritime">항구와 해양 문화</a>
+          <a class="chip" href="explore.html?theme=Local%20Food">현지 먹거리</a>
+          <a class="chip" href="explore.html?theme=Buddhist%20Culture">불교 문화</a>
+          <a class="chip" href="assistant.html">AI에게 물어보기</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Destinations -->
+    <section class="section" aria-labelledby="dest-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">여행지</p>
+            <h2 id="dest-title">상하이·항저우에서 닝보까지</h2>
+          </div>
+          <a class="more" href="explore.html">모든 가이드 →</a>
+        </div>
+        <div class="dest-grid" id="dest-grid"></div>
+        <p class="small muted mt2">사오싱과 저우산은 현재 미리보기만 제공해요. 상세 코스는 현지 정보를 확인한 뒤 준비할 예정이에요.</p>
+      </div>
+    </section>
+
+    <!-- Routes by theme -->
+    <section class="section section-alt" aria-labelledby="routes-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">코스·테마</p>
+            <h2 id="routes-title">많이 보기보다, 내 취향에 맞게</h2>
+          </div>
+          <a class="more" href="explore.html">전체 코스 찾기 →</a>
+        </div>
+        <div class="flex mb2" id="theme-chips" aria-label="테마로 찾기"></div>
+        <div class="route-grid" id="featured-routes"></div>
+      </div>
+    </section>
+
+    <!-- What you can do -->
+    <section class="section" aria-labelledby="do-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">읽고, 물어보고, 저장해 보세요</p>
+            <h2 id="do-title">여행 준비를 한곳에서</h2>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <a class="feature-card" href="planner.html">
+            <span class="feature-icon" id="fi-plan"></span>
+            <h3>간단하게 여행 코스 찾기</h3>
+            <p>도시와 일수, 여행 속도, 동행인을 알려 주세요. 조건에 맞는 코스와 선택할 때 고려할 점을 안내해요.</p>
+            <span class="arrow">계획 시작하기 →</span>
+          </a>
+          <a class="feature-card" href="assistant.html">
+            <span class="feature-icon" id="fi-assistant"></span>
+            <h3>AI 여행 도우미에게 질문하기</h3>
+            <p>코스·기차·결제·닝보 먹거리가 궁금한가요? AI 연결 상태를 확인한 뒤 여행 질문을 나눌 수 있어요.</p>
+            <span class="arrow">AI와 대화하기 →</span>
+          </a>
+          <a class="feature-card" href="photo-guide.html">
+            <span class="feature-icon" id="fi-app"></span>
+            <h3>사진 가이드(App 전용)</h3>
+            <p>매표기·보관함·주문 기기·메뉴·안내판을 이해하는 단계별 사진 가이드예요. 현재는 모의 인식 데모예요.</p>
+            <span class="arrow">사진 가이드 살펴보기 →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust -->
+    <section class="section section-night" aria-labelledby="trust-title">
+      <div class="wrap">
+        <p class="section-eyebrow" style="color:#C7B08E">정보를 확인하는 기준</p>
+        <h2 id="trust-title" style="color:var(--on-night)">확신할 수 없다면, 확인이 필요하다고 알려드려요.</h2>
+        <div class="feature-grid" style="margin-top:28px">
+          <div class="feature-card" style="background:var(--night-2);border-color:rgba(233,228,213,.12);color:var(--on-night)">
+            <h3 style="color:var(--on-night)">미확인 정보는 표시해요</h3>
+            <p style="color:var(--on-night-muted)">열차·운영 시간·입장권·입국 규정은 확인 날짜가 없으면 ‘출발 전 확인’으로 표시해요. 현재 자료는 현장 검증 전 데모예요.</p>
+          </div>
+          <div class="feature-card" style="background:var(--night-2);border-color:rgba(233,228,213,.12);color:var(--on-night)">
+            <h3 style="color:var(--on-night)">가상의 후기나 실적을 만들지 않아요</h3>
+            <p style="color:var(--on-night-muted)">후기·평점·예약 수·가격을 꾸며내지 않아요. 설명용 자료에는 예시라고 표시해요.</p>
+          </div>
+          <div class="feature-card" style="background:var(--night-2);border-color:rgba(233,228,213,.12);color:var(--on-night)">
+            <h3 style="color:var(--on-night)">코스 제안은 예약 완료가 아니에요</h3>
+            <p style="color:var(--on-night-muted)">AI 답변과 코스는 여행 준비를 위한 안내예요. 담당자 도움이 필요하다면 부담 없이 상담을 남겨 주세요.</p>
+          </div>
+        </div>
+        <p style="margin-top:22px"><a class="btn btn-ghost" style="border-color:rgba(233,228,213,.4);color:var(--on-night)" href="about.html">콘텐츠 운영 기준 보기</a></p>
+      </div>
+    </section>
+
+    <!-- Consult band -->
+    <section class="section" aria-labelledby="consult-title">
+      <div class="wrap">
+        <div class="planner-card" style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+          <div style="flex:1;min-width:260px">
+            <h2 id="consult-title" style="margin-bottom:6px">여행 중 도움이 필요하다면</h2>
+            <p class="mb0">날짜와 인원, 이동 편의, 나에게 맞는 코스 등 해결되지 않는 질문을 남겨 주세요. 확인되지 않은 가격이나 예약 가능 여부는 약속하지 않아요.</p>
+          </div>
+          <a class="btn btn-sandal btn-lg" href="consult.html">여행 상담 요청</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="모바일 메뉴"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var C = ZW.CONTENT;
+      // destination cards
+      var grid = document.getElementById("dest-grid");
+      var main = C.cities.filter(function (c) { return !c.preview; });
+      grid.innerHTML = main.map(ZW.cityCard).join("");
+      ZW.bindSaveButtons(grid);
+      // theme chips
+      var chips = document.getElementById("theme-chips");
+      chips.innerHTML = C.themes.map(function (t) {
+        return '<a class="chip" href="explore.html?theme=' + encodeURIComponent(t.name) + '">' +
+          '<img src="' + ZW.esc(t.art) + '" alt="" width="15" height="15" aria-hidden="true"/>' +
+          ZW.esc(ZW.label(t.name)) + "</a>";
+      }).join("");
+      // featured routes (overridable from CMS UI config)
+      var uiCfg = (C.ui && typeof C.ui === "object") ? C.ui : {};
+      var featured = (uiCfg.featuredRouteIds || ["nb-port-books", "hz-slow-lake", "sh-nb-link"])
+        .map(ZW.getRoute).filter(Boolean);
+      var fr = document.getElementById("featured-routes");
+      fr.innerHTML = featured.map(ZW.routeCard).join("");
+      ZW.bindSaveButtons(fr);
+      // hero copy (overridable from CMS UI config; plain text only)
+      if (uiCfg.heroEyebrow) document.querySelector(".hero-eyebrow").textContent = uiCfg.heroEyebrow;
+      if (uiCfg.heroTitle) document.querySelector(".hero h1").textContent = uiCfg.heroTitle;
+      if (uiCfg.heroSub) document.querySelector(".hero .sub").textContent = uiCfg.heroSub;
+      // search pill
+      var input = document.getElementById("home-search");
+      var go = function () { if (input.value.trim()) { ZW.openSearch(); var si = document.getElementById("zw-search-input"); if (si) { si.value = input.value; ZW.runSearch(si.value); } } else { ZW.openSearch(); } };
+      document.getElementById("home-search-btn").addEventListener("click", go);
+      input.addEventListener("keydown", function (e) { if (e.key === "Enter") go(); });
+      // feature icons
+      document.getElementById("fi-plan").innerHTML = ZW.icon("plan");
+      document.getElementById("fi-assistant").innerHTML = ZW.icon("assistant");
+      document.getElementById("fi-app").innerHTML = ZW.icon("camera");
+      document.getElementById("home-search-icon").innerHTML = ZW.icon("search");
+    })();
+  </script>
+</body>
+</html>

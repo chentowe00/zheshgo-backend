@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 760" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: canal town with arched bridge and wine jars">
+  <defs>
+    <linearGradient id="ssky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E7EAE2"/>
+      <stop offset="1" stop-color="#F0EBDD"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="760" fill="url(#ssky)"/>
+  <g fill="#22302E" opacity="0.9">
+    <rect x="70" y="300" width="120" height="26"/>
+    <rect x="90" y="240" width="80" height="60"/>
+    <path d="M90 240 Q130 200 170 240 Z" fill="#22302E"/>
+  </g>
+  <g fill="#3D6B5C" opacity="0.9">
+    <rect x="330" y="310" width="150" height="24"/>
+    <rect x="360" y="255" width="90" height="55"/>
+    <path d="M360 255 Q405 215 450 255 Z"/>
+  </g>
+  <path d="M240 380 Q300 300 360 380" fill="none" stroke="#22302E" stroke-width="16"/>
+  <path d="M240 380 Q300 300 360 380" fill="none" stroke="#F6F2E9" stroke-width="3" opacity="0.6"/>
+  <rect y="430" width="600" height="330" fill="#9FB4A5"/>
+  <g fill="#A67C52">
+    <ellipse cx="150" cy="600" rx="34" ry="46"/>
+    <rect x="146" y="556" width="8" height="16" fill="#22302E"/>
+    <ellipse cx="245" cy="620" rx="40" ry="52"/>
+    <rect x="240" y="570" width="10" height="18" fill="#22302E"/>
+  </g>
+  <g stroke="#6E9183" stroke-width="2.4" opacity="0.55">
+    <path d="M60 480 h140" fill="none"/>
+    <path d="M380 520 h160" fill="none"/>
+  </g>
+</svg>

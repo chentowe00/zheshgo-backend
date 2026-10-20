@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>操作記録 · ZheshGo</title>
+  <meta name="description" content="このブラウザ内に保存されたZheshGoの操作記録。"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/events.html"/><link rel="alternate" hreflang="ja" href="/ja/events.html"/><link rel="alternate" hreflang="ko" href="/ko/events.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore">
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">デモの操作記録</p>
+        <h1>このブラウザでの操作</h1>
+        <p class="lead">利用した機能を、この端末のブラウザに記録しています。いつでも削除できます。これはデモ用の記録です。</p>
+      </div>
+    </div>
+
+    <div class="wrap page page-narrow">
+      <div class="evt-grid" id="counts"></div>
+      <div class="flex mb2">
+        <button class="btn btn-secondary btn-sm" type="button" id="refresh">表示を更新</button>
+        <button class="btn btn-ghost btn-sm" type="button" id="clear">記録を削除</button>
+      </div>
+      <div class="evt-log" id="log" aria-live="polite"></div>
+      <p class="small muted mt2">セッション：<span id="session"></span> · 直近500件を保存します。デモ用の記録で、利用者数や市場の需要を示すものではありません。</p>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="モバイルメニュー"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var LABELS = {
+        view_home: "ホームの閲覧",
+        view_explore: "ガイド一覧の閲覧",
+        view_plan: "プランナーの閲覧",
+        view_assistant: "AIページの閲覧",
+        view_trip: "保存した旅の閲覧",
+        view_guide: "ガイドの閲覧（都市・コース・スポット）",
+        search: "Searches",
+        search_open: "検索を開いた回数",
+        filter: "絞り込みの変更",
+        save_route: "コースの保存",
+        save_place: "スポットの保存",
+        unsave_route: "コースの保存解除",
+        save_plan_intent: "プランの検索",
+        open_assistant: "AIを開いた回数",
+        assistant_query: "AIへの質問",
+        photo_start: "写真ガイドの開始",
+        photo_scan: "サンプル認識の操作",
+        photo_matched: "ガイドとの照合",
+        photo_step: "手順の閲覧",
+        photo_complete: "ガイドの完了",
+        photo_abandon: "ガイドの終了",
+        open_consult: "相談フォームの閲覧",
+        submit_consult: "相談の送信操作",
+        error: "Errors",
+        human_handoff: "スタッフへの相談へ移動",
+        faq_open: "FAQの閲覧",
+        community_ask: "ひろばへの質問",
+        export_trip: "保存リストの書き出し",
+      };
+      function render() {
+        var counts = ZW.eventCounts();
+        var total = ZW.getEvents().length;
+        document.getElementById("counts").innerHTML =
+          '<div class="evt-count"><b>' + total + "</b><span>このブラウザの記録合計</span></div>" +
+          Object.keys(counts).map(function (k) {
+            return '<div class="evt-count"><b>' + counts[k] + "</b><span>" + (LABELS[k] || k) + "</span></div>";
+          }).join("");
+        document.getElementById("log").innerHTML = ZW.getEvents().slice(-120).reverse().map(function (e) {
+          var d = new Date(e.ts);
+          return "<div>" + d.toLocaleTimeString() + " · " + ZW.esc(e.task) +
+            (e.payload && Object.keys(e.payload).length ? " · " + ZW.esc(JSON.stringify(e.payload).slice(0, 90)) : "") + "</div>";
+        }).join("");
+        document.getElementById("session").textContent = ZW.sessionId;
+      }
+      document.getElementById("refresh").addEventListener("click", render);
+      document.getElementById("clear").addEventListener("click", function () {
+        if (confirm("このブラウザの操作記録を削除しますか？")) { ZW.clearEvents(); render(); }
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>

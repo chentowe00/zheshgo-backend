@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>AI旅行助手 · ZheshGo</title>
+  <meta name="description" content="上海・杭州・寧波の旅をAIに相談できます。ページを開いた際に接続状況を確認します。"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/assistant.html"/><link rel="alternate" hreflang="ja" href="/ja/assistant.html"/><link rel="alternate" hreflang="ko" href="/ko/assistant.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="assistant">
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">AI旅行助手</p>
+        <h1>旅の希望や疑問を教えてください</h1>
+        <p class="lead">モデルコース、列車、支払い、寧波の料理などを相談できます。確認できない情報は、その旨をお伝えします。</p>
+      </div>
+    </div>
+
+    <div class="wrap page">
+      <div class="note-box warn mb2" role="status">
+        <h4 id="ai-banner-title">AIの接続状況を確認しています…</h4>
+        <span id="ai-banner-text">サーバーに接続しています。少しお待ちください。</span>
+        <button id="ai-recheck" class="btn btn-secondary btn-sm" type="button" style="margin-top:8px" hidden>接続状況を確認</button>
+      </div>
+
+      <div class="chat-shell" aria-label="AIに旅の相談">
+        <div class="chat-head">
+          <span class="chat-avatar" id="chat-avatar"></span>
+          <div>
+            <h2>ZheshGo旅行助手</h2>
+            <span class="status"><span class="status-dot" aria-hidden="true"></span> 接続状況を確認しています…</span>
+          </div>
+        </div>
+        <div class="chat-suggest" id="chat-suggest" aria-label="質問の例"></div>
+        <div class="chat-body" id="chat-body" aria-live="polite"></div>
+        <form class="chat-input" id="chat-form">
+          <textarea id="chat-input" rows="1" placeholder="行き先、移動、食事、支払いなどを相談…" aria-label="質問を入力"></textarea>
+          <button class="btn btn-primary" type="submit" id="chat-send">送信</button>
+        </form>
+      </div>
+
+      <div class="flex mt2" style="justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px">
+        <p class="small muted mb0" style="max-width:520px">AIの提案で予約・手配は完了しません。入国、法律、医療、緊急時の判断は、公式機関や専門家に確認してください。</p>
+        <a class="btn btn-secondary btn-sm" href="faq.html">よくある質問を見る</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="モバイルメニュー"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/config.js?v=20261013-network-fix"></script>
+  <script src="js/assistant.js?v=20261017-zg001-cited"></script>
+  <script>
+    (function () {
+      document.getElementById("chat-avatar").innerHTML = ZW.icon("assistant");
+      // auto-grow textarea
+      var ta = document.getElementById("chat-input");
+      ta.addEventListener("input", function () {
+        ta.style.height = "auto";
+        ta.style.height = Math.min(ta.scrollHeight, 110) + "px";
+      });
+      ZW.assistant.mount();
+    })();
+  </script>
+</body>
+</html>

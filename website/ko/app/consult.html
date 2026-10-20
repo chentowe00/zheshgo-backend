@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>여행 상담 요청 · ZheshGo</title>
+  <meta name="description" content="가이드와 AI만으로 해결하기 어려운 여행 질문을 남겨 주세요. 선택 항목은 건너뛸 수 있어요."/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/consult.html"/><link rel="alternate" hreflang="ja" href="/ja/app/consult.html"/><link rel="alternate" hreflang="ko" href="/ko/app/consult.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="plan" data-app="app">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">여행 상담</p>
+        <h1>조금 더 도움이 필요하다면</h1>
+        <p class="lead">간단한 메모로 시작해도 좋아요. 답하기 어려운 항목은 건너뛰고, 가입 없이 가이드를 둘러보세요.</p>
+      </div>
+    </div>
+
+    <div class="wrap page page-narrow">
+      <div class="consult-intro"> 입력한 내용은 여행 계획을 이해하고 답변하는 데만 사용해요. <strong>확인되지 않은 코스·가격·입장권·예약 가능 여부를 약속하지 않아요</strong>. 상담을 통해 세부 사항을 확인해요. 현재 정적 데모에서는 입력 내용이 이 브라우저에만 저장되고 팀으로 전송되지 않을 수 있어요.</div>
+
+      <div class="form-steps" aria-hidden="true">
+        <span class="step-pill on" id="sp-1">1 · 기본 정보</span>
+        <span class="step-pill" id="sp-2">2 · 여행지와 일정 속도</span>
+        <span class="step-pill" id="sp-3">3 · 예산과 연락처</span>
+      </div>
+
+      <form id="consult-form">
+        <!-- Step 1 -->
+        <fieldset id="step-1" style="border:0;padding:0;margin:0">
+          <div class="field">
+            <label for="f-dates">여행 예정일 <span class="hint">(선택 사항 — ‘4월 중순’처럼 적어도 좋아요)</span></label>
+            <input class="input" type="text" id="f-dates" placeholder="예: 2026년 4월 중순(선택 사항)"/>
+          </div>
+          <div class="field">
+            <label id="l-dur">이 지역에서 며칠 머무르나요?</label>
+            <div class="chip-row" role="group" aria-labelledby="l-dur" id="f-duration"></div>
+          </div>
+          <div class="field">
+            <label for="f-group">누구와 함께하나요? <span class="hint">(인원, 필요한 경우 대략적인 연령)</span></label>
+            <input class="input" type="text" id="f-group" placeholder="예: 성인 2명, 어린이 1명(6세)"/>
+          </div>
+          <div class="flex">
+            <button class="btn btn-primary" type="button" data-next="2">다음</button>
+            <button class="btn btn-ghost" type="button" data-skip="2">이 단계 건너뛰기</button>
+          </div>
+        </fieldset>
+
+        <!-- Step 2 -->
+        <fieldset id="step-2" style="border:0;padding:0;margin:0" hidden>
+          <div class="field">
+            <label for="f-arrive">도착 도시 / 출발 도시</label>
+            <input class="input" type="text" id="f-arrive" placeholder="예: 상하이 푸둥공항 도착, 상하이 출발"/>
+          </div>
+          <div class="field">
+            <label id="l-cities">관심 있는 도시 <span class="hint">(여러 개 선택 가능)</span></label>
+            <div class="chip-row" role="group" aria-labelledby="l-cities" id="f-cities"></div>
+          </div>
+          <div class="field">
+            <label id="l-pace">선호하는 여행 속도</label>
+            <div class="chip-row" role="group" aria-labelledby="l-pace" id="f-pace"></div>
+          </div>
+          <div class="field">
+            <label for="f-needs">필요한 배려나 꼭 해보고 싶은 것 <span class="hint">(이동 편의, 식사 제한, 사찰 탐방 등)</span></label>
+            <textarea class="input" id="f-needs" rows="3" placeholder="미리 알려주실 내용"></textarea>
+          </div>
+          <div class="flex">
+            <button class="btn btn-secondary" type="button" data-back="1">이전</button>
+            <button class="btn btn-primary" type="button" data-next="3">다음</button>
+            <button class="btn btn-ghost" type="button" data-skip="3">이 단계 건너뛰기</button>
+          </div>
+        </fieldset>
+
+        <!-- Step 3 -->
+        <fieldset id="step-3" style="border:0;padding:0;margin:0" hidden>
+          <div class="field">
+            <label id="l-budget">항공권을 제외한 1인 예산 <span class="hint">(선택 사항 — 최소 이용 금액이 아니라 계획을 위한 참고예요)</span></label>
+            <div class="chip-row" role="group" aria-labelledby="l-budget" id="f-budget"></div>
+          </div>
+          <div class="field">
+            <label for="f-contact">답변받을 연락처 <span class="hint">(이메일·WhatsApp·WeChat 등 — 연락처가 있어야 답변할 수 있어요)</span></label>
+            <input class="input" type="text" id="f-contact" placeholder="예: email@example.com"/>
+          </div>
+          <div class="field">
+            <label for="f-note">추가로 남길 내용</label>
+            <textarea class="input" id="f-note" rows="2" placeholder="선택 사항"></textarea>
+          </div>
+          <p class="small muted">보내기를 누르면 이 상담에 답변하기 위한 정보 이용에 동의하게 돼요. 계정은 생성되지 않아요.</p>
+          <div class="flex">
+            <button class="btn btn-secondary" type="button" data-back="2">이전</button>
+            <button class="btn btn-sandal btn-lg" type="submit">상담 내용 보내기</button>
+          </div>
+        </fieldset>
+      </form>
+
+      <div id="consult-done" hidden>
+        <div class="empty" style="padding:30px 20px">
+          <div class="empty-art" id="done-art"></div>
+          <h3>접수 상태 안내</h3>
+          <p id="done-note">정식 운영 시에는 담당자가 남겨 주신 연락처로 세부 사항을 확인해요. 확인되지 않은 가격이나 예약 가능 여부는 약속하지 않아요.</p>
+          <div class="flex" style="justify-content:center">
+            <a class="btn btn-primary" href="explore.html">계속 둘러보기</a>
+            <button class="btn btn-secondary" type="button" id="done-again">다른 상담 남기기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="모바일 메뉴"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var DRAFT = "zheway:consultDraft";
+      var step = 1;
+      var form = document.getElementById("consult-form");
+
+      function chipGroup(el, options) {
+        el._arr = [];
+        el.innerHTML = options.map(function (o) {
+          return '<button class="chip" type="button" role="checkbox" aria-checked="false" data-val="' + ZW.esc(o.v) + '">' + ZW.esc(ZW.label(o.l)) + "</button>";
+        }).join("");
+        el.querySelectorAll("button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            var arr = el._arr;
+            var val = b.getAttribute("data-val");
+            var i = arr.indexOf(val);
+            if (i === -1) arr.push(val); else arr.splice(i, 1);
+            el.querySelectorAll("button").forEach(function (x) {
+              var on = arr.indexOf(x.getAttribute("data-val")) !== -1;
+              x.setAttribute("aria-checked", on);
+              x.classList.toggle("selected", on);
+            });
+            saveDraft();
+          });
+        });
+        return el;
+      }
+      var dur = chipGroup(document.getElementById("f-duration"),
+        [{ v: "1-2 days", l: "1~2일" }, { v: "3-4 days", l: "3~4일" }, { v: "5-7 days", l: "5~7일" }, { v: "8일 이상", l: "8일 이상" }]);
+      var cities = chipGroup(document.getElementById("f-cities"),
+        ZW.CONTENT.cities.map(function (c) { return { v: c.name, l: c.name }; }));
+      var pace = chipGroup(document.getElementById("f-pace"),
+        [{ v: "Gentle", l: "가볍게 걷기" }, { v: "Relaxed", l: "여유롭게 머물기" }, { v: "Moderate", l: "적당히 둘러보기" }]);
+      var budget = chipGroup(document.getElementById("f-budget"),
+        [{ v: "Economy", l: "Economy" }, { v: "Mid-range", l: "Mid-range" }, { v: "Comfort", l: "Comfort" }, { v: "응답하지 않음", l: "응답하지 않음" }]);
+
+      function setStep(n) {
+        step = n;
+        [1, 2, 3].forEach(function (i) {
+          var fs = document.getElementById("step-" + i);
+          fs.hidden = i !== n;
+          var sp = document.getElementById("sp-" + i);
+          sp.className = "step-pill" + (i === n ? " 선택" : i < n ? " 완료" : "");
+        });
+        saveDraft();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      form.addEventListener("click", function (e) {
+        var t = e.target;
+        if (t.hasAttribute("data-next")) setStep(parseInt(t.getAttribute("data-next"), 10));
+        if (t.hasAttribute("data-back")) setStep(parseInt(t.getAttribute("data-back"), 10));
+        if (t.hasAttribute("data-skip")) setStep(parseInt(t.getAttribute("data-skip"), 10));
+      });
+
+      function gather() {
+        return {
+          dates: document.getElementById("f-dates").value.trim(),
+          duration: dur._arr.slice(),
+          group: document.getElementById("f-group").value.trim(),
+          arrive: document.getElementById("f-arrive").value.trim(),
+          cities: cities._arr.slice(),
+          pace: pace._arr.slice(),
+          needs: document.getElementById("f-needs").value.trim(),
+          budget: budget._arr.slice(),
+          contact: document.getElementById("f-contact").value.trim(),
+          note: document.getElementById("f-note").value.trim(),
+        };
+      }
+      function saveDraft() {
+        try { localStorage.setItem(DRAFT, JSON.stringify({ step: step, data: gather() })); } catch (e) {}
+      }
+      function loadDraft() {
+        try {
+          var d = JSON.parse(localStorage.getItem(DRAFT));
+          if (!d || !d.data) return;
+          var data = d.data;
+          var fieldMap = {
+            "f-dates": data.dates, "f-group": data.group, "f-arrive": data.arrive,
+            "f-needs": data.needs, "f-contact": data.contact, "f-note": data.note,
+          };
+          Object.keys(fieldMap).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el && fieldMap[id] !== undefined && fieldMap[id] !== null) el.value = fieldMap[id];
+          });
+          var chipMap = {
+            "f-duration": dur, "f-cities": cities, "f-pace": pace, "f-budget": budget,
+          };
+          var dataMap = {
+            "f-duration": data.duration, "f-cities": data.cities, "f-pace": data.pace, "f-budget": data.budget,
+          };
+          Object.keys(chipMap).forEach(function (id) {
+            var el = chipMap[id];
+            if (!el) return;
+            el._arr = Array.isArray(dataMap[id]) ? dataMap[id].slice() : [];
+            el.querySelectorAll("button").forEach(function (x) {
+              var on = el._arr.indexOf(x.getAttribute("data-val")) !== -1;
+              x.setAttribute("aria-checked", on);
+              x.classList.toggle("selected", on);
+            });
+          });
+          if (d.step && d.step > 1) setStep(d.step);
+        } catch (e) { /* corrupt draft — start fresh */ }
+      }
+      ["f-dates", "f-group", "f-arrive", "f-needs", "f-contact", "f-note"].forEach(function (id) {
+        document.getElementById(id).addEventListener("input", saveDraft);
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var d = gather();
+        if (!d.contact) {
+          if (!confirm("연락처가 없으면 답변을 받을 수 없어요. 그래도 계속할까요?")) return;
+        }
+        ZW.log("submit_consult", {
+          duration: d.duration.join(","), cities: d.cities.join(","), budget: d.budget.join(","),
+          hasContact: !!d.contact, from: ZW.param("topic") || ZW.param("route") || "direct",
+        });
+        var doneNote = document.getElementById("done-note");
+        form.hidden = true;
+        document.getElementById("consult-done").hidden = false;
+        document.getElementById("done-art").innerHTML = ZW.icon("check");
+        // try to send to the team server; fall back to local demo storage
+        fetch("/api/v1/consult", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(d),
+        }).then(function (res) {
+          if (!res.ok) throw new Error("http " + res.status);
+          if (doneNote) doneNote.innerHTML =
+            "상담 내용이 팀에 전달됐어요. 남겨 주신 연락처로 답변하고 코스·가격·예약 가능 여부를 함께 확인할 예정이에요.";
+        }).catch(function () {
+          try { localStorage.setItem("zheway:consultSubmitted", JSON.stringify({ at: new Date().toISOString(), demo: true, data: d })); } catch (err) {}
+          if (doneNote) doneNote.innerHTML =
+            "이 기기에 저장했어요 · <strong>데모 모드</strong>: 서버에 연결되지 않아 팀으로 전송하지 못했어요. 별도 연락 수단으로 문의해 주세요.";
+        });
+        try { localStorage.removeItem(DRAFT); } catch (err) {}
+      });
+      document.getElementById("done-again").addEventListener("click", function () {
+        form.hidden = false;
+        document.getElementById("consult-done").hidden = true;
+        form.reset();
+        dur._arr = []; cities._arr = []; pace._arr = []; budget._arr = [];
+        setStep(1);
+      });
+
+      ZW.log("open_consult", { from: ZW.param("topic") || ZW.param("route") || "direct" });
+      loadDraft();
+    })();
+  </script>
+</body>
+</html>

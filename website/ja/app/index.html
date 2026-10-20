@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ZheshGo — 上海と浙江を、自分のペースで旅しよう</title>
+  <meta name="description" content="上海・杭州・寧波を自分のペースで旅するガイド。街歩き、地元グルメ、寺院、移動のポイントを紹介します。"/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/index.html"/><link rel="alternate" hreflang="ja" href="/ja/app/index.html"/><link rel="alternate" hreflang="ko" href="/ko/app/index.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="home" data-app="app">
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-art" aria-hidden="true"><img src="../assets/img/hero-art.svg" alt="" style="width:100%;height:100%;object-fit:cover"/></div>
+      <div class="wrap hero-inner">
+        <p class="hero-eyebrow">上海 · 杭州 · 寧波</p>
+        <h1>上海から、浙江の街へ。自分のペースで旅をしよう。</h1>
+        <p class="sub">街歩き、地元の味、歴史ある建物。上海や杭州から寧波へ、気になるテーマで旅を考えましょう。未確認の情報は表示しています。このサイトで予約は完了しません。</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="explore.html">モデルコースとガイドを見る</a>
+          <a class="btn btn-secondary btn-lg" href="planner.html">旅のプランを考える</a>
+        </div>
+        <div class="search-pill">
+          <span id="home-search-icon" style="display:inline-flex"></span>
+          <input type="search" id="home-search" placeholder="寧波の料理、列車、支払いなどを検索…" aria-label="ガイドとコースを検索"/>
+          <button class="btn btn-primary" type="button" id="home-search-btn">検索</button>
+        </div>
+        <div class="hero-chips" style="margin-top:16px" aria-label="検索の例">
+          <a class="chip" href="explore.html?theme=Port%20%26%20Maritime">港町と海の歴史</a>
+          <a class="chip" href="explore.html?theme=Local%20Food">地元グルメ</a>
+          <a class="chip" href="explore.html?theme=Buddhist%20Culture">仏教文化・寺院めぐり</a>
+          <a class="chip" href="assistant.html">AIに旅の相談</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Destinations -->
+    <section class="section" aria-labelledby="dest-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">行き先から探す</p>
+            <h2 id="dest-title">上海・杭州から、港町の寧波へ</h2>
+          </div>
+          <a class="more" href="explore.html">すべてのガイド →</a>
+        </div>
+        <div class="dest-grid" id="dest-grid"></div>
+        <p class="small muted mt2">紹興と舟山は紹介準備中です。詳細のモデルコースは、確認が済んでから掲載します。</p>
+      </div>
+    </section>
+
+    <!-- Routes by theme -->
+    <section class="section section-alt" aria-labelledby="routes-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">モデルコース・テーマから探す</p>
+            <h2 id="routes-title">気になるテーマで選ぶ、モデルコース</h2>
+          </div>
+          <a class="more" href="explore.html">すべてのコースを絞り込む →</a>
+        </div>
+        <div class="flex mb2" id="theme-chips" aria-label="旅のテーマから探す"></div>
+        <div class="route-grid" id="featured-routes"></div>
+      </div>
+    </section>
+
+    <!-- What you can do -->
+    <section class="section" aria-labelledby="do-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">旅の準備に使う</p>
+            <h2 id="do-title">考える、相談する、保存する</h2>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <a class="feature-card" href="planner.html">
+            <span class="feature-icon" id="fi-plan"></span>
+            <h3>希望に合うコースを探す</h3>
+            <p>都市、日数、ペース、同行者を選ぶと、候補のコースと合う理由を確認できます。</p>
+            <span class="arrow">プランを考える →</span>
+          </a>
+          <a class="feature-card" href="assistant.html">
+            <span class="feature-icon" id="fi-assistant"></span>
+            <h3>AIに相談する</h3>
+            <p>移動や支払い、食事など、旅の疑問を相談できます。AIの接続状況はページで確認できます。</p>
+            <span class="arrow">旅行助手へ →</span>
+          </a>
+          <a class="feature-card" href="photo-guide.html">
+            <span class="feature-icon" id="fi-app"></span>
+            <h3>写真ガイド（Appのみ）</h3>
+            <p>券売機、ロッカー、注文端末、メニュー、標識の操作を、一つずつ案内する機能です。現在はサンプルによる模擬認識です。</p>
+            <span class="arrow">写真ガイドを試す →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust -->
+    <section class="section section-night" aria-labelledby="trust-title">
+      <div class="wrap">
+        <p class="section-eyebrow" style="color:#C7B08E">情報の確認状況を表示します</p>
+        <h2 id="trust-title" style="color:var(--on-night)">確認できないことは、確認が必要だとお伝えします。</h2>
+        <div class="feature-grid" style="margin-top:28px">
+          <div class="feature-card" style="background:var(--night-2);border-color:rgba(233,228,213,.12);color:var(--on-night)">
+            <h3 style="color:var(--on-night)">未確認の情報は表示します</h3>
+            <p style="color:var(--on-night-muted)">列車、営業時間、料金、入国条件は変わることがあります。現在のモデルコンテンツは現地確認前です。出発前に公式案内でご確認ください。</p>
+          </div>
+          <div class="feature-card" style="background:var(--night-2);border-color:rgba(233,228,213,.12);color:var(--on-night)">
+            <h3 style="color:var(--on-night)">架空の口コミは掲載しません</h3>
+            <p style="color:var(--on-night-muted)">口コミ、予約数、料金などを作りません。説明用の内容にはサンプル表示を付けます。</p>
+          </div>
+          <div class="feature-card" style="background:var(--night-2);border-color:rgba(233,228,213,.12);color:var(--on-night)">
+            <h3 style="color:var(--on-night)">提案だけで予約は完了しません</h3>
+            <p style="color:var(--on-night-muted)">AIとモデルコースは旅の参考情報です。個別に相談したい場合は、フォームの受付状況をご確認ください。</p>
+          </div>
+        </div>
+        <p style="margin-top:22px"><a class="btn btn-ghost" style="border-color:rgba(233,228,213,.4);color:var(--on-night)" href="about.html">情報掲載の方針を見る</a></p>
+      </div>
+    </section>
+
+    <!-- Consult band -->
+    <section class="section" aria-labelledby="consult-title">
+      <div class="wrap">
+        <div class="planner-card" style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+          <div style="flex:1;min-width:260px">
+            <h2 id="consult-title" style="margin-bottom:6px">個別の旅の希望を相談したいときに</h2>
+            <p class="mb0">日程、同行者、移動の配慮など、ガイドだけで決まらないことを短くまとめてください。料金や空き状況は個別の確認が必要です。</p>
+          </div>
+          <a class="btn btn-sandal btn-lg" href="consult.html">スタッフに相談</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="モバイルメニュー"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var C = ZW.CONTENT;
+      // destination cards
+      var grid = document.getElementById("dest-grid");
+      var main = C.cities.filter(function (c) { return !c.preview; });
+      grid.innerHTML = main.map(ZW.cityCard).join("");
+      ZW.bindSaveButtons(grid);
+      // theme chips
+      var chips = document.getElementById("theme-chips");
+      chips.innerHTML = C.themes.map(function (t) {
+        return '<a class="chip" href="explore.html?theme=' + encodeURIComponent(t.name) + '">' +
+          '<img src="' + ZW.esc(t.art) + '" alt="" width="15" height="15" aria-hidden="true"/>' +
+          ZW.esc(ZW.label(t.name)) + "</a>";
+      }).join("");
+      // featured routes (overridable from CMS UI config)
+      var uiCfg = (C.ui && typeof C.ui === "object") ? C.ui : {};
+      var featured = (uiCfg.featuredRouteIds || ["nb-port-books", "hz-slow-lake", "sh-nb-link"])
+        .map(ZW.getRoute).filter(Boolean);
+      var fr = document.getElementById("featured-routes");
+      fr.innerHTML = featured.map(ZW.routeCard).join("");
+      ZW.bindSaveButtons(fr);
+      // hero copy (overridable from CMS UI config; plain text only)
+      if (uiCfg.heroEyebrow) document.querySelector(".hero-eyebrow").textContent = uiCfg.heroEyebrow;
+      if (uiCfg.heroTitle) document.querySelector(".hero h1").textContent = uiCfg.heroTitle;
+      if (uiCfg.heroSub) document.querySelector(".hero .sub").textContent = uiCfg.heroSub;
+      // search pill
+      var input = document.getElementById("home-search");
+      var go = function () { if (input.value.trim()) { ZW.openSearch(); var si = document.getElementById("zw-search-input"); if (si) { si.value = input.value; ZW.runSearch(si.value); } } else { ZW.openSearch(); } };
+      document.getElementById("home-search-btn").addEventListener("click", go);
+      input.addEventListener("keydown", function (e) { if (e.key === "Enter") go(); });
+      // feature icons
+      document.getElementById("fi-plan").innerHTML = ZW.icon("plan");
+      document.getElementById("fi-assistant").innerHTML = ZW.icon("assistant");
+      document.getElementById("fi-app").innerHTML = ZW.icon("camera");
+      document.getElementById("home-search-icon").innerHTML = ZW.icon("search");
+    })();
+  </script>
+</body>
+</html>

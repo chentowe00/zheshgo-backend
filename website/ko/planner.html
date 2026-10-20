@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>여행 계획하기 · ZheshGo</title>
+  <meta name="description" content="도시와 여행 속도, 동행인, 관심사에 맞춰 상하이·저장성 추천 코스를 찾아보세요."/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/planner.html"/><link rel="alternate" hreflang="ja" href="/ja/planner.html"/><link rel="alternate" hreflang="ko" href="/ko/planner.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="plan">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">여행 계획하기</p>
+        <h1>짧은 질문으로, 나에게 맞는 코스를</h1>
+        <p class="lead">도시·일수·속도·동행인에 맞춰 코스를 제안하고, 맞는 이유와 고려할 점을 알려드려요. 가입이나 예약 없이 이용할 수 있어요.</p>
+      </div>
+    </div>
+
+    <div class="wrap page">
+      <div class="detail-grid">
+        <div>
+          <form id="planner-form" class="planner-card">
+            <div class="field">
+              <label id="l-cities">어디로 떠나나요? <span class="hint">해당하는 도시를 골라 주세요.</span></label>
+              <div class="chip-row" role="group" aria-labelledby="l-cities" id="q-cities"></div>
+            </div>
+            <div class="field">
+              <label id="l-days">이 지역에서 며칠 머무르나요?</label>
+              <div class="chip-row" role="group" aria-labelledby="l-days" id="q-days"></div>
+            </div>
+            <div class="field">
+              <label id="l-interest">관심 있는 테마는 무엇인가요? <span class="hint">최대 3개까지 선택해 주세요.</span></label>
+              <div class="chip-row" role="group" aria-labelledby="l-interest" id="q-interest"></div>
+            </div>
+            <div class="field">
+              <label id="l-group">누구와 함께하나요?</label>
+              <div class="chip-row" role="group" aria-labelledby="l-group" id="q-group"></div>
+            </div>
+            <div class="field">
+              <label id="l-pace">어떤 여행 속도가 좋나요?</label>
+              <div class="chip-row" role="group" aria-labelledby="l-pace" id="q-pace"></div>
+            </div>
+            <div class="flex">
+              <button class="btn btn-primary btn-lg" type="submit" id="go">추천 코스 보기</button>
+              <button class="btn btn-secondary" type="button" id="reset">초기화</button>
+            </div>
+          </form>
+          <p class="small muted mt1">이 데모의 여행 취향은 브라우저에만 저장돼요. 결과는 여행 제안이며 예약된 일정이 아니에요.</p>
+        </div>
+        <aside class="sticky-side">
+          <div class="side-card">
+            <h3>코스 추천 기준</h3>
+            <ul class="side-list">
+              <li>도시·테마·일수·동행인·여행 속도를 기준으로 비교해요.</li>
+              <li>추천마다 <strong>맞는 이유</strong>를 보여드리니 직접 비교해 보세요.</li>
+              <li>일부 조건만 맞는 코스에는 맞지 않는 부분도 함께 표시해요.</li>
+              <li>관심 코스를 저장하거나 AI에게 일정 조정을 물어보세요.</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <div id="results" hidden>
+        <hr class="divider"/>
+        <div class="section-head">
+          <div>
+            <p class="section-eyebrow">나에게 맞는 코스</p>
+            <h2 id="results-title">추천 결과</h2>
+          </div>
+        </div>
+        <div class="route-grid" id="match-grid"></div>
+        <div class="empty" id="no-match" hidden>
+          <div class="empty-art" id="nm-art"></div>
+          <h3>모든 조건에 맞는 코스는 아직 없어요</h3>
+          <p>현재는 일부 코스부터 제공하고 있어요. 조건을 하나 줄이거나 AI에게 다른 방안을 물어보세요.</p>
+          <div class="flex" style="justify-content:center">
+            <a class="btn btn-secondary" href="explore.html">전체 코스 보기</a>
+            <a class="btn btn-primary" href="assistant.html">AI에게 물어보기</a>
+          </div>
+        </div>
+        <div class="note-box warn mt2"><h4>결정하기 전 확인해 주세요</h4>추천 코스는 검증 중인 초안이에요. 예약 전 열차 시간·운영 시간·입장권을 확인하고, 관심 있는 코스는 여행 목록에 저장해 두세요.</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="모바일 메뉴"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var C = ZW.CONTENT;
+      var answers = { cities: [], days: null, interests: [], group: null, pace: null };
+
+      function chipGroup(el, options, isMulti, onchange) {
+        el._arr = [];
+        el._max = el.getAttribute("data-max") ? parseInt(el.getAttribute("data-max"), 10) : 99;
+        el.innerHTML = options.map(function (o) {
+          return '<button class="chip" type="button" role="checkbox" aria-checked="false" data-val="' + ZW.esc(o.v) + '">' + ZW.esc(ZW.label(o.l)) + "</button>";
+        }).join("");
+        el.querySelectorAll("button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            var val = b.getAttribute("data-val");
+            var arr = el._arr;
+            if (isMulti) {
+              var i = arr.indexOf(val);
+              if (i === -1) { if (arr.length >= el._max) { ZW.toast("최대 선택 수: " + el._max); return; } arr.push(val); }
+              else arr.splice(i, 1);
+            } else {
+              arr.length = 0; arr.push(val);
+            }
+            el.querySelectorAll("button").forEach(function (x) {
+              var on = arr.indexOf(x.getAttribute("data-val")) !== -1;
+              x.setAttribute("aria-checked", on);
+              x.classList.toggle("selected", on);
+            });
+            if (onchange) onchange();
+          });
+        });
+      }
+
+      var cities = chipGroup(document.getElementById("q-cities"),
+        C.cities.filter(function (c) { return !c.preview; }).map(function (c) { return { v: c.id, l: c.name }; }), true, function () { answers.cities = document.getElementById("q-cities")._arr.slice(); });
+      document.getElementById("q-days").setAttribute("data-max", 1);
+      var days = chipGroup(document.getElementById("q-days"),
+        [{ v: "1", l: "1~2일" }, { v: "3", l: "3~4일" }, { v: "5", l: "5~7일" }, { v: "8", l: "8일 이상" }], false, function () { answers.days = document.getElementById("q-days")._arr[0] || null; });
+      var interests = chipGroup(document.getElementById("q-interest"),
+        C.themes.map(function (t) { return { v: t.name, l: ZW.label(t.name) }; }), true, function () { answers.interests = document.getElementById("q-interest")._arr.slice(); });
+      document.getElementById("q-interest").setAttribute("data-max", 3);
+      var group = chipGroup(document.getElementById("q-group"),
+        [{ v: "Solo", l: "혼자" }, { v: "Couples", l: "둘이서" }, { v: "Friends", l: "친구와" }, { v: "Families", l: "가족과" }], false, function () { answers.group = document.getElementById("q-group")._arr[0] || null; });
+      var pace = chipGroup(document.getElementById("q-pace"),
+        [{ v: "Gentle", l: "가볍게 걷기" }, { v: "Relaxed", l: "여유롭게 머물기" }, { v: "Moderate", l: "적당히 둘러보기" }], false, function () { answers.pace = document.getElementById("q-pace")._arr[0] || null; });
+
+      function collect() {
+        answers.cities = document.getElementById("q-cities")._arr.slice();
+        answers.days = document.getElementById("q-days")._arr[0] || null;
+        answers.interests = document.getElementById("q-interest")._arr.slice();
+        answers.group = document.getElementById("q-group")._arr[0] || null;
+        answers.pace = document.getElementById("q-pace")._arr[0] || null;
+      }
+
+      document.getElementById("planner-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        collect();
+        if (answers.cities.length === 0 && answers.interests.length === 0) {
+          ZW.toast("도시나 관심사를 하나 이상 골라 주세요.");
+          return;
+        }
+        run();
+      });
+      document.getElementById("reset").addEventListener("click", function () {
+        ["q-cities", "q-days", "q-interest", "q-group", "q-pace"].forEach(function (id) {
+          var el = document.getElementById(id);
+          el._arr = [];
+          el.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-checked", "false"); x.classList.remove("selected"); });
+        });
+        document.getElementById("results").hidden = true;
+      });
+      document.getElementById("nm-art").innerHTML = ZW.icon("search");
+
+      function run() {
+        var scored = C.routes.filter(function (r) { return r.status !== "archived"; }).map(function (r) {
+          var score = 0, reasons = [], gaps = [];
+          if (answers.cities.length && r.cities.some(function (cid) { return answers.cities.indexOf(cid) !== -1; })) { score += 3; reasons.push("방문 도시: " + r.cities.filter(function (cid) { return answers.cities.indexOf(cid) !== -1; }).map(ZW.cityName).join(" & ")); }
+          else if (answers.cities.length) gaps.push("선택한 도시와 달라요");
+          if (answers.interests.length && r.themes.some(function (t) { return answers.interests.indexOf(t) !== -1; })) { score += 3; reasons.push("관심 테마: " + r.themes.filter(function (t) { return answers.interests.indexOf(t) !== -1; }).map(ZW.label).join(" & ")); }
+          if (answers.days && r.days <= parseInt(answers.days, 10)) { score += 2; reasons.push(r.days + "일" + "" + " · 선택한 기간에 맞아요"); }
+          else if (answers.days) gaps.push("선택한 기간보다 길어요");
+          if (answers.group && r.groups.indexOf(answers.group) !== -1) { score += 2; reasons.push(" · 추천 동행인: " + ZW.label(answers.group)); }
+          else if (answers.group) gaps.push("대상과 다른 동행인: " + ZW.label(answers.group));
+          if (answers.pace && r.pace === answers.pace) { score += 2; reasons.push(ZW.label(r.pace) + " · 선택한 여행 속도에 가까워요"); }
+          else if (answers.pace) gaps.push("선호한 여행 속도와 달라요");
+          if (answers.cities.length === 0) score -= 1;
+          return { r: r, score: score, reasons: reasons, gaps: gaps };
+        }).sort(function (a, b) { return b.score - a.score; });
+
+        var good = scored.filter(function (x) { return x.score >= 4; });
+        var partial = scored.filter(function (x) { return x.score >= 2 && x.score < 4; });
+        var list = good.concat(partial).slice(0, 6);
+
+        var grid = document.getElementById("match-grid");
+        var noMatch = document.getElementById("no-match");
+        document.getElementById("results-title").textContent =
+          "추천 코스 (" + good.length + "개는 조건에 잘 맞아요" + "" + (partial.length ? ", " + partial.length + "개는 일부 조건만 맞아요" : "") + ")";
+        var resultsBox = document.getElementById("results");
+        resultsBox.hidden = false;
+        resultsBox.scrollIntoView({ behavior: "smooth", block: "start" });
+        grid.innerHTML = list.map(function (x) {
+          var card = document.createElement("div");
+          card.innerHTML = ZW.routeCard(x.r);
+          var article = card.firstElementChild;
+          var reasonsHtml = '<div class="match-reasons">✓ ' + ZW.esc(x.reasons.join(" · ")) +
+            (x.gaps.length ? " <span style=\"color:var(--muted)\">— 참고: " + ZW.esc(x.gaps.join(", ")) + "</span>" : "") + "</div>";
+          var body = article.querySelector(".card-body");
+          body.insertAdjacentHTML("afterbegin", reasonsHtml);
+          return card.innerHTML;
+        }).join("");
+        ZW.bindSaveButtons(grid);
+        noMatch.hidden = list.length > 0;
+        grid.style.display = list.length > 0 ? "" : "none";
+        ZW.log("save_plan_intent", answers);
+      }
+
+      // deep link from route pages
+      var q = ZW.param("route");
+      if (q) {
+        var rr = ZW.getRoute(q);
+        if (rr) {
+          var cityEl = document.getElementById("q-cities");
+          cityEl._arr = rr.cities.slice();
+          cityEl.querySelectorAll("button").forEach(function (x) {
+            var on = cityEl._arr.indexOf(x.getAttribute("data-val")) !== -1;
+            x.setAttribute("aria-checked", on);
+            x.classList.toggle("selected", on);
+          });
+          collect();
+          run();
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>AI 여행 도우미 · ZheshGo</title>
+  <meta name="description" content="상하이·항저우·닝보 여행을 ZheshGo AI 여행 도우미에게 물어보세요. 페이지를 열면 AI 연결 상태를 확인해요."/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/assistant.html"/><link rel="alternate" hreflang="ja" href="/ja/assistant.html"/><link rel="alternate" hreflang="ko" href="/ko/assistant.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="assistant">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">여행 도우미</p>
+        <h1>여행이 궁금할 땐</h1>
+        <p class="lead">코스와 기차 이동, 결제, 닝보 먹거리까지 사이트의 여행 가이드를 바탕으로 안내해요. 확인되지 않은 내용은 분명히 알려드려요.</p>
+      </div>
+    </div>
+
+    <div class="wrap page">
+      <div class="note-box warn mb2" role="status">
+        <h4 id="ai-banner-title">AI 연결 확인 중…</h4>
+        <span id="ai-banner-text">서버에 연결해 AI 설정 상태를 확인하고 있어요. 잠시만 기다려 주세요.</span>
+        <button id="ai-recheck" class="btn btn-secondary btn-sm" type="button" style="margin-top:8px" hidden>연결 다시 확인</button>
+      </div>
+
+      <div class="chat-shell" aria-label="AI 여행 도우미와 대화">
+        <div class="chat-head">
+          <span class="chat-avatar" id="chat-avatar"></span>
+          <div>
+            <h2>ZheshGo 여행 도우미</h2>
+            <span class="status"><span class="status-dot" aria-hidden="true"></span> AI 연결 확인 중…</span>
+          </div>
+        </div>
+        <div class="chat-suggest" id="chat-suggest" aria-label="이렇게 물어보세요"></div>
+        <div class="chat-body" id="chat-body" aria-live="polite"></div>
+        <form class="chat-input" id="chat-form">
+          <textarea id="chat-input" rows="1" placeholder="코스, 기차, 먹거리, 결제 등을 물어보세요" aria-label="질문 입력"></textarea>
+          <button class="btn btn-primary" type="submit" id="chat-send">보내기</button>
+        </form>
+      </div>
+
+      <div class="flex mt2" style="justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px">
+        <p class="small muted mb0" style="max-width:520px">AI 제안은 예약이나 수배 완료를 뜻하지 않아요. 비자·법률·의료·긴급 상황은 공식 기관의 안내를 확인해 주세요.</p>
+        <a class="btn btn-secondary btn-sm" href="faq.html">자주 묻는 질문 보기</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="모바일 메뉴"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/config.js?v=20261013-network-fix"></script>
+  <script src="js/assistant.js?v=20261017-zg001-cited"></script>
+  <script>
+    (function () {
+      document.getElementById("chat-avatar").innerHTML = ZW.icon("assistant");
+      // auto-grow textarea
+      var ta = document.getElementById("chat-input");
+      ta.addEventListener("input", function () {
+        ta.style.height = "auto";
+        ta.style.height = Math.min(ta.scrollHeight, 110) + "px";
+      });
+      ZW.assistant.mount();
+    })();
+  </script>
+</body>
+</html>

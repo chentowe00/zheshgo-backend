@@ -1,0 +1,26 @@
+{
+  "name": "ZheshGo — 상하이·저장성 여행 가이드",
+  "short_name": "ZheshGo",
+  "description": "상하이·항저우·닝보 추천 코스와 AI 여행 도우미.",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F6F2E9",
+  "theme_color": "#3D6B5C",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "id": "/ko/"
+}

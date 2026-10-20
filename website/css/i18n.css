@@ -1,0 +1,20 @@
+.language-picker{display:inline-flex;align-items:center;flex-shrink:0;margin-left:8px}
+.language-picker select{font:inherit;font-size:.83rem;max-width:110px;padding:7px 8px;border:1px solid var(--line,#d8d3c9);border-radius:999px;background:var(--paper,#faf8f2);color:var(--ink,#253e43)}
+html[lang=ja] body{line-height:1.8;line-break:strict;word-break:normal;overflow-wrap:anywhere}
+html[lang=ja] h1,html[lang=ja] h2,html[lang=ja] h3{font-family:'Noto Serif JP',serif;line-height:1.5;letter-spacing:.01em}
+html[lang=ja] .hero h1{font-size:clamp(2rem,4vw,3.6rem)}
+html[lang=ja] .nav-links a{font-size:.82rem}
+html[lang=ja] .chip{white-space:normal;line-height:1.5}
+html[lang=ja] .bubble{white-space:pre-wrap;overflow-wrap:anywhere}
+.trust-details{margin-top:.65rem;color:var(--muted,#637578);font-size:.78rem}
+.trust-details summary{cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.trust-details p{margin:.35rem 0;overflow-wrap:anywhere}
+@media(max-width:760px){.language-picker{margin-left:4px}.language-picker select{max-width:90px;font-size:.76rem}html[lang=ja] .brand-sub{font-size:.6rem}}
+
+html[lang=ko] body{line-height:1.8;word-break:keep-all;overflow-wrap:anywhere}
+html[lang=ko] h1,html[lang=ko] h2,html[lang=ko] h3{font-family:"Noto Serif KR",serif;line-height:1.5;letter-spacing:-.025em}
+html[lang=ko] .hero h1{font-size:clamp(2rem,4vw,3.6rem)}
+html[lang=ko] .nav-links a{font-size:.82rem}
+html[lang=ko] .chip{white-space:normal;line-height:1.5}
+html[lang=ko] .bubble{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:760px){html[lang=ko] .brand-sub{font-size:.6rem}}

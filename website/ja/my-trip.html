@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>保存した旅 · ZheshGo</title>
+  <meta name="description" content="このブラウザに保存したコースとスポット。"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/my-trip.html"/><link rel="alternate" hreflang="ja" href="/ja/my-trip.html"/><link rel="alternate" hreflang="ko" href="/ko/my-trip.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="trip">
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">保存した旅</p>
+        <h1>気になるコースとスポット</h1>
+        <p class="lead">保存先はこのブラウザです。登録やアップロードは不要で、いつでも書き出しや削除ができます。</p>
+      </div>
+    </div>
+
+    <div class="wrap page">
+      <div id="trip-content"></div>
+      <div class="empty" id="trip-empty" hidden>
+        <div class="empty-art" id="te-art"></div>
+        <h3>まだ保存されていません</h3>
+        <p>ガイドを開き、気になるコースやスポットのハートを押して保存しましょう。</p>
+        <a class="btn btn-primary" href="explore.html">ガイドを見る</a>
+      </div>
+      <div class="flex mt3" id="trip-actions" hidden>
+        <button class="btn btn-secondary btn-sm" type="button" id="export-btn">JSONで書き出す</button>
+        <button class="btn btn-ghost btn-sm" type="button" id="clear-btn">すべて削除</button>
+      </div>
+      <p class="small muted mt2">保存リストはこのブラウザのlocalStorageにのみ保存されます。別の端末には引き継がれません。</p>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="モバイルメニュー"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var box = document.getElementById("trip-content");
+      var empty = document.getElementById("trip-empty");
+      var actions = document.getElementById("trip-actions");
+      document.getElementById("te-art").innerHTML = ZW.icon("trip");
+
+      function render() {
+        var t = ZW.readTrip();
+        var routes = t.routes.map(ZW.getRoute).filter(Boolean);
+        var places = t.places.map(ZW.getPlace).filter(Boolean);
+        var has = routes.length + places.length > 0;
+        empty.hidden = has;
+        actions.hidden = !has;
+        if (!has) { box.innerHTML = ""; return; }
+
+        var html = "";
+        if (routes.length) {
+          html += "<h2 class='mt0'>モデルコース</h2>";
+          html += routes.map(function (r) {
+            var city = ZW.getCity(r.city);
+            return (
+              '<div class="trip-item">' +
+              '<a class="trip-thumb" href="route.html?id=' + r.id + '" aria-hidden="true" tabindex="-1"><img src="' + ZW.esc(city ? city.art : "assets/img/hero-art.svg") + '" alt=""/></a>' +
+              '<div><h3><a href="route.html?id=' + r.id + '">' + ZW.esc(r.title) + "</a></h3>" +
+              '<span class="sub">' + r.days + "日" + "" + " · " + ZW.esc(ZW.label(r.pace)) + " · " + ZW.esc(ZW.label(r.theme)) + "</span></div>" +
+              '<button class="icon-btn remove" type="button" data-type="routes" data-id="' + r.id + '" aria-label="Remove ' + ZW.esc(r.title) + "を保存リストから解除\">" + ZW.icon("x") + "</button>" +
+              "</div>"
+            );
+          }).join("");
+        }
+        if (places.length) {
+          html += "<h2 class='mt2'>スポット</h2>";
+          html += places.map(function (p) {
+            var city = ZW.getCity(p.city);
+            return (
+              '<div class="trip-item">' +
+              '<div class="trip-thumb" style="display:flex;align-items:center;justify-content:center;background:var(--celadon-mist)"><span>' + ZW.icon("walk") + "</span></div>" +
+              '<div><h3><a href="place.html?id=' + p.id + '">' + ZW.esc(p.name) + "</a></h3>" +
+              '<span class="sub">' + ZW.esc(city ? city.name : "") + " · " + ZW.esc(p.type) + "</span></div>" +
+              '<button class="icon-btn remove" type="button" data-type="places" data-id="' + p.id + '" aria-label="Remove ' + ZW.esc(p.name) + "を保存リストから解除\">" + ZW.icon("x") + "</button>" +
+              "</div>"
+            );
+          }).join("");
+        }
+        box.innerHTML = html;
+        box.querySelectorAll(".remove").forEach(function (b) {
+          b.addEventListener("click", function () {
+            ZW.toggleSave(b.getAttribute("data-type"), b.getAttribute("data-id"));
+            render();
+          });
+        });
+      }
+
+      document.getElementById("export-btn").addEventListener("click", function () {
+        var t = ZW.readTrip();
+        t.exportedAt = new Date().toISOString();
+        t.demo = true;
+        var blob = new Blob([JSON.stringify(t, null, 2)], { type: "application/json" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "zheway-my-trip.json";
+        a.click();
+        ZW.log("export_trip", {});
+      });
+      document.getElementById("clear-btn").addEventListener("click", function () {
+        if (confirm("このブラウザに保存したコースとスポットをすべて削除しますか？")) {
+          ZW.clearTrip();
+          render();
+        }
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>장소 · ZheshGo</title>
+  <meta name="description" content="ZheshGo 장소 가이드."/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/place.html"/><link rel="alternate" hreflang="ja" href="/ja/app/place.html"/><link rel="alternate" hreflang="ko" href="/ko/app/place.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore" data-app="app">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <div id="detail"></div>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="모바일 메뉴"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var id = ZW.param("id");
+      var p = ZW.getPlace(id);
+      var el = document.getElementById("detail");
+      if (!p) { ZW.notFound("아직 준비 중인 장소 가이드예요"); return; }
+
+      document.title = p.name + " · ZheshGo";
+      var meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", p.blurb);
+      var city = ZW.getCity(p.city);
+
+      var practical = p.practical || {};
+      var facts = [
+        { k: "Type", v: p.type, s: null },
+        { k: "운영 시간", v: practical.hours || "정보 없음", s: p.verifyNote },
+        { k: "Tickets", v: practical.ticket || "정보 없음", s: p.verifyNote },
+        { k: "가는 방법", v: practical.transport || "도시 가이드 보기", s: p.verifyNote },
+      ];
+
+      var inRoutes = ZW.CONTENT.routes.filter(function (r) {
+        return r.status !== "archived" &&
+          r.dayByDay.some(function (d) { return d.stops.some(function (s) { return s.placeId === p.id; }); });
+      });
+
+      el.innerHTML =
+        '<div class="page-hero"><div class="wrap">' +
+        "<nav class=\"crumbs\" aria-label=\"Breadcrumb\"><a href=\"index.html\">홈</a><span class=\"sep\">/</span>" +
+        (city ? '<a href="city.html?id=' + city.id + '">' + ZW.esc(city.name) + "</a>" : "") +
+        '<span class="sep">/</span><span>' + ZW.esc(p.name) + "</span></nav>" +
+        '<span class="theme-tag" style="background:var(--celadon-mist);color:var(--celadon-deep)">' + ZW.esc(p.type) + "</span>" +
+        "<h1>" + ZW.esc(p.name) + "</h1>" +
+        '<p class="lead">' + ZW.esc(p.blurb) + "</p>" +
+        ((p.originalName || p.latinName) ? '<p class="small muted place-name-aliases">중국어 이름: ' + (p.originalName ? ZW.esc(p.originalName) : '') + (p.originalName && p.latinName ? ' · ' : '') + (p.latinName ? '영문·로마자 이름: ' + ZW.esc(p.latinName) : '') + '</p>' : '') +
+        '<div class="flex mt1">' + ZW.verifyBadge(p) + "</div>" + ZW.provenance(p) +
+        "</div></div>" +
+        '<div class="wrap page">' +
+        '<div class="detail-grid">' +
+        "<div>" +
+        '<div class="flex mb1"><button class="btn btn-primary" type="button" id="save-place">' + ZW.icon("heart") + " <span id=\"save-label\">여행 목록에 저장</span></button></div>" +
+        "<div class=\"note-box info\"><h4>정보 확인 상태</h4>운영 시간·입장권·교통은 달라질 수 있어요. 현장 검증 전 데모 자료이므로 출발 전에 확인해 주세요.</div>" +
+        (inRoutes.length
+          ? "<h2>이 장소가 포함된 코스</h2>" + inRoutes.map(function (r) {
+            return '<p class="mb1"><a href="route.html?id=' + r.id + '">' + ZW.esc(r.title) + "</a> <span class='small muted'>(" + r.days + "일" + "" + ")</span></p>";
+          }).join("")
+          : "") +
+        "</div>" +
+        "<aside class=\"sticky-side\"><div class=\"side-card\"><h3>이용 정보</h3><table class=\"fact-table\"><tbody>" +
+        facts.map(function (f) {
+          return "<tr><th>" + ZW.esc(f.k) + "</th><td>" + ZW.esc(f.v) +
+            (f.s ? ' <span class="small muted">(' + ZW.esc(f.s) + ")</span>" : "") + "</td></tr>";
+        }).join("") +
+        "</tbody></table></div>" +
+        "<div class=\"side-card\"><h3>이 장소에 대해 궁금한가요?</h3><p class=\"small\">AI에게 물어보거나 상담을 남겨 주세요.</p><div class=\"flex\"><a class=\"btn btn-secondary btn-sm\" href=\"assistant.html?q=" + encodeURIComponent("방문 전 알아둘 점을 알려 주세요: " + p.name + "?") + "\">AI에게 질문</a><a class=\"btn btn-ghost btn-sm\" href=\"consult.html\">여행 상담</a></div></div>" +
+        "</aside></div></div>";
+
+      var saveBtn = document.getElementById("save-place");
+      var saveLabel = document.getElementById("save-label");
+      function paint() {
+        var saved = ZW.isSaved("places", p.id);
+        saveLabel.textContent = saved ? "저장했어요" : "여행 목록에 저장";
+        saveBtn.setAttribute("aria-pressed", String(saved));
+      }
+      saveBtn.addEventListener("click", function () { ZW.toggleSave("places", p.id); paint(); });
+      paint();
+      ZW.bindSaveButtons(el);
+      ZW.log("view_guide", { type: "place", id: p.id });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Community · ZheshGo</title>
+  <meta name="description" content="Light travel questions and route talk for ZheshGo readers — a demo community with clearly labeled samples."/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/community.html"/><link rel="alternate" hreflang="ja" href="/ja/app/community.html"/><link rel="alternate" hreflang="ko" href="/ko/app/community.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore" data-app="app">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">Community · demo</p>
+        <h1>Questions from the road</h1>
+        <p class="lead">A deliberately light corner: real traveler questions and corrections, nothing social-network-shaped. Every thread below is a labeled sample — this is the mechanism demo, not a live community.</p>
+      </div>
+    </div>
+
+    <div class="wrap page page-narrow">
+      <div class="note-box info"><h4>How this is meant to work</h4>Travelers post short questions or trip reports; the best answers get folded back into our guides (that's the “experience loop”). No follow buttons, no DMs, no likes inflation, no fake scale.</div>
+
+      <div id="threads"></div>
+
+      <hr class="divider"/>
+      <h2 class="mt0">Ask a question</h2>
+      <p class="small muted">Your question goes to our editors for review before it appears publicly. If the site is unreachable, it's kept in this browser instead.</p>
+      <form id="ask-form" class="planner-card">
+        <div class="field">
+          <label for="ask-title">Your question</label>
+          <textarea class="input" id="ask-title" rows="3" placeholder="e.g. Is Dongqian Lake worth a full day with a 6-year-old in May?" required></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Post (demo)</button>
+      </form>
+      <div id="ask-done" class="note-box" style="border-left-color:var(--bamboo);background:var(--bamboo-soft)" hidden>
+        <h4>Posted — locally, for this demo</h4>Your question appears in the list below marked as yours. In the real product it would be reviewed by our editors before going public.
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var SAMPLES = [
+        {
+          q: "Best way from Hangzhou to Ningbo with luggage?",
+          a: "High-speed rail from Hangzhou East, roughly an hour. Stations have luggage storage (usually a staffed counter) — allow extra time. We've folded this into the Hangzhou → Ningbo connector route.",
+          by: "Editor answer",
+          tag: "Example · transport",
+        },
+        {
+          q: "Is the Ningbo seafood good in summer, or should we wait for autumn?",
+          a: "Autumn and winter are the strongest seasons for local seafood — summer is hot and many crabs are out of season. If you only have summer, stick to the daily catch and fish dishes rather than crab specialties.",
+          by: "Editor answer",
+          tag: "Example · food",
+        },
+        {
+          q: "Correction: the Old Bund area is walkable from the city center, metro exit D",
+          a: "Thanks — noted. We'll verify the exit number on our next content pass and update the guide. (Corrections like this are exactly what this corner is for.)",
+          by: "Editor answer",
+          tag: "Example · correction",
+        },
+      ];
+      var box = document.getElementById("threads");
+      var serverItems = [];
+      function render() {
+        var local = [];
+        try {
+          var raw = JSON.parse(localStorage.getItem("zheway:community") || "[]");
+          if (Array.isArray(raw)) local = raw;
+        } catch (e) {}
+        var server = serverItems.map(function (x) {
+          return { q: x.question, a: "A traveler's question, reviewed and published by our editors.", by: "Traveler question (editor approved)", tag: "From travelers" };
+        });
+        box.innerHTML = server.concat(SAMPLES).concat(local.map(function (x) { return { q: x.q, a: "Your question — stored locally in this demo. An editor would review it before publishing.", by: "You (demo)", tag: "Local demo · not published" }; }))
+          .map(function (t) {
+            return (
+              '<article class="card mb2"><div class="card-body">' +
+              '<div class="flex" style="justify-content:space-between;gap:8px"><span class="pill-demo" style="font-size:.72rem">' + ZW.esc(t.tag) + "</span></div>" +
+              '<h3 class="card-title mt1">' + ZW.esc(t.q) + "</h3>" +
+              '<p class="card-desc">' + ZW.esc(t.a) + "</p>" +
+              '<p class="card-meta mb0">— ' + ZW.esc(t.by) + "</p>" +
+              "</div></article>"
+            );
+          }).join("");
+      }
+      // load editor-approved traveler questions
+      fetch("/api/v1/submissions/published").then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { if (d && d.items) { serverItems = d.items; render(); } })
+        .catch(function () { /* offline — samples only */ });
+      document.getElementById("ask-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var q = document.getElementById("ask-title").value.trim();
+        if (!q) return;
+        var done = document.getElementById("ask-done");
+        fetch("/api/v1/submissions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: q }),
+        }).then(function (res) {
+          if (!res.ok) throw new Error("http");
+          document.getElementById("ask-title").value = "";
+          done.innerHTML = "<h4>Submitted for review</h4>Your question has reached our editors. If approved, it will appear here for other travelers.";
+          done.hidden = false;
+        }).catch(function () {
+          var local = [];
+          try { local = JSON.parse(localStorage.getItem("zheway:community") || "[]") || []; } catch (err) {}
+          local.push({ q: q, at: Date.now() });
+          try { localStorage.setItem("zheway:community", JSON.stringify(local)); } catch (err2) { ZW.toast("Storage unavailable — your question won't persist."); }
+          document.getElementById("ask-title").value = "";
+          done.innerHTML = "<h4>Saved locally — demo mode</h4>Your question was not sent to our editors (couldn't reach the server), so it's stored in this browser only.";
+          done.hidden = false;
+          render();
+        });
+        ZW.log("community_ask", { len: q.length });
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>

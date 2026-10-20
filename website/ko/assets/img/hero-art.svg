@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Abstract Jiangnan landscape: misty mountains over a lake">
+  <defs>
+    <linearGradient id="hsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EDF1EA"/>
+      <stop offset="1" stop-color="#F6F2E9"/>
+    </linearGradient>
+    <linearGradient id="hwater" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#CFDBD2"/>
+      <stop offset="1" stop-color="#AFC3B6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="600" fill="url(#hsky)"/>
+  <circle cx="905" cy="150" r="52" fill="#FBF8F1" opacity="0.9"/>
+  <path d="M0 360 L140 250 L260 330 L380 230 L520 350 L640 210 L760 340 L880 235 L1010 340 L1120 270 L1200 330 L1200 600 L0 600 Z" fill="#DCE4DB" opacity="0.9"/>
+  <path d="M0 400 L160 310 L300 380 L440 300 L600 400 L740 300 L880 390 L1030 320 L1200 390 L1200 600 L0 600 Z" fill="#BCCDC0"/>
+  <path d="M0 450 L180 380 L340 440 L520 370 L700 450 L860 380 L1030 445 L1200 400 L1200 600 L0 600 Z" fill="#93AD9C"/>
+  <rect y="452" width="1200" height="148" fill="url(#hwater)"/>
+  <g stroke="#7E9A89" stroke-width="2" opacity="0.55">
+    <path d="M120 500 h240" fill="none"/>
+    <path d="M420 525 h300" fill="none"/>
+    <path d="M800 505 h260" fill="none"/>
+    <path d="M60 545 h180" fill="none"/>
+    <path d="M960 545 h190" fill="none"/>
+  </g>
+  <g transform="translate(300 468)">
+    <path d="M0 26 Q40 -8 80 26 Z" fill="#3D6B5C" opacity="0.85"/>
+    <line x1="40" y1="0" x2="40" y2="-24" stroke="#22302E" stroke-width="2.5"/>
+    <rect x="34" y="-40" width="12" height="16" fill="#22302E" opacity="0.8"/>
+    <line x1="28" y1="24" x2="52" y2="24" stroke="#22302E" stroke-width="2"/>
+  </g>
+  <g transform="translate(760 490)">
+    <circle r="7" fill="#A67C52" opacity="0.8"/>
+  </g>
+</svg>

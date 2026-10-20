@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>都市ガイド · ZheshGo</title>
+  <meta name="description" content="ZheshGoの都市ガイド。"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/city.html"/><link rel="alternate" hreflang="ja" href="/ja/city.html"/><link rel="alternate" hreflang="ko" href="/ko/city.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore">
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <div id="detail"></div>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="モバイルメニュー"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var id = ZW.param("id");
+      var c = ZW.getCity(id);
+      var el = document.getElementById("detail");
+      if (!c) { ZW.notFound("この都市のガイドはまだありません"); return; }
+
+      document.title = c.name + " — " + c.role + " · ZheshGo";
+      var meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", c.tagline);
+
+      var factsHtml = c.facts.length
+        ? "<div class=\"side-card\"><h3>旅の基本情報</h3><table class=\"fact-table\"><tbody>" +
+          c.facts.map(function (f) {
+            return "<tr><th>" + ZW.esc(f.k) + "</th><td>" + ZW.esc(f.v) +
+              (f.s ? ' <span class="small muted">(' + ZW.esc(f.s) + ")</span>" : "") + "</td></tr>";
+          }).join("") + "</tbody></table></div>"
+        : "";
+
+      var ownRoutes = ZW.CONTENT.routes.filter(function (r) { return r.city === c.id && r.status !== "archived"; });
+      var linkRoutes = ZW.CONTENT.routes.filter(function (r) {
+        return r.city !== c.id && r.cities.indexOf(c.id) !== -1 && r.status !== "archived";
+      });
+      var places = (c.places || []).map(ZW.getPlace).filter(Boolean);
+      var previewCities = ZW.CONTENT.cities.filter(function (o) { return o.preview; });
+
+      var routesHtml = ownRoutes.length
+        ? "<section class=\"section\"><div class=\"wrap\"><div class=\"section-head\"><div><p class=\"section-eyebrow\">モデルコース：" + ZW.esc(c.name) + "</p><h2>旅の候補にしたいモデルコース</h2></div></div>" +
+          '<div class="route-grid">' + ownRoutes.map(ZW.routeCard).join("") + "</div></div></section>"
+        : "";
+
+      var linksHtml = linkRoutes.length
+        ? "<section class=\"section section-alt\"><div class=\"wrap\"><div class=\"section-head\"><div><p class=\"section-eyebrow\">アクセスの案：" + ZW.esc(c.name) + "</p><h2>街から街へ、足を延ばす旅</h2></div></div>" +
+          '<div class="route-grid">' + linkRoutes.map(ZW.routeCard).join("") + "</div></div></section>"
+        : "";
+
+      var placesHtml = places.length
+        ? "<section class=\"section\"><div class=\"wrap\"><div class=\"section-head\"><div><p class=\"section-eyebrow\">紹介スポット：" + ZW.esc(c.name) + "</p><h2>紹介しているスポット</h2></div></div>" +
+          '<div class="route-grid">' + places.map(ZW.placeCard).join("") + "</div></div></section>"
+        : "";
+
+      var previewHtml = c.preview
+        ? "<div class=\"note-box warn\"><h4>紹介準備中</h4>詳細のコース、時刻表、料金はまだ掲載していません：" + ZW.esc(c.name) +
+          "。確認が済んだ情報から公開します。まずは寧波のガイドをご覧ください。</div>"
+        : "";
+
+      el.innerHTML =
+        '<div class="page-hero" style="position:relative;overflow:hidden">' +
+        '<div style="position:absolute;inset:0;opacity:.5" aria-hidden="true"><img src="' + ZW.esc(c.art) + '" alt="" style="width:100%;height:100%;object-fit:cover"/></div>' +
+        '<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(246,242,233,.25),rgba(246,242,233,.94))"></div>' +
+        '<div class="wrap" style="position:relative">' +
+        "<nav class=\"crumbs\" aria-label=\"Breadcrumb\"><a href=\"index.html\">ホーム</a><span class=\"sep\">/</span><a href=\"explore.html\">行き先・モデルコース</a><span class=\"sep\">/</span><span>" + ZW.esc(c.name) + "</span></nav>" +
+        '<p class="section-eyebrow" style="font-family:var(--serif-zh);letter-spacing:.5em;font-size:1rem">' + ZW.esc(c.zh) + " · " + ZW.esc(c.name) + "</p>" +
+        '<h1>' + ZW.esc(c.name) + " — " + ZW.esc(c.role) + "</h1>" +
+        '<p class="lead" style="max-width:620px">' + ZW.esc(c.tagline) + "</p>" +
+        '<div class="flex mt1">' + ZW.verifyBadge(c) +
+        (c.gateway ? "<span class=\"pill-demo\">旅の出発点に</span>" : "") + "</div>" + ZW.provenance(c) +
+        "</div></div>" +
+        '<div class="wrap page">' +
+        '<div class="detail-grid">' +
+        '<div>' +
+        previewHtml +
+        '<h2 class="mt0">' + (c.preview ? "この街で楽しめること" : "知っておきたいこと") + "</h2>" +
+        "<p>" + ZW.esc(c.intro) + "</p>" +
+        "<div class=\"note-box info\"><h4>情報の確認状況</h4>現地確認前のモデルコンテンツです。交通、営業時間、料金、入国条件は、出発前に公式案内で確認してください。未確認の金額を確定情報として表示しません。</div>" +
+        "</div>" +
+        '<aside class="sticky-side">' + factsHtml +
+        (c.preview ? "" : "<div class=\"side-card\"><h3>旅のポイント</h3><ul class=\"side-list\">" +
+          (c.gateway ? "<li>" + ZW.icon("check") + " 到着・出発の拠点に。施設の表示言語をご確認ください。</li>" : "") +
+          "<li>" + ZW.icon("check") + " 地下鉄と徒歩を基本に、荷物や距離に合わせて配車サービスなどを選びましょう。</li>" +
+          "<li>" + ZW.icon("warn") + " 決済アプリの設定は出発前に確認し、別の支払い手段も用意しておきましょう。</li>" +
+          "</ul></div>") +
+        "</aside></div>" +
+        placesHtml + routesHtml + linksHtml +
+        "</div>";
+
+      ZW.bindSaveButtons(el);
+      ZW.log("view_guide", { type: "city", id: c.id });
+    })();
+  </script>
+</body>
+</html>

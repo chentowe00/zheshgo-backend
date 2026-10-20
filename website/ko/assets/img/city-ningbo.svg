@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 760" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: Ningbo port cranes, ship and old library roof">
+  <defs>
+    <linearGradient id="nsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E7E9E0"/>
+      <stop offset="1" stop-color="#EFE9DC"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="760" fill="url(#nsky)"/>
+  <circle cx="470" cy="120" r="42" fill="#FBF8F1"/>
+  <g fill="#22302E">
+    <rect x="90" y="250" width="14" height="300"/>
+    <rect x="104" y="210" width="150" height="12"/>
+    <rect x="118" y="222" width="12" height="120"/>
+    <rect x="160" y="222" width="12" height="120"/>
+    <rect x="202" y="222" width="12" height="120"/>
+    <path d="M104 222 L118 198 L134 222 Z"/>
+    <path d="M146 222 L160 198 L178 222 Z"/>
+    <path d="M188 222 L202 198 L220 222 Z"/>
+    <rect x="380" y="270" width="14" height="280"/>
+    <rect x="394" y="230" width="130" height="12"/>
+    <rect x="406" y="242" width="12" height="110"/>
+    <rect x="448" y="242" width="12" height="110"/>
+    <rect x="490" y="242" width="12" height="110"/>
+    <path d="M394 242 L406 220 L422 242 Z"/>
+    <path d="M436 242 L448 220 L464 242 Z"/>
+    <path d="M478 242 L490 220 L506 242 Z"/>
+  </g>
+  <rect y="520" width="600" height="240" fill="#9FB4A5"/>
+  <g transform="translate(250 480)">
+    <rect x="0" y="0" width="170" height="42" rx="4" fill="#3D6B5C"/>
+    <rect x="20" y="-26" width="60" height="26" fill="#3D6B5C"/>
+    <rect x="30" y="-40" width="10" height="14" fill="#A67C52"/>
+    <rect x="50" y="-40" width="10" height="14" fill="#A67C52"/>
+    <rect x="70" y="-40" width="10" height="14" fill="#A67C52"/>
+    <rect x="110" y="8" width="14" height="30" fill="#F6F2E9"/>
+    <rect x="134" y="8" width="14" height="30" fill="#F6F2E9"/>
+  </g>
+  <g stroke="#6E9183" stroke-width="2.4" opacity="0.6">
+    <path d="M40 560 h150" fill="none"/>
+    <path d="M420 590 h140" fill="none"/>
+    <path d="M120 640 h220" fill="none"/>
+  </g>
+  <g fill="#A67C52" opacity="0.85">
+    <circle cx="330" cy="700" r="5"/><circle cx="348" cy="700" r="5"/><circle cx="366" cy="700" r="5"/>
+  </g>
+</svg>

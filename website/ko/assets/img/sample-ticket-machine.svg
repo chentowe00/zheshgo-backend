@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480" role="img" aria-label="Sample illustration of a metro ticket machine">
+  <rect width="600" height="480" fill="#F2EEE4"/>
+  <rect x="60" y="30" width="480" height="420" rx="14" fill="#FFFDF8" stroke="#22302E" stroke-width="5"/>
+  <rect x="110" y="80" width="240" height="170" rx="8" fill="#E8EFE7" stroke="#22302E" stroke-width="4"/>
+  <g fill="#3D6B5C">
+    <rect x="130" y="100" width="90" height="16" rx="3"/>
+    <rect x="130" y="126" width="60" height="12" rx="3" opacity="0.7"/>
+    <rect x="130" y="148" width="70" height="12" rx="3" opacity="0.7"/>
+    <rect x="240" y="205" width="96" height="32" rx="6" fill="#A67C52"/>
+  </g>
+  <g stroke="#22302E" stroke-width="3.5">
+    <rect x="390" y="100" width="110" height="26" rx="6" fill="none"/>
+    <rect x="390" y="140" width="110" height="60" rx="6" fill="none"/>
+    <line x1="390" y1="170" x2="500" y2="170"/>
+  </g>
+  <g fill="#22302E">
+    <circle cx="150" cy="300" r="16"/><circle cx="214" cy="300" r="16"/><circle cx="278" cy="300" r="16"/>
+    <circle cx="342" cy="300" r="16"/><circle cx="406" cy="300" r="16"/>
+  </g>
+  <g fill="#A67C52">
+    <circle cx="150" cy="362" r="16"/><circle cx="214" cy="362" r="16"/><circle cx="278" cy="362" r="16"/>
+  </g>
+  <rect x="300" y="395" width="240" height="30" rx="8" fill="#F0E6D9" stroke="#A67C52" stroke-width="3"/>
+  <g fill="#22302E" font-family="Arial, sans-serif" font-size="22" font-weight="bold">
+    <text x="150" y="308" text-anchor="middle" fill="#F6F2E9">1</text>
+    <text x="214" y="308" text-anchor="middle" fill="#F6F2E9">2</text>
+    <text x="278" y="308" text-anchor="middle" fill="#F6F2E9">3</text>
+    <text x="342" y="308" text-anchor="middle" fill="#F6F2E9">4</text>
+    <text x="406" y="308" text-anchor="middle" fill="#F6F2E9">5</text>
+  </g>
+  <text x="300" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#77837C" letter-spacing="2">SAMPLE ILLUSTRATION — DEMO ONLY</text>
+</svg>

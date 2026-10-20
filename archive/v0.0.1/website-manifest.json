@@ -1,0 +1,1586 @@
+[
+  {
+    "path": "404.html",
+    "size": 1789,
+    "sha": "3c07f9ee0994d10bc2f56c6d4e6aaf70802499bd",
+    "sha256": "d319f5a1add46612b84fc3527eb4b29e523d1d23bbcd605826e51e15c8d76599"
+  },
+  {
+    "path": "about.html",
+    "size": 4558,
+    "sha": "759415e0253000e085fbd0a7191b610580dd7e04",
+    "sha256": "61823361bd69609b58f68faf64ecba3a1df423655d1bc639fdf88e0eae369bf0"
+  },
+  {
+    "path": "app/404.html",
+    "size": 1822,
+    "sha": "2c46f05deb5284ee8651b645f0fa36bc02682136",
+    "sha256": "65fe962a18121a143ae139d4b60470019d64376efb406193fdb32d5551395b03"
+  },
+  {
+    "path": "app/about.html",
+    "size": 4591,
+    "sha": "f31c163a18b85b564eca964fbd3de0310452ba17",
+    "sha256": "2d99977da82a715762b14533fcc5dc15e798d8498fde5375127d30fc9a2ef541"
+  },
+  {
+    "path": "app/assistant.html",
+    "size": 4037,
+    "sha": "f4f0f8b6ba9c2a6958617597a1c2b003f9fd574b",
+    "sha256": "01cc8e6930bb27b257c62c58cf844aed69f7068428281ef52452fc407aba7a75"
+  },
+  {
+    "path": "app/city.html",
+    "size": 6430,
+    "sha": "28f99edd7bee3f4bca3eb7489c53a5292ce0adcb",
+    "sha256": "e43dcd2d70de927364e507133a5bff9473396f794bdd2f3a9bf79bdb683683ad"
+  },
+  {
+    "path": "app/community.html",
+    "size": 7492,
+    "sha": "890e96c441b9f27a45dd6e1740c256e066110d17",
+    "sha256": "64804752309eb796a411f2b8b821e37786d6c2905212c0a7d129e12d813a5bb1"
+  },
+  {
+    "path": "app/consult.html",
+    "size": 14208,
+    "sha": "126b3722efda906ee678f7e6964ecfd1ac868cab",
+    "sha256": "41711fee317e04ac7df087476ccee9c50a217a7b1e5eae964aaeb7fb7e703c7b"
+  },
+  {
+    "path": "app/events.html",
+    "size": 4779,
+    "sha": "4d41c40adefd85a869afdf5b7aecd0eafd32883b",
+    "sha256": "8f29a1be4645ac50e6847cc4cece06522a42ae3e88704356ccf3264ec92cebf2"
+  },
+  {
+    "path": "app/explore.html",
+    "size": 10276,
+    "sha": "20af1690b2c6e71876fd732b58c969bdebc54e2b",
+    "sha256": "aa8a6f8f30fb67c0db82564febbef5a3585caae241d134336fd15e72161a3c6a"
+  },
+  {
+    "path": "app/faq.html",
+    "size": 3383,
+    "sha": "b35854f03345e3a14c5bdcb931132dc415dc15b3",
+    "sha256": "28674019c90cd336a94f3fc68210b1c0e0d478638ce1efdd798aac644acf9829"
+  },
+  {
+    "path": "app/index.html",
+    "size": 10886,
+    "sha": "495b5774e2d4efaad0b19da67a6aa1dc0fb55565",
+    "sha256": "af03ccd49068c8e193b8f228242ed449d5e659e1d16ab59a11787a4a08996296"
+  },
+  {
+    "path": "app/manifest.webmanifest",
+    "size": 656,
+    "sha": "194c88fca736003d5649747118a49d7cf36e9145",
+    "sha256": "dacdc02810287ca766b0f75ef7eeb86bd0589078b8694601d87507e05759a722"
+  },
+  {
+    "path": "app/my-trip.html",
+    "size": 5974,
+    "sha": "eb1c09b9d90e2dd3e8957d9bf927df49eb989ccf",
+    "sha256": "8d4a1cbbd74d4b109a5d36a695683c09e75f9fa13b82dcc66dfcba98029c3812"
+  },
+  {
+    "path": "app/offline.html",
+    "size": 1714,
+    "sha": "27f38c7baba06e3869b0215f9e2d4abf81b8ac0b",
+    "sha256": "2efee00915db8e34e13a3aaa6a762dbd3023cd93fa17f7e896be6c43eac64c8f"
+  },
+  {
+    "path": "app/photo-guide.html",
+    "size": 11385,
+    "sha": "c42eb724bc82999a29905081df9313d7fb9399dd",
+    "sha256": "51de8e4715589f3dc8315ff6864c52bc45c3ddb2f0f9781fededa7a7216bfd49"
+  },
+  {
+    "path": "app/place.html",
+    "size": 5552,
+    "sha": "499a546b902a81466e4b79252f51c9feeeff0d0f",
+    "sha256": "14df59e15a8f1ed80f76c2fcbf483dce0f44ce71c8be5bdb6cb0e8873342716a"
+  },
+  {
+    "path": "app/planner.html",
+    "size": 13110,
+    "sha": "8563574a6f70a5217939a9362d0f349f592a51d7",
+    "sha256": "05d63491204bb7b0ef5a5b0721826d5d4abd471789c9026e3d5fdd08beb3681e"
+  },
+  {
+    "path": "app/privacy.html",
+    "size": 4433,
+    "sha": "64c9a610fd00a7c875fb584c919b1f9706ebaab2",
+    "sha256": "1c27ce2a5354d2d2201a20a1d15cb41c90ab42d5ff428f03dc87b65b0104491a"
+  },
+  {
+    "path": "app/route.html",
+    "size": 7190,
+    "sha": "709331a37e141b1e9c0c842ee292fca3f3909f44",
+    "sha256": "1abe68634f40e9102d51609b6f4c986e373cd91bbd4144919eb45e38e241e587"
+  },
+  {
+    "path": "app/sw.js",
+    "size": 5038,
+    "sha": "32c768cbfa9e4881e39fb0b8f04f06a7507abb53",
+    "sha256": "dc1556ccd80d7aa24439f30331b5e54fdfaae85aa7a190bdd39bc9ec221ff72f"
+  },
+  {
+    "path": "assets/img/brand-mark.svg",
+    "size": 465,
+    "sha": "1561cfe8e5e4203e99a5d038f17023e697ab17f7",
+    "sha256": "f44cbc9313046ec0db7ecf29849724fc8e79fda1dc0af5d6128c010fb067da94"
+  },
+  {
+    "path": "assets/img/city-hangzhou.svg",
+    "size": 1837,
+    "sha": "145bc31733e61c13a46998c99c0d2b78154cd52a",
+    "sha256": "63b8083e6a1d1f48762d915cf78bbd73df1386da10bb6e2a039a5f74d0e84795"
+  },
+  {
+    "path": "assets/img/city-ningbo.svg",
+    "size": 2200,
+    "sha": "799b6acacfab61c4900f882aeeadd8eecfe3b4b0",
+    "sha256": "5d8bdd11014dc337b031c59f61bbeaa6227fd5237d232c63fdf13b0a7696fb8e"
+  },
+  {
+    "path": "assets/img/city-shanghai.svg",
+    "size": 2078,
+    "sha": "dd99b11ad667d33cc4402f502919ccb8df8a5f88",
+    "sha256": "cdbcf4142141768e7ad58dd00b272ecd460285406846d3b1bd8314bbe0605d9b"
+  },
+  {
+    "path": "assets/img/city-shaoxing.svg",
+    "size": 1473,
+    "sha": "ec2ff86c5d9f3c28868660f324123e6aadded2ab",
+    "sha256": "42933f180beff8319aae9f5d43719a3b1aa5857c909236680e433f5c1985a7c8"
+  },
+  {
+    "path": "assets/img/city-zhoushan.svg",
+    "size": 1502,
+    "sha": "7bc316943ef804b9d6b90e59a2a6bac3f548f9b2",
+    "sha256": "235e1b35a0ff454627de8d5e628e7e25942f045cc13c8b1508c79f6eea20cefa"
+  },
+  {
+    "path": "assets/img/hero-art.svg",
+    "size": 1863,
+    "sha": "ba41baea449f6f2268e20c7f301c7150bc03ba56",
+    "sha256": "6bad8d6e88c096533e7a6946e2b94afed8e8f3af36ee983aff941fa974d6b4c8"
+  },
+  {
+    "path": "assets/img/sample-kiosk.svg",
+    "size": 1405,
+    "sha": "b64b6bb4146219905a2de8dea6dbeb6745343381",
+    "sha256": "4be7b235987a2c6c4153c9c1407baadc5a5e3637f70a6d176aebbd73c73c4ad0"
+  },
+  {
+    "path": "assets/img/sample-locker.svg",
+    "size": 1587,
+    "sha": "ccae2b13d35852ccf667d294679884a7be41cc30",
+    "sha256": "2d5554500a009e35fe550a9ec71293a7a78ef033488102234f976d2a70150e19"
+  },
+  {
+    "path": "assets/img/sample-menu.svg",
+    "size": 1709,
+    "sha": "39e3402d9d961422318a5d4f6c9d6d4f38df8f9f",
+    "sha256": "7e042ee88410e9eb044610833adf1485687e8ccab9eddeaf8bbf016580e5a4fb"
+  },
+  {
+    "path": "assets/img/sample-signage.svg",
+    "size": 1421,
+    "sha": "94ec2a1734c5177dbc7a7628a3c7d1865887fdf9",
+    "sha256": "f0f2c6e35948c204f795ddd92e11dfebde92da56a46832f36197691101f41cbd"
+  },
+  {
+    "path": "assets/img/sample-ticket-machine.svg",
+    "size": 2009,
+    "sha": "15e3abb02ec5e7334cc7ae1f69b6a648b819e927",
+    "sha256": "728f9e086cd051223cc03c5001a17a0d0bfd2db933903e6cc0e59391e8213ec0"
+  },
+  {
+    "path": "assets/img/theme-architecture.svg",
+    "size": 485,
+    "sha": "0df98a40aa892a9d47f338211f55915bc2af7ad3",
+    "sha256": "6aae5a5c8d383eebc2c5c61d246e12b1e73622fa26c504811fd75e08dbe711f2"
+  },
+  {
+    "path": "assets/img/theme-buddhist.svg",
+    "size": 376,
+    "sha": "ab8ce1098ce69764047debf45a022fef578fd4a6",
+    "sha256": "f58be55f719fc5f3df79dcfd2225e9b34fc149ee9eb7b7550fd2ab00c844cf9c"
+  },
+  {
+    "path": "assets/img/theme-family.svg",
+    "size": 472,
+    "sha": "426185e59c7500045ac18c5098a7a5f7d8a96c11",
+    "sha256": "030b6b1ee761ccbb36a0745dbe7dc0f2cbd94eb2557acf34caafcd16c7806abf"
+  },
+  {
+    "path": "assets/img/theme-food.svg",
+    "size": 464,
+    "sha": "1ccd5fe3aa936504ef83ff370d5ff901b04a0bbc",
+    "sha256": "6f5b76bf5c710d51a6a4f82ff52a1063274493da16eaa5400e5922db4f6b0968"
+  },
+  {
+    "path": "assets/img/theme-port.svg",
+    "size": 470,
+    "sha": "b27344d79a254d8b20731cf41a2a6e01925d40e3",
+    "sha256": "dfc4073d28292e75297da93b458cddc878a3649524f43fe27cae92f2fbb5ee03"
+  },
+  {
+    "path": "assets/img/theme-slow.svg",
+    "size": 485,
+    "sha": "7fa56b6c786406b2762ec7535eb70b2a4636d05d",
+    "sha256": "899c19ddfcbfb8098cf392dfb4349bd8d65c1b313539832e19c28fbb741bd6e6"
+  },
+  {
+    "path": "assets/img/theme-walk.svg",
+    "size": 503,
+    "sha": "59b0978642ace9d0accc70997b93f0b10388e4a5",
+    "sha256": "6390854759b756fdbe46a3652c6e9d919668816c6168c765fb7ed90b08ec2e98"
+  },
+  {
+    "path": "assistant.html",
+    "size": 3998,
+    "sha": "d81b2d128f1e7d5ace1c2dc4ae2d35099e9c12a7",
+    "sha256": "f430bc985ce1197ee03d15624247002117e68b5889f0a85c8f2066fd2c1adef0"
+  },
+  {
+    "path": "city.html",
+    "size": 6397,
+    "sha": "1a78b4901b950474387a5bc6592f6acc577ae56e",
+    "sha256": "6f3b236cae950d04f53d63ff8e3e43f613c9826144d422db9053e522037f949b"
+  },
+  {
+    "path": "community.html",
+    "size": 7459,
+    "sha": "f910169a5b0fce5310825d76c3476bb0fc967288",
+    "sha256": "69e4cc23cc1068de13db4ae827f741c9dca4d3508cbdcccceb0dce056d334529"
+  },
+  {
+    "path": "consult.html",
+    "size": 14175,
+    "sha": "18ae7f0362df5fac68455823ea36e5ebfe3019d4",
+    "sha256": "d363add9dbf92c8892c27460fa076e21a3b0b4fa3f5134add60eb8a3f55a0674"
+  },
+  {
+    "path": "css/i18n.css",
+    "size": 1610,
+    "sha": "66328c39a5c9ae85a5cd20b4c5bc0040a0bab8e8",
+    "sha256": "ff3e1580379cdd9ac6a3b1dcaa642e3253b60e3fd6eeb2b3d6223e5900aa5705"
+  },
+  {
+    "path": "css/styles.css",
+    "size": 31256,
+    "sha": "f806742fb3a86b27499a4660120d570e86c0dd24",
+    "sha256": "5e4915c641f69abca5f0c23ce48bbc1aa4d7d35f209adacef439a67dde643ab1"
+  },
+  {
+    "path": "en/404.html",
+    "size": 1960,
+    "sha": "a2788c7df0e1f4df952bbaf1aeacbd3b17789eeb",
+    "sha256": "a7dea08b79f03d9d6b05107809109ca565ef04a5434a232284cc25c8548060c5"
+  },
+  {
+    "path": "en/about.html",
+    "size": 4735,
+    "sha": "357fb8c53ef92828b8be3a512fda4efd962530a5",
+    "sha256": "2a90640b4ac7cb7fcc95dd2d08f4d95c8a763511079c186e185e48db36a0db7c"
+  },
+  {
+    "path": "en/app/404.html",
+    "size": 2005,
+    "sha": "f773a7ff792014fbfa5f7269ab8173e7be529bd8",
+    "sha256": "e0aef198d8fee5edc2704ff4a8ee229d14c4c7834b070d586c29937407f01abf"
+  },
+  {
+    "path": "en/app/about.html",
+    "size": 4780,
+    "sha": "b84b5597a8dec711e1bd117b24d9d8b5dd1b2e66",
+    "sha256": "f164db46e8fc9dbb30b3e2320e51659ea68450861ac7b325991e42f4e779474b"
+  },
+  {
+    "path": "en/app/assistant.html",
+    "size": 4238,
+    "sha": "4676120f1d25f1941cec6c6e27f2c8190f2a1d69",
+    "sha256": "d9eb2158ddd4d854af28c0ac507c48936faedd45cd861d82fcae790b2aaa2bf3"
+  },
+  {
+    "path": "en/app/city.html",
+    "size": 6657,
+    "sha": "c615776d2048af64d5fadfbb4d2279f1a1a0266f",
+    "sha256": "687feed0d8987a020c68d6520805618b7eeda6c602ab15ccb2ce35f7a7a8209a"
+  },
+  {
+    "path": "en/app/community.html",
+    "size": 7693,
+    "sha": "e90022baf8eaa26379f4f7a9ee850d7464600c19",
+    "sha256": "a194f45bae9d1ce457bc3c83cb0bb3e30f171f91c54a37355b270c82c13f487b"
+  },
+  {
+    "path": "en/app/consult.html",
+    "size": 14403,
+    "sha": "87dffd48c65341054288ca6e356dddd234282dc0",
+    "sha256": "d00b2536650a4f7d923e3a074d8054ac8ac22bab3e9f81861a9a5ed6e4af985f"
+  },
+  {
+    "path": "en/app/events.html",
+    "size": 4971,
+    "sha": "5ba5729df8019aff5a143e247913bc3a9e93f5d4",
+    "sha256": "53951e81a8534cf8d7654be91cf13d3c7a5bc2b91f1878148fa902be13d3cebc"
+  },
+  {
+    "path": "en/app/explore.html",
+    "size": 10477,
+    "sha": "59b638633ae5d3267e5e0b08917e4b1aa4bf549c",
+    "sha256": "62fd9c65d42365d0c50e369c372a6d14b11a5cc0a5a3727501f24c98e46d8f24"
+  },
+  {
+    "path": "en/app/faq.html",
+    "size": 3566,
+    "sha": "4d5fc814d0ea0c3b63e3be1b2e16e586cb5babca",
+    "sha256": "180d3cdad70aa015711016960a6dce04139c6c0e907efe2ceb74b4971f686f12"
+  },
+  {
+    "path": "en/app/index.html",
+    "size": 11075,
+    "sha": "ae6b907d8b1ad1b6fc67125967f76c37ecddad24",
+    "sha256": "3cbd274d66a999c7a5a9562ccbfcc4621133d795b6b1aeb1870df983763722e9"
+  },
+  {
+    "path": "en/app/manifest.webmanifest",
+    "size": 659,
+    "sha": "59f74e3723f6d0b7b7a89a76acf0f86d8b7c9930",
+    "sha256": "b629938f9826e98bd9e795709145415415f99805e00b86e7d7d94c3aaeb83901"
+  },
+  {
+    "path": "en/app/my-trip.html",
+    "size": 6171,
+    "sha": "a930c3594db8aa55f0853459730219046faff8e5",
+    "sha256": "abd064c68ae955200da26b88f773a6f221cf5592d68a12083a291453e39ba649"
+  },
+  {
+    "path": "en/app/offline.html",
+    "size": 1909,
+    "sha": "954e4f1f6b59f0f460525d7ec495656d9bf54572",
+    "sha256": "837cac4f3d12c52abdff4bd9f68ccb332a8c4ae69b5d363361e3e4adc6c8c772"
+  },
+  {
+    "path": "en/app/photo-guide.html",
+    "size": 11675,
+    "sha": "9474c771ebdb81299bd4ef1e7da088da36e3e5da",
+    "sha256": "d3b4a7c46440c4a018fecec98940840f73cfcb6c75b164dbf7c52cb06fa438fe"
+  },
+  {
+    "path": "en/app/place.html",
+    "size": 5767,
+    "sha": "bdfa4fce5b6c838bc055ea6c316ed5a8653b86e7",
+    "sha256": "9f358246e368ff16e54bf6c901591111f381c0ec12fcd825733573ed28397a45"
+  },
+  {
+    "path": "en/app/planner.html",
+    "size": 13307,
+    "sha": "ef618c13e067aae03f2cea6a6d06f37ea91ee0d7",
+    "sha256": "a502a69d73507679fe89d6e1faf7283de305542ba607461080961fbbd281f065"
+  },
+  {
+    "path": "en/app/privacy.html",
+    "size": 4628,
+    "sha": "b0fe321ad835b6e662caedc239f6f9a09600e74c",
+    "sha256": "9d6c8cdaa6a139ad6af346af1aac19ee595f23b46dbc4e461e93f9194b29796d"
+  },
+  {
+    "path": "en/app/route.html",
+    "size": 7412,
+    "sha": "f3ac8c9adb121d32bbdd5026d6d08c67f128b6df",
+    "sha256": "29bb4b352bd86982f0d72da1df5c6e4a3819d828e5cc3bd9510af454e80e6457"
+  },
+  {
+    "path": "en/app/sw.js",
+    "size": 5036,
+    "sha": "3965b81eda1392d62f7d811bd82bf564e98e45bd",
+    "sha256": "73268941b856152b0c2231f1ed9b7be7ffb84f46019cdea22ffa5e5e73d3cf8e"
+  },
+  {
+    "path": "en/assets/img/brand-mark.svg",
+    "size": 465,
+    "sha": "1561cfe8e5e4203e99a5d038f17023e697ab17f7",
+    "sha256": "f44cbc9313046ec0db7ecf29849724fc8e79fda1dc0af5d6128c010fb067da94"
+  },
+  {
+    "path": "en/assets/img/city-hangzhou.svg",
+    "size": 1837,
+    "sha": "145bc31733e61c13a46998c99c0d2b78154cd52a",
+    "sha256": "63b8083e6a1d1f48762d915cf78bbd73df1386da10bb6e2a039a5f74d0e84795"
+  },
+  {
+    "path": "en/assets/img/city-ningbo.svg",
+    "size": 2200,
+    "sha": "799b6acacfab61c4900f882aeeadd8eecfe3b4b0",
+    "sha256": "5d8bdd11014dc337b031c59f61bbeaa6227fd5237d232c63fdf13b0a7696fb8e"
+  },
+  {
+    "path": "en/assets/img/city-shanghai.svg",
+    "size": 2078,
+    "sha": "dd99b11ad667d33cc4402f502919ccb8df8a5f88",
+    "sha256": "cdbcf4142141768e7ad58dd00b272ecd460285406846d3b1bd8314bbe0605d9b"
+  },
+  {
+    "path": "en/assets/img/city-shaoxing.svg",
+    "size": 1473,
+    "sha": "ec2ff86c5d9f3c28868660f324123e6aadded2ab",
+    "sha256": "42933f180beff8319aae9f5d43719a3b1aa5857c909236680e433f5c1985a7c8"
+  },
+  {
+    "path": "en/assets/img/city-zhoushan.svg",
+    "size": 1502,
+    "sha": "7bc316943ef804b9d6b90e59a2a6bac3f548f9b2",
+    "sha256": "235e1b35a0ff454627de8d5e628e7e25942f045cc13c8b1508c79f6eea20cefa"
+  },
+  {
+    "path": "en/assets/img/hero-art.svg",
+    "size": 1863,
+    "sha": "ba41baea449f6f2268e20c7f301c7150bc03ba56",
+    "sha256": "6bad8d6e88c096533e7a6946e2b94afed8e8f3af36ee983aff941fa974d6b4c8"
+  },
+  {
+    "path": "en/assets/img/sample-kiosk.svg",
+    "size": 1405,
+    "sha": "b64b6bb4146219905a2de8dea6dbeb6745343381",
+    "sha256": "4be7b235987a2c6c4153c9c1407baadc5a5e3637f70a6d176aebbd73c73c4ad0"
+  },
+  {
+    "path": "en/assets/img/sample-locker.svg",
+    "size": 1587,
+    "sha": "ccae2b13d35852ccf667d294679884a7be41cc30",
+    "sha256": "2d5554500a009e35fe550a9ec71293a7a78ef033488102234f976d2a70150e19"
+  },
+  {
+    "path": "en/assets/img/sample-menu.svg",
+    "size": 1709,
+    "sha": "39e3402d9d961422318a5d4f6c9d6d4f38df8f9f",
+    "sha256": "7e042ee88410e9eb044610833adf1485687e8ccab9eddeaf8bbf016580e5a4fb"
+  },
+  {
+    "path": "en/assets/img/sample-signage.svg",
+    "size": 1421,
+    "sha": "94ec2a1734c5177dbc7a7628a3c7d1865887fdf9",
+    "sha256": "f0f2c6e35948c204f795ddd92e11dfebde92da56a46832f36197691101f41cbd"
+  },
+  {
+    "path": "en/assets/img/sample-ticket-machine.svg",
+    "size": 2009,
+    "sha": "15e3abb02ec5e7334cc7ae1f69b6a648b819e927",
+    "sha256": "728f9e086cd051223cc03c5001a17a0d0bfd2db933903e6cc0e59391e8213ec0"
+  },
+  {
+    "path": "en/assets/img/theme-architecture.svg",
+    "size": 485,
+    "sha": "0df98a40aa892a9d47f338211f55915bc2af7ad3",
+    "sha256": "6aae5a5c8d383eebc2c5c61d246e12b1e73622fa26c504811fd75e08dbe711f2"
+  },
+  {
+    "path": "en/assets/img/theme-buddhist.svg",
+    "size": 376,
+    "sha": "ab8ce1098ce69764047debf45a022fef578fd4a6",
+    "sha256": "f58be55f719fc5f3df79dcfd2225e9b34fc149ee9eb7b7550fd2ab00c844cf9c"
+  },
+  {
+    "path": "en/assets/img/theme-family.svg",
+    "size": 472,
+    "sha": "426185e59c7500045ac18c5098a7a5f7d8a96c11",
+    "sha256": "030b6b1ee761ccbb36a0745dbe7dc0f2cbd94eb2557acf34caafcd16c7806abf"
+  },
+  {
+    "path": "en/assets/img/theme-food.svg",
+    "size": 464,
+    "sha": "1ccd5fe3aa936504ef83ff370d5ff901b04a0bbc",
+    "sha256": "6f5b76bf5c710d51a6a4f82ff52a1063274493da16eaa5400e5922db4f6b0968"
+  },
+  {
+    "path": "en/assets/img/theme-port.svg",
+    "size": 470,
+    "sha": "b27344d79a254d8b20731cf41a2a6e01925d40e3",
+    "sha256": "dfc4073d28292e75297da93b458cddc878a3649524f43fe27cae92f2fbb5ee03"
+  },
+  {
+    "path": "en/assets/img/theme-slow.svg",
+    "size": 485,
+    "sha": "7fa56b6c786406b2762ec7535eb70b2a4636d05d",
+    "sha256": "899c19ddfcbfb8098cf392dfb4349bd8d65c1b313539832e19c28fbb741bd6e6"
+  },
+  {
+    "path": "en/assets/img/theme-walk.svg",
+    "size": 503,
+    "sha": "59b0978642ace9d0accc70997b93f0b10388e4a5",
+    "sha256": "6390854759b756fdbe46a3652c6e9d919668816c6168c765fb7ed90b08ec2e98"
+  },
+  {
+    "path": "en/assistant.html",
+    "size": 4187,
+    "sha": "b32dd18ede5e0c8a09aff6ebf9ca15608fccbc01",
+    "sha256": "adcac4fb7d3ecb67afea6511c54872e5eb297116b6bdb219f8f15c542c5aa712"
+  },
+  {
+    "path": "en/city.html",
+    "size": 6612,
+    "sha": "062340143283c2c480aec09a4423f360f2947b6d",
+    "sha256": "b33d489a95c7fd6e2efc45a1745f17a898b4547bd15dddd80ee8744008a7e85b"
+  },
+  {
+    "path": "en/community.html",
+    "size": 7648,
+    "sha": "6af448eaf9ecf0fe5af6c4ec685ab68c6e189ee0",
+    "sha256": "2c60b9f64e25c0a6301ab9fbf65a16856e4caadae90a2cabd95e0ed565a2f1c1"
+  },
+  {
+    "path": "en/consult.html",
+    "size": 14358,
+    "sha": "81cfb7c3b4d1b9f02fcefbf1b1f699051aa0e557",
+    "sha256": "dc995ad6e113052f0e21a95e2ca3b9226658bfd1e4599774866c29b553106b5a"
+  },
+  {
+    "path": "en/css/i18n.css",
+    "size": 1610,
+    "sha": "66328c39a5c9ae85a5cd20b4c5bc0040a0bab8e8",
+    "sha256": "ff3e1580379cdd9ac6a3b1dcaa642e3253b60e3fd6eeb2b3d6223e5900aa5705"
+  },
+  {
+    "path": "en/css/styles.css",
+    "size": 31256,
+    "sha": "f806742fb3a86b27499a4660120d570e86c0dd24",
+    "sha256": "5e4915c641f69abca5f0c23ce48bbc1aa4d7d35f209adacef439a67dde643ab1"
+  },
+  {
+    "path": "en/events.html",
+    "size": 4926,
+    "sha": "4975a97c9758fccedde0e226eeceb56bc49c8db4",
+    "sha256": "98a3d24396dddae2840266d39d41aebb35fbc2c86236039fb0d16f61fc431be0"
+  },
+  {
+    "path": "en/explore.html",
+    "size": 10432,
+    "sha": "0dfdd96fb39b9dbaf872e31161e09367b1b869ed",
+    "sha256": "f01797d17db959b50cdbe5fbce167abae3b2c4878406e2d41d7650c6381e95cb"
+  },
+  {
+    "path": "en/faq.html",
+    "size": 3521,
+    "sha": "cef65e1a0c0517bea14c52e91e88525b02a716b0",
+    "sha256": "795acd7a44a0b9001dc4f7e4edbae93633042a134b5bdc67d3babe172f1b8514"
+  },
+  {
+    "path": "en/favicon.svg",
+    "size": 335,
+    "sha": "ccf37579a5b31125bd49d7ea04b76359cdbeaf27",
+    "sha256": "58c49610deb51f4540c1adb373deabebb81987a8e822c8a215f2f73eb7861b9d"
+  },
+  {
+    "path": "en/icons/icon-192.png",
+    "size": 1578,
+    "sha": "56c94c6d644d356d7d6f266eb8e0eff8b211fd27",
+    "sha256": "6de26ad605f0466e9e99ea32ce3427cb57ba3db85e0b112daa96308cd35ba5b8"
+  },
+  {
+    "path": "en/icons/icon-512.png",
+    "size": 5754,
+    "sha": "4e556d145626de5ce836b3d5cd9fe18a33e63019",
+    "sha256": "ee5d4abac7ca6a14f29174c2912d40439617fb6076c78cf876547b9024b34b17"
+  },
+  {
+    "path": "en/index.html",
+    "size": 11290,
+    "sha": "a3e779c9b9ade00c60ed0146650b4c070c250df1",
+    "sha256": "9e0e03553e6c297535d0599391fcd9f1dbb37ee29234a590f66b6a532431e18a"
+  },
+  {
+    "path": "en/js/app.js",
+    "size": 28247,
+    "sha": "0da24abbd0f7fa36bbca17175ee255f2e0e8b1c8",
+    "sha256": "53a7829acd81931d4d42c3ed2ec8a3eda35eff23eda228d40515eae0f0eee138"
+  },
+  {
+    "path": "en/js/assistant.js",
+    "size": 27216,
+    "sha": "28fd888ed4b8d2c1bb7ed5d16a48d87701491811",
+    "sha256": "4edcb9c02e39de4249218d7435001b335511488ba14e0d79d25edbc4969c6e7d"
+  },
+  {
+    "path": "en/js/config.js",
+    "size": 177,
+    "sha": "0b7eb93ee69f29eabe6a226bf738b3389b788ea9",
+    "sha256": "8900826e7b23e60f1e3ebb08092f5f9682041a77e8566fd33f545b1ba80f74f3"
+  },
+  {
+    "path": "en/js/data/content.js",
+    "size": 47224,
+    "sha": "4872d22eb552a689614f8fc7c2ec521d7cb28748",
+    "sha256": "4331b2bb01e303718f524231a20acdc2c646118c591ac41d339af00a948df144"
+  },
+  {
+    "path": "en/js/i18n-route.js",
+    "size": 2198,
+    "sha": "3a021cdc14d93971cf6c2f41c79e208476aa39a8",
+    "sha256": "c9a813d59c950dbee8513ed3c466535040e657124ea3ce4dc008d3ab0ac47975"
+  },
+  {
+    "path": "en/manifest.webmanifest",
+    "size": 641,
+    "sha": "b044b3939dffc10ef1faf62cc2fb3949ae16278e",
+    "sha256": "c34f5828a9c41f67bbacd137788a5b2c9980dc2964a2f99b13b1592485dd7997"
+  },
+  {
+    "path": "en/my-trip.html",
+    "size": 6123,
+    "sha": "95aa80f7922bb1060c1fb310b623b30a525e8f04",
+    "sha256": "97381188de5bfb223f679cada3b1ffde8e84ac3fd474df03aa9f50c828bc17d2"
+  },
+  {
+    "path": "en/offline.html",
+    "size": 1864,
+    "sha": "7ffe11783e2ff38f4df9714d535559f89d3f9855",
+    "sha256": "e9531e49f82359b10da71b45aa6a4049787a6b4680be02842de8c185fe15822b"
+  },
+  {
+    "path": "en/place.html",
+    "size": 5727,
+    "sha": "3aaf917cfc231d47d2b84f1bbe12a8f84e6fddcb",
+    "sha256": "534cdf36d8d98d6147eec35e8e7d64d8d67fa13fc17269210d35a120fd9691a5"
+  },
+  {
+    "path": "en/planner.html",
+    "size": 13262,
+    "sha": "0c232dbb6fab63c60f93c6f585d54c244a914cd0",
+    "sha256": "b66e60f8c9f711da51cfb40f37d9a94abc9e8ee8a60ef4b576fd0cc854b37728"
+  },
+  {
+    "path": "en/privacy.html",
+    "size": 4583,
+    "sha": "aa6a436ee41466f940fecadb4198ef3556af7ea8",
+    "sha256": "603b9f69099a9ac45e4bdb88a8992dd941bfb8e7a8333dae52beaeb45369b86e"
+  },
+  {
+    "path": "en/route.html",
+    "size": 7367,
+    "sha": "734b10816664b674f8305ea9420563e33bb838fb",
+    "sha256": "982aa535298d3cd4030cc070ef342ff2dd9bb1bc58fa3bc1a38f3e829720fa93"
+  },
+  {
+    "path": "en/sw.js",
+    "size": 4926,
+    "sha": "c355b02b93eeb41f728d337d120ca134a367aaa8",
+    "sha256": "8822be78dab0962b8a062bdefc23c5b411c79bda9da87a01b0d01b98be8390d0"
+  },
+  {
+    "path": "events.html",
+    "size": 4746,
+    "sha": "b4556d36bbc2a443a5c509e79e25112e679b9750",
+    "sha256": "c4110ce5bc8c4e771b379a707ad8f6284e42f1bc1f58d68df9540f090d2da03e"
+  },
+  {
+    "path": "explore.html",
+    "size": 10243,
+    "sha": "206ecbdaad2747968803af2da52edbc7a46d1aa1",
+    "sha256": "6d2c6000cc3e3cbb177bf550d0066b540f3e957df0a752a1f6bec081fe63303c"
+  },
+  {
+    "path": "faq.html",
+    "size": 3350,
+    "sha": "a40b38b09625365c4fda527f3cebded809673388",
+    "sha256": "12e6987b8ca6a7a81a084dc12161fd1c5ac1435cffb03fb076c6ba7e9569b9fb"
+  },
+  {
+    "path": "favicon.svg",
+    "size": 335,
+    "sha": "ccf37579a5b31125bd49d7ea04b76359cdbeaf27",
+    "sha256": "58c49610deb51f4540c1adb373deabebb81987a8e822c8a215f2f73eb7861b9d"
+  },
+  {
+    "path": "icons/icon-192.png",
+    "size": 1578,
+    "sha": "56c94c6d644d356d7d6f266eb8e0eff8b211fd27",
+    "sha256": "6de26ad605f0466e9e99ea32ce3427cb57ba3db85e0b112daa96308cd35ba5b8"
+  },
+  {
+    "path": "icons/icon-512.png",
+    "size": 5754,
+    "sha": "4e556d145626de5ce836b3d5cd9fe18a33e63019",
+    "sha256": "ee5d4abac7ca6a14f29174c2912d40439617fb6076c78cf876547b9024b34b17"
+  },
+  {
+    "path": "index.html",
+    "size": 11113,
+    "sha": "7b964df1533c2e5d656f5227bcef8fe49ab1c0d3",
+    "sha256": "54d4560ddbd8804abea54fe075ba44c9e6ff9d45d09f6bcd73b80bb7cbd1b5cc"
+  },
+  {
+    "path": "ja/404.html",
+    "size": 2045,
+    "sha": "4a70f605803697202ca0978bc449e4321f6626fc",
+    "sha256": "38524491c611d7c404e69dc9db1ca752b3ba8cd8b5662e9d7605d515314c2116"
+  },
+  {
+    "path": "ja/about.html",
+    "size": 5026,
+    "sha": "1068ad14a6ef0f0b029b6474568315235913f8d2",
+    "sha256": "3a49573e8310d220811dc15ae8e308426526158faedee4b1b527d2875aa70807"
+  },
+  {
+    "path": "ja/app/404.html",
+    "size": 2090,
+    "sha": "8a2ad9c6613e89a6f51db8a3fcf7fade2530f5c0",
+    "sha256": "de55b08dcd9017729b2cb7da3b10c6703408df65e1f2b873ea229a1dc10e3f1e"
+  },
+  {
+    "path": "ja/app/about.html",
+    "size": 5071,
+    "sha": "a4533069fe5025406d0f030719400a5375895b64",
+    "sha256": "cd36fa7dc5ec019298af546c86dc1050f51c83f8d55d585eba35729823631d80"
+  },
+  {
+    "path": "ja/app/assistant.html",
+    "size": 4299,
+    "sha": "99331ccf83cf42c539b552576edabfcc07e12ea8",
+    "sha256": "5b0ad77ccf9f6375e8d868f0b033951a20957794e43e4e4834b54f3d53307f83"
+  },
+  {
+    "path": "ja/app/city.html",
+    "size": 7023,
+    "sha": "1af9936bd3763ea0fa405ec6da2fab2dc2cc9aa8",
+    "sha256": "796eea167c169e68c4ed4074897ac966180e9667a5630d7f5db913f2460deb7a"
+  },
+  {
+    "path": "ja/app/community.html",
+    "size": 7893,
+    "sha": "0361130094e16cc0c0e364301bf5fd87b1511455",
+    "sha256": "252e3e6e2910faed644e6d6a78385c375a81201cf311a297e589f744f60fadbb"
+  },
+  {
+    "path": "ja/app/consult.html",
+    "size": 14777,
+    "sha": "0afb31dff2e4a56ed5a090073de9c69302e6d378",
+    "sha256": "2b85585c8a3074f2505b7439fbada6ee7587f27c8004f7c11221b5f9d46c5bb9"
+  },
+  {
+    "path": "ja/app/events.html",
+    "size": 5156,
+    "sha": "b0a63171b0a4fa63dddcb05cb291ad208b210a6f",
+    "sha256": "bd307faf88da7790cda574c5ca985cc759f63ed2e8f84961d0200b4c249227b6"
+  },
+  {
+    "path": "ja/app/explore.html",
+    "size": 10876,
+    "sha": "38a7324a5579179960917fc89b43509b3eab4801",
+    "sha256": "67d27133ac337caefc3510d753534e3faa25424f1b4e63beb806de1b4b0d9ae8"
+  },
+  {
+    "path": "ja/app/faq.html",
+    "size": 3605,
+    "sha": "d12b7573b8bc0db3109128d6e6780d946c785f1e",
+    "sha256": "baebbd009e00239bfd1e95104a9e42051d3b695e60a0ff9b2e4aa35a8a2f7b38"
+  },
+  {
+    "path": "ja/app/index.html",
+    "size": 11357,
+    "sha": "b4e678bfe7e5539afb7b975f8a97fc35a8677b14",
+    "sha256": "46c4a49cd5d71af838d9f9e35740c7c707c670483f0b684585cb75a2830d0e49"
+  },
+  {
+    "path": "ja/app/manifest.webmanifest",
+    "size": 631,
+    "sha": "20699f8deb014d6d912f7270525bf5209a6a7dc9",
+    "sha256": "349ef3dd974a8c490c56f47acc3bc9911a2bb8ce99895680b1301494f00b6163"
+  },
+  {
+    "path": "ja/app/my-trip.html",
+    "size": 6385,
+    "sha": "97d19c0aa63a90250c8d691024e034283f58bf8e",
+    "sha256": "a6318449237ae68c88a050c9d8ff3ec30125ce62c6f529d3c137a907fdda3d3d"
+  },
+  {
+    "path": "ja/app/offline.html",
+    "size": 1997,
+    "sha": "b2502318b41973986f928d9a9ebe09acd3c74250",
+    "sha256": "7d34009a2575ede6d5f9a1a03b0b30562f9aa60d23686db5f425b6c35d26e35b"
+  },
+  {
+    "path": "ja/app/photo-guide.html",
+    "size": 11842,
+    "sha": "51fb638e56b43ac43f197295be7b66f3bcd87a4c",
+    "sha256": "70f1cd248e4c5c823fdebf1924045246aae68fbfe3c3441c4b219dc52557bbf0"
+  },
+  {
+    "path": "ja/app/place.html",
+    "size": 5978,
+    "sha": "53e9040055c168cf7c8c8e062e7119d8f5529d71",
+    "sha256": "731dcf535f381d32f72f827410c81587b4a8b3762d756e1ec88ac09226ef3921"
+  },
+  {
+    "path": "ja/app/planner.html",
+    "size": 13929,
+    "sha": "d91ddad77a859ff5532e170d5d4646d2713798a6",
+    "sha256": "a83e199d9338191fbec50591a1cf4d729576eed841fa23f8b61f0696daaf6a4a"
+  },
+  {
+    "path": "ja/app/privacy.html",
+    "size": 4968,
+    "sha": "67aca378a47e4b96c4660b1d7ed2081b67e57beb",
+    "sha256": "a02630658b1daa842b785834f929b52830347ae7bc72a1b5415b125fad8b7021"
+  },
+  {
+    "path": "ja/app/route.html",
+    "size": 7812,
+    "sha": "ea30bba19b554ce476b552f33d9062762c4ec719",
+    "sha256": "a27fe4086f41e8190f7facb0a3b36e6963b67b96dabc19cf3284c74d12138bc7"
+  },
+  {
+    "path": "ja/app/sw.js",
+    "size": 5036,
+    "sha": "6b385281fa05ecce85af26c521a0a9448708f97d",
+    "sha256": "1bcf9a1cfb9edc189d1ef32b4ba70b712598c735c3cb3c293c2ac77e9a49d9c0"
+  },
+  {
+    "path": "ja/assets/img/brand-mark.svg",
+    "size": 465,
+    "sha": "1561cfe8e5e4203e99a5d038f17023e697ab17f7",
+    "sha256": "f44cbc9313046ec0db7ecf29849724fc8e79fda1dc0af5d6128c010fb067da94"
+  },
+  {
+    "path": "ja/assets/img/city-hangzhou.svg",
+    "size": 1837,
+    "sha": "145bc31733e61c13a46998c99c0d2b78154cd52a",
+    "sha256": "63b8083e6a1d1f48762d915cf78bbd73df1386da10bb6e2a039a5f74d0e84795"
+  },
+  {
+    "path": "ja/assets/img/city-ningbo.svg",
+    "size": 2200,
+    "sha": "799b6acacfab61c4900f882aeeadd8eecfe3b4b0",
+    "sha256": "5d8bdd11014dc337b031c59f61bbeaa6227fd5237d232c63fdf13b0a7696fb8e"
+  },
+  {
+    "path": "ja/assets/img/city-shanghai.svg",
+    "size": 2078,
+    "sha": "dd99b11ad667d33cc4402f502919ccb8df8a5f88",
+    "sha256": "cdbcf4142141768e7ad58dd00b272ecd460285406846d3b1bd8314bbe0605d9b"
+  },
+  {
+    "path": "ja/assets/img/city-shaoxing.svg",
+    "size": 1473,
+    "sha": "ec2ff86c5d9f3c28868660f324123e6aadded2ab",
+    "sha256": "42933f180beff8319aae9f5d43719a3b1aa5857c909236680e433f5c1985a7c8"
+  },
+  {
+    "path": "ja/assets/img/city-zhoushan.svg",
+    "size": 1502,
+    "sha": "7bc316943ef804b9d6b90e59a2a6bac3f548f9b2",
+    "sha256": "235e1b35a0ff454627de8d5e628e7e25942f045cc13c8b1508c79f6eea20cefa"
+  },
+  {
+    "path": "ja/assets/img/hero-art.svg",
+    "size": 1863,
+    "sha": "ba41baea449f6f2268e20c7f301c7150bc03ba56",
+    "sha256": "6bad8d6e88c096533e7a6946e2b94afed8e8f3af36ee983aff941fa974d6b4c8"
+  },
+  {
+    "path": "ja/assets/img/sample-kiosk.svg",
+    "size": 1405,
+    "sha": "b64b6bb4146219905a2de8dea6dbeb6745343381",
+    "sha256": "4be7b235987a2c6c4153c9c1407baadc5a5e3637f70a6d176aebbd73c73c4ad0"
+  },
+  {
+    "path": "ja/assets/img/sample-locker.svg",
+    "size": 1587,
+    "sha": "ccae2b13d35852ccf667d294679884a7be41cc30",
+    "sha256": "2d5554500a009e35fe550a9ec71293a7a78ef033488102234f976d2a70150e19"
+  },
+  {
+    "path": "ja/assets/img/sample-menu.svg",
+    "size": 1709,
+    "sha": "39e3402d9d961422318a5d4f6c9d6d4f38df8f9f",
+    "sha256": "7e042ee88410e9eb044610833adf1485687e8ccab9eddeaf8bbf016580e5a4fb"
+  },
+  {
+    "path": "ja/assets/img/sample-signage.svg",
+    "size": 1421,
+    "sha": "94ec2a1734c5177dbc7a7628a3c7d1865887fdf9",
+    "sha256": "f0f2c6e35948c204f795ddd92e11dfebde92da56a46832f36197691101f41cbd"
+  },
+  {
+    "path": "ja/assets/img/sample-ticket-machine.svg",
+    "size": 2009,
+    "sha": "15e3abb02ec5e7334cc7ae1f69b6a648b819e927",
+    "sha256": "728f9e086cd051223cc03c5001a17a0d0bfd2db933903e6cc0e59391e8213ec0"
+  },
+  {
+    "path": "ja/assets/img/theme-architecture.svg",
+    "size": 485,
+    "sha": "0df98a40aa892a9d47f338211f55915bc2af7ad3",
+    "sha256": "6aae5a5c8d383eebc2c5c61d246e12b1e73622fa26c504811fd75e08dbe711f2"
+  },
+  {
+    "path": "ja/assets/img/theme-buddhist.svg",
+    "size": 376,
+    "sha": "ab8ce1098ce69764047debf45a022fef578fd4a6",
+    "sha256": "f58be55f719fc5f3df79dcfd2225e9b34fc149ee9eb7b7550fd2ab00c844cf9c"
+  },
+  {
+    "path": "ja/assets/img/theme-family.svg",
+    "size": 472,
+    "sha": "426185e59c7500045ac18c5098a7a5f7d8a96c11",
+    "sha256": "030b6b1ee761ccbb36a0745dbe7dc0f2cbd94eb2557acf34caafcd16c7806abf"
+  },
+  {
+    "path": "ja/assets/img/theme-food.svg",
+    "size": 464,
+    "sha": "1ccd5fe3aa936504ef83ff370d5ff901b04a0bbc",
+    "sha256": "6f5b76bf5c710d51a6a4f82ff52a1063274493da16eaa5400e5922db4f6b0968"
+  },
+  {
+    "path": "ja/assets/img/theme-port.svg",
+    "size": 470,
+    "sha": "b27344d79a254d8b20731cf41a2a6e01925d40e3",
+    "sha256": "dfc4073d28292e75297da93b458cddc878a3649524f43fe27cae92f2fbb5ee03"
+  },
+  {
+    "path": "ja/assets/img/theme-slow.svg",
+    "size": 485,
+    "sha": "7fa56b6c786406b2762ec7535eb70b2a4636d05d",
+    "sha256": "899c19ddfcbfb8098cf392dfb4349bd8d65c1b313539832e19c28fbb741bd6e6"
+  },
+  {
+    "path": "ja/assets/img/theme-walk.svg",
+    "size": 503,
+    "sha": "59b0978642ace9d0accc70997b93f0b10388e4a5",
+    "sha256": "6390854759b756fdbe46a3652c6e9d919668816c6168c765fb7ed90b08ec2e98"
+  },
+  {
+    "path": "ja/assistant.html",
+    "size": 4248,
+    "sha": "845f71a1b729900a255bbfe292f753bd1b4f0c61",
+    "sha256": "01b25aaf9b6b76a0d1fed598055634625a7e76c3d734a4327bb96090219bb4e8"
+  },
+  {
+    "path": "ja/city.html",
+    "size": 6978,
+    "sha": "2180d8e21662168b3fe74c4e3fc6b03ba7715905",
+    "sha256": "7d51eeed35a38cc5b7c241f8d20e0ddd4fac698fa8583d05715afbe5cc0843f2"
+  },
+  {
+    "path": "ja/community.html",
+    "size": 7848,
+    "sha": "f982080d537c1947857c153fea060aa06cd04c5a",
+    "sha256": "ecbbe5354456c6bab7d2eb074f5b87f56dd4f253027113235138bfd50b08a177"
+  },
+  {
+    "path": "ja/consult.html",
+    "size": 14732,
+    "sha": "6d627eee740713e7e0a7bffa6e6491802e6bc476",
+    "sha256": "bef1372f880225622351f7850e6fd8643267cf99e53429955734d6fa85fa49cc"
+  },
+  {
+    "path": "ja/css/i18n.css",
+    "size": 1610,
+    "sha": "66328c39a5c9ae85a5cd20b4c5bc0040a0bab8e8",
+    "sha256": "ff3e1580379cdd9ac6a3b1dcaa642e3253b60e3fd6eeb2b3d6223e5900aa5705"
+  },
+  {
+    "path": "ja/css/styles.css",
+    "size": 31256,
+    "sha": "f806742fb3a86b27499a4660120d570e86c0dd24",
+    "sha256": "5e4915c641f69abca5f0c23ce48bbc1aa4d7d35f209adacef439a67dde643ab1"
+  },
+  {
+    "path": "ja/events.html",
+    "size": 5111,
+    "sha": "5081bd1a0b064bd29a96d6cec7bc64f13bc8bc30",
+    "sha256": "dc7a36a705a9afb616466fbcf36c183efa990cc3ab0ec0642bd9bea50debf016"
+  },
+  {
+    "path": "ja/explore.html",
+    "size": 10831,
+    "sha": "3fe19d700ba5eaf36c987c8adeef59ccad650cdd",
+    "sha256": "eff133937fe3d744e11081ef6ca3967c9e6008a28ae48500d96210d7002e72b6"
+  },
+  {
+    "path": "ja/faq.html",
+    "size": 3560,
+    "sha": "242e293d30214b3a03c836e52d0197ba76b4044d",
+    "sha256": "307c49406af8f9293019ac3a6a71700c7a57b451781252013ab37d5de73ede1a"
+  },
+  {
+    "path": "ja/favicon.svg",
+    "size": 335,
+    "sha": "ccf37579a5b31125bd49d7ea04b76359cdbeaf27",
+    "sha256": "58c49610deb51f4540c1adb373deabebb81987a8e822c8a215f2f73eb7861b9d"
+  },
+  {
+    "path": "ja/icons/icon-192.png",
+    "size": 1578,
+    "sha": "56c94c6d644d356d7d6f266eb8e0eff8b211fd27",
+    "sha256": "6de26ad605f0466e9e99ea32ce3427cb57ba3db85e0b112daa96308cd35ba5b8"
+  },
+  {
+    "path": "ja/icons/icon-512.png",
+    "size": 5754,
+    "sha": "4e556d145626de5ce836b3d5cd9fe18a33e63019",
+    "sha256": "ee5d4abac7ca6a14f29174c2912d40439617fb6076c78cf876547b9024b34b17"
+  },
+  {
+    "path": "ja/index.html",
+    "size": 11557,
+    "sha": "8c9e590595f93672d5d94d0e055a1c587b416a86",
+    "sha256": "c4324a4dbf16f2cb6ebad193ff25b9e33b70416660742f934c3bf3fe399b9ae3"
+  },
+  {
+    "path": "ja/js/app.js",
+    "size": 28878,
+    "sha": "526e53ccd6fdb3e939d7a63fe25bb91868969cb9",
+    "sha256": "06072183953ad19269d190bd70384a84d1f672ce6af4c14b2b71c4d2f58385e8"
+  },
+  {
+    "path": "ja/js/assistant.js",
+    "size": 27514,
+    "sha": "163b29ce7db09db0888b3bc6c65361f73c167568",
+    "sha256": "da525018835a14db83c2dcb68ef9f9a6725e2db663a5af6cfab830fd07fa43e0"
+  },
+  {
+    "path": "ja/js/config.js",
+    "size": 177,
+    "sha": "0b7eb93ee69f29eabe6a226bf738b3389b788ea9",
+    "sha256": "8900826e7b23e60f1e3ebb08092f5f9682041a77e8566fd33f545b1ba80f74f3"
+  },
+  {
+    "path": "ja/js/data/content.js",
+    "size": 58284,
+    "sha": "5991426c4c084aad464d8c89f67f94f36f822ba0",
+    "sha256": "6721cf2900de0a2ffbacd3541c849ee5932ff54257b3da1ba9bd5c98a48be6ac"
+  },
+  {
+    "path": "ja/js/i18n-route.js",
+    "size": 2198,
+    "sha": "3a021cdc14d93971cf6c2f41c79e208476aa39a8",
+    "sha256": "c9a813d59c950dbee8513ed3c466535040e657124ea3ce4dc008d3ab0ac47975"
+  },
+  {
+    "path": "ja/manifest.webmanifest",
+    "size": 621,
+    "sha": "f40ac5ef62ef3c664b15163ad08b7c0eb43e7153",
+    "sha256": "a6b8102646329fe9d055d6f4c80e010ef3e5d1746b1eb7ee95160413f171f489"
+  },
+  {
+    "path": "ja/my-trip.html",
+    "size": 6337,
+    "sha": "d1f66567628b31a3601a5f90b88a06f12f4ae580",
+    "sha256": "dd287cba6371f1343b6434fe04931b3673823618850f299e4e550a2940e13b65"
+  },
+  {
+    "path": "ja/offline.html",
+    "size": 1952,
+    "sha": "4e0b7cd138ed86e873695ebf8cc7917d4150f7b1",
+    "sha256": "bfe90102d3f1b675b07c5b044bfbebc840abe23c6f35616d83193744f6e52047"
+  },
+  {
+    "path": "ja/place.html",
+    "size": 5938,
+    "sha": "bc26c7d537eafe03900887a3909af0c68645d055",
+    "sha256": "871b5c573236cf6bb2b38a81c67888cc92d2254274786639e96fd69f33e326ec"
+  },
+  {
+    "path": "ja/planner.html",
+    "size": 13884,
+    "sha": "e0516894f487fde7fd2b839cf8649bf3cc37e8e3",
+    "sha256": "b7279d91db837f35d2a0f801f447fc9d3f7a61d40b7b103589cd5557ffc067f8"
+  },
+  {
+    "path": "ja/privacy.html",
+    "size": 4923,
+    "sha": "3713c08b325a14c797e1b3a8bd659c500757b1a4",
+    "sha256": "5e9cf3cf0ff024b2f71747878740673fb8b8be7f71984214b1306d35af83c66b"
+  },
+  {
+    "path": "ja/route.html",
+    "size": 7767,
+    "sha": "ccd147d68ccbe00f5e1d6c5116dfeb82f5b5ae04",
+    "sha256": "e23a91e08e470fa5b220fb2d36ff670fff9628cfeddfdfbcd890f70ed467dd8f"
+  },
+  {
+    "path": "ja/sw.js",
+    "size": 4926,
+    "sha": "3a7b2aea69dfb609f4e9f4e0a0c6690ddac51c00",
+    "sha256": "d535bd53ffcaf69ed1999a4740c7f2a459ca98fdb39aa83af7943e3541d13efa"
+  },
+  {
+    "path": "js/app.js",
+    "size": 28162,
+    "sha": "51d316b07158ff15cc0441225b6af7fecf322474",
+    "sha256": "18b8c239dff90b722764a074181ff53aa62bc572546d080233bb5a5db031f17c"
+  },
+  {
+    "path": "js/assistant.js",
+    "size": 27058,
+    "sha": "9a96e7e4b03a89ac47136fc91d8b69ea7c1bdb11",
+    "sha256": "74e089642603fbeb8310261c663a1c7e7888bdaa76c26f6cfafe34df7b9911b5"
+  },
+  {
+    "path": "js/config.js",
+    "size": 177,
+    "sha": "0b7eb93ee69f29eabe6a226bf738b3389b788ea9",
+    "sha256": "8900826e7b23e60f1e3ebb08092f5f9682041a77e8566fd33f545b1ba80f74f3"
+  },
+  {
+    "path": "js/data/content.js",
+    "size": 52866,
+    "sha": "f5a6f19d200629371851ace034ffab20bd14ca96",
+    "sha256": "5f6eeb6826634dbb547a1e3c8b46eb6301bfb57415b5133725aaefa54a593e38"
+  },
+  {
+    "path": "js/i18n-route.js",
+    "size": 2198,
+    "sha": "3a021cdc14d93971cf6c2f41c79e208476aa39a8",
+    "sha256": "c9a813d59c950dbee8513ed3c466535040e657124ea3ce4dc008d3ab0ac47975"
+  },
+  {
+    "path": "ko/404.html",
+    "size": 2034,
+    "sha": "1eff47a2042baaa89440c238237b168185462a93",
+    "sha256": "a361098f29be52c8597cb0826ccc722c47c4793fb6e041cdd7d20f7add234a5e"
+  },
+  {
+    "path": "ko/about.html",
+    "size": 4915,
+    "sha": "d1df867d6b2179b66c6dde797998095d4602f114",
+    "sha256": "071f2ec22c2dd8b18961e9799363326c59552019e61628e3445c13b6929df488"
+  },
+  {
+    "path": "ko/app/404.html",
+    "size": 2079,
+    "sha": "4f6108b5a7813d68f89b28b6d06c336a082771c2",
+    "sha256": "9497617d15a7c39f749ddeeb2c562fb63238fcf186c17b0393fc6f92528c6d66"
+  },
+  {
+    "path": "ko/app/about.html",
+    "size": 4960,
+    "sha": "01c38ccdf3a2dd0aa2272271dadf058bb739272c",
+    "sha256": "55f344d4dce5444f8894db3de8fda1f2c6d9937522054c728a0f63fb5c3d6a56"
+  },
+  {
+    "path": "ko/app/assistant.html",
+    "size": 4337,
+    "sha": "621e690723cf99b4ffc4d50da43e320e09b1e1e6",
+    "sha256": "a240db6020580e4a0ab4db50792b3fce3dc2ca298d70fbe8ca26307371daf954"
+  },
+  {
+    "path": "ko/app/city.html",
+    "size": 6909,
+    "sha": "10f4e55e076d82946b3e2bf71fee6b28aa3271f0",
+    "sha256": "e4fa3f89e3ae801f72b95dcbefa2be59dfc371ad0974df218ad4d84f4c0057dc"
+  },
+  {
+    "path": "ko/app/community.html",
+    "size": 7879,
+    "sha": "2283dc879edf99f8adb6823651b81ea0ce500ca8",
+    "sha256": "244860c04c743cf96c95738c561c94d629128ecbdda07d96198150df21c7aae6"
+  },
+  {
+    "path": "ko/app/consult.html",
+    "size": 14781,
+    "sha": "da375dab74bbf3c341d60c34df06aa932e2f9017",
+    "sha256": "b20122c8cb08071645578183411bdd126a201914c79c81ea9d0ac6612ea6b81a"
+  },
+  {
+    "path": "ko/app/events.html",
+    "size": 5037,
+    "sha": "fbabf183ec42b527341bd7fcd4260e7b8725f37c",
+    "sha256": "5edc74ee48e3cd7afb9d87f2258cc776da0788bdc1c4bea0230b7ce9e4336ab3"
+  },
+  {
+    "path": "ko/app/explore.html",
+    "size": 10660,
+    "sha": "4764288cf4b669f15e7c958f2a508b5aafec94f7",
+    "sha256": "e42f9de060979176592593fbab55e70a2bba11fbcfbce4e69e45641ca41864f4"
+  },
+  {
+    "path": "ko/app/faq.html",
+    "size": 3610,
+    "sha": "05eac290e071b7f8219caba83ab025aa23136b88",
+    "sha256": "3d46974e18f215d6132d1b3f805172c2e976dab90ea37f1b7932f32b1f260a5a"
+  },
+  {
+    "path": "ko/app/index.html",
+    "size": 11275,
+    "sha": "f286c624aa8f707d1fa9b8a9fddfeadd3c32dc1b",
+    "sha256": "caf43c135e86a1550b9bfeacdb5db8c67a716d6e7fc6366b55d1eca3c3642a8c"
+  },
+  {
+    "path": "ko/app/manifest.webmanifest",
+    "size": 638,
+    "sha": "66e628fc74396db17a44526647c3415e7b6ac46a",
+    "sha256": "d71ea82d268eb15095d7e5c275e06284a85506ea09b00d5a0bf2a487c78d334e"
+  },
+  {
+    "path": "ko/app/my-trip.html",
+    "size": 6361,
+    "sha": "249edec05278de4b0a8b4c264a5a1526e5565fda",
+    "sha256": "34fb078b310604dc4986f88c768d4f1603f85a9fb770867418987ccb711c7872"
+  },
+  {
+    "path": "ko/app/offline.html",
+    "size": 1968,
+    "sha": "19a49b5fd1881896513b1f5fc31df3fd1312289e",
+    "sha256": "1068eea41b6fcc95bd55723123d352df7c1c3238ea3810d2be5bb7207ac67fa7"
+  },
+  {
+    "path": "ko/app/photo-guide.html",
+    "size": 11826,
+    "sha": "2dcfa72daddcef63fd484d40637acffe7fceb943",
+    "sha256": "43e87f53f30c04bad208bb7b82b1f1d741073c3671314cffa97c01ead911ea84"
+  },
+  {
+    "path": "ko/app/place.html",
+    "size": 5877,
+    "sha": "0bf09878ef6e45e4133fd472f2478a7a33893b62",
+    "sha256": "f1c49e1526e95697743b14a5631e1c8cf7e30baf84078cdcd4a52c617f102316"
+  },
+  {
+    "path": "ko/app/planner.html",
+    "size": 13737,
+    "sha": "5231757338c787148e1f78cfa7b1189f900aa4dc",
+    "sha256": "07276be7cb000b50984756ca1e1cdc6d2660ab215e0b91dc2344201db95e5010"
+  },
+  {
+    "path": "ko/app/privacy.html",
+    "size": 4988,
+    "sha": "e85fa6ade43b36364e2a3744d7e19f830155cb49",
+    "sha256": "9ca4502afe920e5248cf23a0fc4a46e06fd401a32c14743d3173670f26e55fd1"
+  },
+  {
+    "path": "ko/app/route.html",
+    "size": 7658,
+    "sha": "99b6eaa52ce304086164a8f89ca5b4e924a0ac4c",
+    "sha256": "a96f23baca4117aa78923463143ce04b3753b0de20f7939daa3aa8aa824f02fd"
+  },
+  {
+    "path": "ko/app/sw.js",
+    "size": 5036,
+    "sha": "6f2ee48d1b9c22c6aa79abc4b4de722b62b80228",
+    "sha256": "2cfb9c9b237d9bdf7938c80a7edec806af0aa308be875afff32feb1837ba4614"
+  },
+  {
+    "path": "ko/assets/img/brand-mark.svg",
+    "size": 465,
+    "sha": "1561cfe8e5e4203e99a5d038f17023e697ab17f7",
+    "sha256": "f44cbc9313046ec0db7ecf29849724fc8e79fda1dc0af5d6128c010fb067da94"
+  },
+  {
+    "path": "ko/assets/img/city-hangzhou.svg",
+    "size": 1837,
+    "sha": "145bc31733e61c13a46998c99c0d2b78154cd52a",
+    "sha256": "63b8083e6a1d1f48762d915cf78bbd73df1386da10bb6e2a039a5f74d0e84795"
+  },
+  {
+    "path": "ko/assets/img/city-ningbo.svg",
+    "size": 2200,
+    "sha": "799b6acacfab61c4900f882aeeadd8eecfe3b4b0",
+    "sha256": "5d8bdd11014dc337b031c59f61bbeaa6227fd5237d232c63fdf13b0a7696fb8e"
+  },
+  {
+    "path": "ko/assets/img/city-shanghai.svg",
+    "size": 2078,
+    "sha": "dd99b11ad667d33cc4402f502919ccb8df8a5f88",
+    "sha256": "cdbcf4142141768e7ad58dd00b272ecd460285406846d3b1bd8314bbe0605d9b"
+  },
+  {
+    "path": "ko/assets/img/city-shaoxing.svg",
+    "size": 1473,
+    "sha": "ec2ff86c5d9f3c28868660f324123e6aadded2ab",
+    "sha256": "42933f180beff8319aae9f5d43719a3b1aa5857c909236680e433f5c1985a7c8"
+  },
+  {
+    "path": "ko/assets/img/city-zhoushan.svg",
+    "size": 1502,
+    "sha": "7bc316943ef804b9d6b90e59a2a6bac3f548f9b2",
+    "sha256": "235e1b35a0ff454627de8d5e628e7e25942f045cc13c8b1508c79f6eea20cefa"
+  },
+  {
+    "path": "ko/assets/img/hero-art.svg",
+    "size": 1863,
+    "sha": "ba41baea449f6f2268e20c7f301c7150bc03ba56",
+    "sha256": "6bad8d6e88c096533e7a6946e2b94afed8e8f3af36ee983aff941fa974d6b4c8"
+  },
+  {
+    "path": "ko/assets/img/sample-kiosk.svg",
+    "size": 1405,
+    "sha": "b64b6bb4146219905a2de8dea6dbeb6745343381",
+    "sha256": "4be7b235987a2c6c4153c9c1407baadc5a5e3637f70a6d176aebbd73c73c4ad0"
+  },
+  {
+    "path": "ko/assets/img/sample-locker.svg",
+    "size": 1587,
+    "sha": "ccae2b13d35852ccf667d294679884a7be41cc30",
+    "sha256": "2d5554500a009e35fe550a9ec71293a7a78ef033488102234f976d2a70150e19"
+  },
+  {
+    "path": "ko/assets/img/sample-menu.svg",
+    "size": 1709,
+    "sha": "39e3402d9d961422318a5d4f6c9d6d4f38df8f9f",
+    "sha256": "7e042ee88410e9eb044610833adf1485687e8ccab9eddeaf8bbf016580e5a4fb"
+  },
+  {
+    "path": "ko/assets/img/sample-signage.svg",
+    "size": 1421,
+    "sha": "94ec2a1734c5177dbc7a7628a3c7d1865887fdf9",
+    "sha256": "f0f2c6e35948c204f795ddd92e11dfebde92da56a46832f36197691101f41cbd"
+  },
+  {
+    "path": "ko/assets/img/sample-ticket-machine.svg",
+    "size": 2009,
+    "sha": "15e3abb02ec5e7334cc7ae1f69b6a648b819e927",
+    "sha256": "728f9e086cd051223cc03c5001a17a0d0bfd2db933903e6cc0e59391e8213ec0"
+  },
+  {
+    "path": "ko/assets/img/theme-architecture.svg",
+    "size": 485,
+    "sha": "0df98a40aa892a9d47f338211f55915bc2af7ad3",
+    "sha256": "6aae5a5c8d383eebc2c5c61d246e12b1e73622fa26c504811fd75e08dbe711f2"
+  },
+  {
+    "path": "ko/assets/img/theme-buddhist.svg",
+    "size": 376,
+    "sha": "ab8ce1098ce69764047debf45a022fef578fd4a6",
+    "sha256": "f58be55f719fc5f3df79dcfd2225e9b34fc149ee9eb7b7550fd2ab00c844cf9c"
+  },
+  {
+    "path": "ko/assets/img/theme-family.svg",
+    "size": 472,
+    "sha": "426185e59c7500045ac18c5098a7a5f7d8a96c11",
+    "sha256": "030b6b1ee761ccbb36a0745dbe7dc0f2cbd94eb2557acf34caafcd16c7806abf"
+  },
+  {
+    "path": "ko/assets/img/theme-food.svg",
+    "size": 464,
+    "sha": "1ccd5fe3aa936504ef83ff370d5ff901b04a0bbc",
+    "sha256": "6f5b76bf5c710d51a6a4f82ff52a1063274493da16eaa5400e5922db4f6b0968"
+  },
+  {
+    "path": "ko/assets/img/theme-port.svg",
+    "size": 470,
+    "sha": "b27344d79a254d8b20731cf41a2a6e01925d40e3",
+    "sha256": "dfc4073d28292e75297da93b458cddc878a3649524f43fe27cae92f2fbb5ee03"
+  },
+  {
+    "path": "ko/assets/img/theme-slow.svg",
+    "size": 485,
+    "sha": "7fa56b6c786406b2762ec7535eb70b2a4636d05d",
+    "sha256": "899c19ddfcbfb8098cf392dfb4349bd8d65c1b313539832e19c28fbb741bd6e6"
+  },
+  {
+    "path": "ko/assets/img/theme-walk.svg",
+    "size": 503,
+    "sha": "59b0978642ace9d0accc70997b93f0b10388e4a5",
+    "sha256": "6390854759b756fdbe46a3652c6e9d919668816c6168c765fb7ed90b08ec2e98"
+  },
+  {
+    "path": "ko/assistant.html",
+    "size": 4286,
+    "sha": "2e91814985596a834da5d6366b940a2443c1475b",
+    "sha256": "c7f1e304f45ae0a28de0ede47ac5a0be9df5a603124bf42dcdb962f2ba2beba6"
+  },
+  {
+    "path": "ko/city.html",
+    "size": 6864,
+    "sha": "e6380d40c5225599fa14eefa9e356d50f3627d28",
+    "sha256": "55f39346688897528b3b754f19298aa5232881fb2c60b373c31881f1908c3a1d"
+  },
+  {
+    "path": "ko/community.html",
+    "size": 7834,
+    "sha": "166c3e34e52b3c42f30c505f8d5f8bcd3e684d9c",
+    "sha256": "b636d97149662acd90302f40bc8a890f1c34a7ed2e81663ee0cfa8348c969e15"
+  },
+  {
+    "path": "ko/consult.html",
+    "size": 14736,
+    "sha": "32caddc34e538454686d70f6fa4809e8a7b292f7",
+    "sha256": "f791a8ee4524a7bf04455797794032df8dae40d935ffbf730f3359c62870adbc"
+  },
+  {
+    "path": "ko/css/i18n.css",
+    "size": 1610,
+    "sha": "66328c39a5c9ae85a5cd20b4c5bc0040a0bab8e8",
+    "sha256": "ff3e1580379cdd9ac6a3b1dcaa642e3253b60e3fd6eeb2b3d6223e5900aa5705"
+  },
+  {
+    "path": "ko/css/styles.css",
+    "size": 31256,
+    "sha": "f806742fb3a86b27499a4660120d570e86c0dd24",
+    "sha256": "5e4915c641f69abca5f0c23ce48bbc1aa4d7d35f209adacef439a67dde643ab1"
+  },
+  {
+    "path": "ko/events.html",
+    "size": 4992,
+    "sha": "86e82dc7a77237819d7b86dad3d251f0b7f9c28a",
+    "sha256": "d81db58fdecb3a86724286c3658f8218276716cd24297d086decf6d0e184f5d3"
+  },
+  {
+    "path": "ko/explore.html",
+    "size": 10615,
+    "sha": "e4156783011e3c15fce613d4542ee448f3612089",
+    "sha256": "34a5740c7500af479fd4231b570e2ad4c99b2a260d54e29bd7536ce38aae0936"
+  },
+  {
+    "path": "ko/faq.html",
+    "size": 3565,
+    "sha": "608c016912c636d8997f1296b2d01d1111775de8",
+    "sha256": "f6094daca871ba39fee47f795498386dba980ec22e76c2af9123cee4f6db4197"
+  },
+  {
+    "path": "ko/favicon.svg",
+    "size": 335,
+    "sha": "ccf37579a5b31125bd49d7ea04b76359cdbeaf27",
+    "sha256": "58c49610deb51f4540c1adb373deabebb81987a8e822c8a215f2f73eb7861b9d"
+  },
+  {
+    "path": "ko/icons/icon-192.png",
+    "size": 1578,
+    "sha": "56c94c6d644d356d7d6f266eb8e0eff8b211fd27",
+    "sha256": "6de26ad605f0466e9e99ea32ce3427cb57ba3db85e0b112daa96308cd35ba5b8"
+  },
+  {
+    "path": "ko/icons/icon-512.png",
+    "size": 5754,
+    "sha": "4e556d145626de5ce836b3d5cd9fe18a33e63019",
+    "sha256": "ee5d4abac7ca6a14f29174c2912d40439617fb6076c78cf876547b9024b34b17"
+  },
+  {
+    "path": "ko/index.html",
+    "size": 11513,
+    "sha": "d7d0f23bdf79578193a0e2ccaf8ab00c928d9fae",
+    "sha256": "04b36606a0a7680976d917066b21468d0aa60d9e16b4b84456e3fda2a630b945"
+  },
+  {
+    "path": "ko/js/app.js",
+    "size": 28628,
+    "sha": "405bca14fc6a1cbaf59aadf2b5ced87bce0a698c",
+    "sha256": "55e4a7e979f1e0ea10795d970e82a0bbd839d62f97c0209986dd86cd93454b39"
+  },
+  {
+    "path": "ko/js/assistant.js",
+    "size": 28403,
+    "sha": "c4699fa5f1ac745cdebe837e7c6d6fdfcb7aea09",
+    "sha256": "458052f779b1f3fa0204a45a924b93083c46b0e68537cacaec173cb18b187d6a"
+  },
+  {
+    "path": "ko/js/config.js",
+    "size": 177,
+    "sha": "0b7eb93ee69f29eabe6a226bf738b3389b788ea9",
+    "sha256": "8900826e7b23e60f1e3ebb08092f5f9682041a77e8566fd33f545b1ba80f74f3"
+  },
+  {
+    "path": "ko/js/data/content.js",
+    "size": 57743,
+    "sha": "6bb0093d9db2afe95d2e99d37b29567f8f74e8df",
+    "sha256": "c1fb1c414ff50445b2778cd02df91d0aecf2247cbd80e656e567cbcd280b46fd"
+  },
+  {
+    "path": "ko/js/i18n-route.js",
+    "size": 2198,
+    "sha": "3a021cdc14d93971cf6c2f41c79e208476aa39a8",
+    "sha256": "c9a813d59c950dbee8513ed3c466535040e657124ea3ce4dc008d3ab0ac47975"
+  },
+  {
+    "path": "ko/manifest.webmanifest",
+    "size": 628,
+    "sha": "cbe3cba6273cedbd8fb1ab3bea102d9578e25e0a",
+    "sha256": "07f44e5005ef5e2d783d77849d427643586155c7651cc8a5bf79192d14fc5fcc"
+  },
+  {
+    "path": "ko/my-trip.html",
+    "size": 6313,
+    "sha": "686fa5ccdd20158ecaf1c765d6a5496dcf997c91",
+    "sha256": "fb87e2a4092ffe3071738ee635654e812b145ecf63ed8e393795cab82795d211"
+  },
+  {
+    "path": "ko/offline.html",
+    "size": 1923,
+    "sha": "65db3a04b2a4a26a3631c571e3ef279f85a02d42",
+    "sha256": "917adf06a3c810d3e7d1557222851985e91042ebe99e6821b79fb07eabb56aef"
+  },
+  {
+    "path": "ko/place.html",
+    "size": 5837,
+    "sha": "889cd3ffe5c30a709843354392ead49d27c83d17",
+    "sha256": "88855e7b6a8f2e931365d2efbe73ebf61e92c8b50eabcde2189ea05d2aff2e47"
+  },
+  {
+    "path": "ko/planner.html",
+    "size": 13692,
+    "sha": "58d0294ff62ad6d67353fbc853f1bb9e93555ffe",
+    "sha256": "aef7bc0182506c3d6e0602c83848b46ade9e0f474b0bcaaf35ec0dc73b661acb"
+  },
+  {
+    "path": "ko/privacy.html",
+    "size": 4943,
+    "sha": "b70e1cbb0512f5b0526f4037ff81c0fe7843401c",
+    "sha256": "db0884ded61187706256729a428ac1f8775ddbb690220971a04288f899e72038"
+  },
+  {
+    "path": "ko/route.html",
+    "size": 7613,
+    "sha": "d6d2668c53362b1b8d7445366ef568dd77a5a4f4",
+    "sha256": "88413690caaf6dfac4e3938dfa8f0566fc043e30cc987785b069197095f5ca0c"
+  },
+  {
+    "path": "ko/sw.js",
+    "size": 4926,
+    "sha": "f9308550cd4f8b0b23c156538c8765bb7e4e3110",
+    "sha256": "8b7c13b63f21475e257a61ad51cc1c2d28cb03c2e1e2641964f74ebcb1dc95ee"
+  },
+  {
+    "path": "manifest.webmanifest",
+    "size": 638,
+    "sha": "5daa498c04469d7777f459f0a091f4a33f89e221",
+    "sha256": "51153c350e907cc775c527e8b36c33a03ba9e7fe4fdd1d9e9acfc9b494e56f0a"
+  },
+  {
+    "path": "my-trip.html",
+    "size": 5938,
+    "sha": "1da9c13ca335e8f0b0cd7f28852a711c4249fb12",
+    "sha256": "758dc52cff63c2bd122c3f528185882acf56b7127b7c08272707b8ed076b8cce"
+  },
+  {
+    "path": "offline.html",
+    "size": 1681,
+    "sha": "1cb6f209dd131f808119754dbe2330afb23637f0",
+    "sha256": "22c28fa26cd07688eae9a4dbbc7681eee6f7d79784cc052fd2177b1cba69f05c"
+  },
+  {
+    "path": "place.html",
+    "size": 5524,
+    "sha": "222666dbcc1a96dbef8a20e5572c0e33b8b43c37",
+    "sha256": "7cfa75abd8bdbb0c2a883a16d34a4f603d0236eac62213bd7fd3e27e7b04baab"
+  },
+  {
+    "path": "planner.html",
+    "size": 13077,
+    "sha": "e04243eb129aef8e2e84ba2e42d1c82a0a6b4d73",
+    "sha256": "88bfd6b2b0cea161181f3a2e9e963b2fa419d6a410e4b8af8b7b2e8b3dbb8a0f"
+  },
+  {
+    "path": "privacy.html",
+    "size": 4400,
+    "sha": "2e09af42edc512dcec91dc60e3cf502f41357ce1",
+    "sha256": "6ff0e7be76798ef5618c32a74a32d168c4a4f9080db0fdc4dcfbaa38f5514149"
+  },
+  {
+    "path": "route.html",
+    "size": 7157,
+    "sha": "075e73abe2589bf45bff62be0d9ef38d30bb25d2",
+    "sha256": "0a58dc717c5f8f508380d5a6f2b631bc6a2a3036b72ef26683c904827044e0ba"
+  },
+  {
+    "path": "sw.js",
+    "size": 4928,
+    "sha": "b7049b70f65d2de4d735bc9b6dfb7e5896c113af",
+    "sha256": "592cb2264c6b306448c178d851b3f9c11c5b36dd8474fb36ad67700c24cf8847"
+  }
+]

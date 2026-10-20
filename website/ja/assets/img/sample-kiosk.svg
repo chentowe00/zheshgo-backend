@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480" role="img" aria-label="Sample illustration of a restaurant self-ordering kiosk">
+  <rect width="600" height="480" fill="#F2EEE4"/>
+  <rect x="140" y="40" width="320" height="400" rx="14" fill="#FFFDF8" stroke="#22302E" stroke-width="5"/>
+  <rect x="170" y="75" width="260" height="190" rx="8" fill="#E8EFE7" stroke="#22302E" stroke-width="4"/>
+  <g fill="#3D6B5C">
+    <rect x="195" y="95" width="80" height="14" rx="3"/>
+    <rect x="195" y="120" width="56" height="10" rx="3" opacity="0.7"/>
+  </g>
+  <g>
+    <rect x="195" y="150" width="100" height="40" rx="6" fill="#F0E6D9"/>
+    <rect x="305" y="150" width="100" height="40" rx="6" fill="#E8EFE7"/>
+    <rect x="195" y="200" width="100" height="40" rx="6" fill="#E8EFE7"/>
+    <rect x="305" y="200" width="100" height="40" rx="6" fill="#F0E6D9"/>
+  </g>
+  <rect x="195" y="285" width="210" height="52" rx="8" fill="#A67C52"/>
+  <g fill="#22302E">
+    <circle cx="235" cy="365" r="15"/><circle cx="305" cy="365" r="15"/>
+  </g>
+  <rect x="400" y="348" width="40" height="34" rx="6" fill="none" stroke="#22302E" stroke-width="3.5"/>
+  <line x1="420" y1="358" x2="420" y2="372" stroke="#22302E" stroke-width="3.5"/>
+  <text x="300" y="438" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#77837C" letter-spacing="2">SAMPLE ILLUSTRATION — DEMO ONLY</text>
+</svg>

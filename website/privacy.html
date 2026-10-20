@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Privacy &amp; your data · ZheshGo</title>
+  <meta name="description" content="What ZheshGo stores in your browser, why, and how to export or delete it."/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">Privacy</p>
+        <h1>Everything stays in your browser</h1>
+        <p class="lead">This demo has no accounts, no cookies, no trackers and no backend. Here's exactly what gets stored where.</p>
+      </div>
+    </div>
+
+    <div class="wrap page page-narrow">
+      <table class="fact-table">
+        <tbody>
+          <tr><th>Saved routes &amp; places</th><td>Your My Trip list — browser localStorage only. Export or clear it from <a href="my-trip.html">My Trip</a>.</td></tr>
+          <tr><th>Activity log</th><td>Which features you used (e.g. opened a guide, saved a route). Stored locally, plus <strong>anonymized aggregate counts</strong> (feature name only — no personal data, no content) are sent to our server to learn what's useful. See it at <a href="events.html">the activity log page</a>; clear it there anytime.</td></tr>
+          <tr><th>Consult form</th><td>Your submission goes to our human team and is used only to reply to you. Fields are optional and limited to what's needed (dates, group, interests, contact). We never see or store payment credentials or full ID documents. If the server can't be reached, the note is kept in your browser only.</td></tr>
+          <tr><th>Community draft</th><td>Questions you post in the demo stay local and are labeled as such.</td></tr>
+          <tr><th>Photos</th><td>The photo guide never opens your camera and nothing is uploaded — it uses preset sample images.</td></tr>
+          <tr><th>What we never ask for</th><td>Passwords, payment codes, passport or ID numbers, health records. If anything ever asks for these, treat it as suspicious.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="flex mt2">
+        <button class="btn btn-secondary" type="button" id="clear-all">Clear all demo data in this browser</button>
+        <a class="btn btn-ghost" href="events.html">View activity log</a>
+      </div>
+      <p class="small muted mt2">Questions about privacy? Use the <a href="consult.html">human help form</a>.</p>
+    </div>
+<section class="wrap page"><h2>AI travel questions</h2><p>Questions you submit to the AI assistant are sent over HTTPS to ZheshGo's Hong Kong backend and Alibaba Cloud Qwen to generate a reply. Do not include passport numbers, payment details, passwords or other sensitive personal information. The App photo guide still uses sample images and does not upload photos for AI recognition.</p></section>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.getElementById("clear-all").addEventListener("click", function () {
+      if (confirm("Clear all ZheshGo demo data from this browser? (saved trip, activity log, consult draft, community posts)")) {
+        ["zheway:trip", "zheway:events", "zheway:consultDraft", "zheway:consultSubmitted", "zheway:community"].forEach(function (k) {
+          try { localStorage.removeItem(k); } catch (e) { /* storage blocked */ }
+        });
+        ZW.toast("All demo data cleared");
+      }
+    });
+  </script>
+</body>
+</html>

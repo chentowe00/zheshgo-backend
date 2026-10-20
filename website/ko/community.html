@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>여행 이야기 · ZheshGo</title>
+  <meta name="description" content="ZheshGo 여행자들이 질문과 코스 이야기를 나누는 공간이에요. 현재 게시물은 예시로 표시돼 있어요."/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/community.html"/><link rel="alternate" hreflang="ja" href="/ja/community.html"/><link rel="alternate" hreflang="ko" href="/ko/community.html"/><link rel="stylesheet" href="css/i18n.css"/><script src="js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="explore">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">여행 이야기 · 데모</p>
+        <h1>여행하며 궁금한 것들</h1>
+        <p class="lead">여행 질문과 수정 의견을 나누기 위한 공간이에요. 아래 글은 모두 예시이며, 현재는 커뮤니티 이용 흐름을 보여주는 데모예요.</p>
+      </div>
+    </div>
+
+    <div class="wrap page page-narrow">
+      <div class="note-box info"><h4>이 공간의 이용 방법</h4>짧은 질문이나 여행 후기를 나누고, 도움이 되는 답변은 가이드에도 반영하려고 해요. 가상의 팔로워나 이용 실적은 만들지 않아요.</div>
+
+      <div id="threads"></div>
+
+      <hr class="divider"/>
+      <h2 class="mt0">질문 남기기</h2>
+      <p class="small muted">질문은 편집팀 검토를 거쳐 공개돼요. 서버에 연결되지 않으면 이 브라우저에만 저장돼요.</p>
+      <form id="ask-form" class="planner-card">
+        <div class="field">
+          <label for="ask-title">질문 내용</label>
+          <textarea class="input" id="ask-title" rows="3" placeholder="예: 5월에 6살 아이와 둥첸호에서 하루를 보내도 괜찮을까요?" required></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">등록하기(데모)</button>
+      </form>
+      <div id="ask-done" class="note-box" style="border-left-color:var(--bamboo);background:var(--bamboo-soft)" hidden>
+        <h4>이 브라우저에 저장했어요</h4>아래 목록에서 내 질문으로 확인할 수 있어요. 정식 서비스에서는 편집팀이 검토한 뒤 공개할 예정이에요.</div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="모바일 메뉴"></nav>
+
+  <script src="js/data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var SAMPLES = [
+        {
+          q: "짐이 있을 때 항저우에서 닝보로 어떻게 가면 좋을까요?",
+          a: "항저우 동역에서 고속철로 약 1시간이지만, 날짜별 시간표는 확인이 필요해요. 역의 짐 보관소 이용 시간도 여유 있게 잡아 주세요. 항저우→닝보 코스에서 함께 안내해요.",
+          by: "편집팀 답변",
+          tag: "예시 · 교통",
+        },
+        {
+          q: "닝보 해산물은 여름에도 괜찮을까요, 가을이 나을까요?",
+          a: "가을·겨울 해산물이 잘 알려져 있지만 어종과 수급에 따라 달라져요. 여름에는 당일 재료와 조리법을 확인하고, 특정 제철 메뉴만 기대하기보다 선택지를 열어두세요.",
+          by: "편집팀 답변",
+          tag: "예시 · 먹거리",
+        },
+        {
+          q: "수정 의견: 라오와이탄은 시내에서 걸어갈 수 있어요. 지하철 D 출구를 확인해 주세요.",
+          a: "의견 감사합니다. 다음 정보 점검 때 출구 번호를 확인한 뒤 가이드를 수정할게요.",
+          by: "편집팀 답변",
+          tag: "예시 · 수정 의견",
+        },
+      ];
+      var box = document.getElementById("threads");
+      var serverItems = [];
+      function render() {
+        var local = [];
+        try {
+          var raw = JSON.parse(localStorage.getItem("zheway:community") || "[]");
+          if (Array.isArray(raw)) local = raw;
+        } catch (e) {}
+        var server = serverItems.map(function (x) {
+          return { q: x.question, a: "편집팀이 검토하고 공개한 여행자 질문이에요.", by: "여행자 질문(검토 완료)", tag: "여행자 이야기" };
+        });
+        box.innerHTML = server.concat(SAMPLES).concat(local.map(function (x) { return { q: x.q, a: "내 질문 — 현재 데모에서는 이 브라우저에만 저장돼요. 공개 전 편집팀 검토가 필요해요.", by: "나(데모)", tag: "이 기기에만 저장 · 비공개" }; }))
+          .map(function (t) {
+            return (
+              '<article class="card mb2"><div class="card-body">' +
+              '<div class="flex" style="justify-content:space-between;gap:8px"><span class="pill-demo" style="font-size:.72rem">' + ZW.esc(t.tag) + "</span></div>" +
+              '<h3 class="card-title mt1">' + ZW.esc(t.q) + "</h3>" +
+              '<p class="card-desc">' + ZW.esc(t.a) + "</p>" +
+              '<p class="card-meta mb0">— ' + ZW.esc(t.by) + "</p>" +
+              "</div></article>"
+            );
+          }).join("");
+      }
+      // load editor-approved traveler questions
+      fetch("/api/v1/submissions/published").then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { if (d && d.items) { serverItems = d.items; render(); } })
+        .catch(function () { /* offline — samples only */ });
+      document.getElementById("ask-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var q = document.getElementById("ask-title").value.trim();
+        if (!q) return;
+        var done = document.getElementById("ask-done");
+        fetch("/api/v1/submissions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: q }),
+        }).then(function (res) {
+          if (!res.ok) throw new Error("http");
+          document.getElementById("ask-title").value = "";
+          done.innerHTML = "<h4>검토를 요청했어요</h4>질문이 편집팀에 전달됐어요. 승인되면 다른 여행자에게도 공개돼요.";
+          done.hidden = false;
+        }).catch(function () {
+          var local = [];
+          try { local = JSON.parse(localStorage.getItem("zheway:community") || "[]") || []; } catch (err) {}
+          local.push({ q: q, at: Date.now() });
+          try { localStorage.setItem("zheway:community", JSON.stringify(local)); } catch (err2) { ZW.toast("저장 기능을 이용할 수 없어 질문이 유지되지 않아요."); }
+          document.getElementById("ask-title").value = "";
+          done.innerHTML = "<h4>이 기기에 저장했어요 · 데모 모드</h4>서버에 연결되지 않아 편집팀에 전송하지 못했어요. 이 브라우저에만 저장돼요.";
+          done.hidden = false;
+          render();
+        });
+        ZW.log("community_ask", { len: q.length });
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>

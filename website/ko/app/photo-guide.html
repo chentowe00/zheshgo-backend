@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>사진 가이드 · ZheshGo App</title>
+  <meta name="description" content="App 전용 기능: 매표기·보관함·주문 기기·메뉴·역 안내판의 단계별 사용법을 살펴보세요. 현재는 모의 인식이에요."/>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#3D6B5C"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+<link rel="alternate" hreflang="en" href="/en/app/photo-guide.html"/><link rel="alternate" hreflang="ja" href="/ja/app/photo-guide.html"/><link rel="alternate" hreflang="ko" href="/ko/app/photo-guide.html"/><link rel="stylesheet" href="../css/i18n.css"/><script src="../js/i18n-route.js?v=20261016-ko-picker-2"></script></head>
+<body data-page="photoguide" data-app="app">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="section-eyebrow">App 기능 · 사진 가이드</p>
+        <h1>기기 앞에서 막막할 때, 한 단계씩</h1>
+        <p class="lead">매표기와 보관함, 주문 기기, 메뉴, 역 안내판의 사용 흐름을 살펴보세요. 현재는 샘플 이미지와 모의 매칭을 사용하며 사진을 업로드하거나 실제 AI 인식을 하지 않아요.</p>
+      </div>
+    </div>
+
+    <div class="wrap page">
+      <div class="note-box warn mb2" role="status">
+        <h4>모의 인식 · 이용 흐름을 보여주는 데모예요</h4>시설을 고르고 샘플 이미지로 안내를 확인해 보세요. 스캔→매칭→단계별 안내→확인의 흐름을 미리 볼 수 있어요.</div>
+
+      <div class="pg-stage">
+        <div class="pg-screen" id="pg-screen" aria-live="polite"></div>
+      </div>
+
+      <div class="note-box info mt2">
+        <h4>실제 기능 도입 시 개인정보 원칙</h4>사진은 시설에 맞는 안내를 제공하는 데만 사용하고, 판매·공개하거나 기본 설정으로 학습에 이용하지 않는 것을 원칙으로 준비하고 있어요. 비밀번호·결제 코드·여권·신분증 번호는 요청하지 않아요.</div>
+
+      <p class="small muted mt2">이 기능은 ZheshGo App에서만 제공해요. 웹사이트에는 카메라·이미지 인식 기능이 없어요.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="App 메뉴"></nav>
+
+  <script src="../js/data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var screen = document.getElementById("pg-screen");
+      var guides = ZW.CONTENT.photoGuides;
+      var current = null;
+      var stepIdx = 0;
+
+      function facilityIcon(g) {
+        if (g.id === "pg-locker") return "shield";
+        if (g.id === "pg-menu") return "trip";
+        if (g.id === "pg-signage") return "search";
+        return "camera";
+      }
+
+      function showPicker() {
+        current = null; stepIdx = 0;
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">어떤 시설인가요?</h3>" +
+          "<p class=\"muted small\">시설을 고르면 해당 가이드와 연결하는 과정을 보여드려요.</p>" +
+          '<div class="pg-choices mt2">' +
+          guides.map(function (g) {
+            return (
+              '<button class="pg-choice" type="button" data-guide="' + g.id + '">' +
+              '<span class="ico">' + ZW.icon(facilityIcon(g)) + "</span>" +
+              "<span><b>" + ZW.esc(g.facility) + "</b><span>" + ZW.esc(g.scenario) + "</span></span>" +
+              "</button>"
+            );
+          }).join("") +
+          "</div></div>";
+        screen.querySelectorAll(".pg-choice").forEach(function (b) {
+          b.addEventListener("click", function () {
+            current = guides.find(function (g) { return g.id === b.getAttribute("data-guide"); });
+            showCapture();
+          });
+        });
+        ZW.log("photo_start", { phase: "picker" });
+      }
+
+      function showCapture() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">사진 대상: " + ZW.esc(current.facility) + "</h3>" +
+          '<div class="pg-sample"><img src="' + ZW.esc(current.sampleImage) + '" alt="Sample illustration of ' + ZW.esc(current.facility) + '"/></div>' +
+          "<p class=\"small muted\">미리 준비한 샘플 이미지예요. 카메라를 켜거나 사진을 업로드하지 않아요.</p>" +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-scan\">샘플 확인하기</button>" +
+          "<button class=\"btn btn-ghost\" type=\"button\" id=\"pg-back\">다른 시설 선택</button>" +
+          "</div></div>";
+        document.getElementById("pg-scan").addEventListener("click", showScanning);
+        document.getElementById("pg-back").addEventListener("click", showPicker);
+      }
+
+      function showScanning() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">맞는 가이드를 찾는 중…</h3>" +
+          '<div class="pg-sample" style="opacity:.85"><img src="' + ZW.esc(current.sampleImage) + '" alt=""/></div>' +
+          '<div class="pg-progress"><i class="on"></i><i class="on"></i><i></i><i></i></div>' +
+          "<p class=\"small muted\">모의 인식이에요. 정식 사진 인식 기능은 아직 도입 전이에요.</p>" +
+          "</div>";
+        ZW.log("photo_scan", { facility: current.id });
+        setTimeout(function () {
+          if (current.confidence === "low") showLowConfidence();
+          else showMatched();
+        }, 1300);
+      }
+
+      function showLowConfidence() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          "<h3 style=\"font-family:var(--sans)\">정확하게 구분하기 어려워요</h3>" +
+          "<p class=\"muted\">메뉴는 형태가 다양해 일치 여부를 판단하기 어려워요. 어떤 안내가 필요하신가요?</p>" +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-use-tutorial\">일반 메뉴 안내 보기</button>" +
+          "<button class=\"btn btn-secondary\" type=\"button\" id=\"pg-retake\">다른 샘플 보기</button>" +
+          "<a class=\"btn btn-ghost\" href=\"consult.html?topic=photo-guide\">담당자에게 상담</a>" +
+          "</div></div>";
+        document.getElementById("pg-use-tutorial").addEventListener("click", showMatched);
+        document.getElementById("pg-retake").addEventListener("click", showCapture);
+        ZW.log("photo_low_confidence", { facility: current.id });
+      }
+
+      function showMatched() {
+        stepIdx = 0;
+        screen.innerHTML =
+          '<div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">' +
+          '<div class="pg-sample" style="max-width:180px;margin:0"><img src="' + ZW.esc(current.sampleImage) + '" alt=""/></div>' +
+          "<div style=\"flex:1;min-width:220px\">" +
+          "<span class=\"pill-demo\">모의 매칭 · 신뢰도: " + ZW.esc(current.confidence) + "</span>" +
+          '<h3 class="mt1" style="font-family:var(--sans)">' + ZW.esc(current.scenario) + "</h3>" +
+          '<p class="small muted mb0">' + ZW.esc(current.verifyNote) + "</p>" +
+          "</div></div>" +
+          '<div class="pg-progress" id="pg-progress" style="margin-top:20px"></div>' +
+          '<div id="pg-step"></div>' +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-secondary\" type=\"button\" id=\"pg-prev\" hidden>이전</button>" +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-next\">다음 단계</button>" +
+          "<button class=\"btn btn-ghost\" type=\"button\" id=\"pg-quit\">가이드 종료</button>" +
+          "</div>";
+        renderStep();
+        document.getElementById("pg-prev").addEventListener("click", function () { stepIdx--; renderStep(); });
+        document.getElementById("pg-next").addEventListener("click", function () {
+          if (stepIdx < current.steps.length - 1) { stepIdx++; renderStep(); }
+          else showDone();
+        });
+        document.getElementById("pg-quit").addEventListener("click", function () {
+          ZW.log("photo_abandon", { facility: current.id, atStep: stepIdx + 1, total: current.steps.length });
+          showPicker();
+        });
+        ZW.log("photo_matched", { facility: current.id });
+      }
+
+      function renderStep() {
+        var s = current.steps[stepIdx];
+        var prog = document.getElementById("pg-progress");
+        prog.innerHTML = current.steps.map(function (_, i) { return '<i class="' + (i <= stepIdx ? "on" : "") + '"></i>'; }).join("");
+        document.getElementById("pg-step").innerHTML =
+          '<div class="pg-step"><span class="pg-step-num">' + (stepIdx + 1) + "</span><div>" +
+          "<h4>" + ZW.esc(s.title) + "</h4><p>" + ZW.esc(s.detail) + "</p>" +
+          (s.tip ? "<p class=\"tip\">팁: " + ZW.esc(s.tip) + "</p>" : "") +
+          "</div></div>";
+        document.getElementById("pg-prev").hidden = stepIdx === 0;
+        document.getElementById("pg-next").textContent =
+          stepIdx === current.steps.length - 1 ? "Done" : "다음 단계";
+        ZW.log("photo_step", { facility: current.id, step: stepIdx + 1 });
+      }
+
+      function showDone() {
+        screen.innerHTML =
+          '<div class="pg-center">' +
+          '<span class="pill-verify" style="background:var(--bamboo-soft);color:var(--bamboo);border-color:#C9D8C4">' + ZW.icon("check") + " 안내 완료</span>" +
+          "<h3 class=\"mt1\" style=\"font-family:var(--sans)\">문제가 해결됐나요?</h3>" +
+          "<p class=\"muted small\">답변은 이 기능이 실제로 필요한지 판단하는 데 도움이 돼요.</p>" +
+          '<div class="pg-actions">' +
+          "<button class=\"btn btn-primary\" type=\"button\" id=\"pg-yes\">네, 해결됐어요</button>" +
+          "<button class=\"btn btn-secondary\" type=\"button\" id=\"pg-no\">아직 어려워요</button>" +
+          "</div>" +
+          "<div id=\"pg-stuck\" class=\"note-box warn\" style=\"text-align:left\" hidden><h4>다른 도움이 필요하군요</h4>정식 기능에서는 다시 촬영하거나 시설을 선택하고 담당자에게 문의하도록 안내할 예정이에요. 지금은 <a href=\"consult.html?topic=photo-guide\">직접 상담해 주세요</a>.</div>" +
+          "</div>";
+        document.getElementById("pg-yes").addEventListener("click", function () {
+          ZW.log("photo_complete", { facility: current.id, solved: true });
+          ZW.toast("감사해요. 해결됨으로 기록했어요");
+          showPicker();
+        });
+        document.getElementById("pg-no").addEventListener("click", function () {
+          ZW.log("photo_complete", { facility: current.id, solved: false });
+          ZW.log("human_handoff", { from: "photo_guide", facility: current.id });
+          document.getElementById("pg-stuck").hidden = false;
+        });
+      }
+
+      showPicker();
+    })();
+  </script>
+</body>
+</html>
