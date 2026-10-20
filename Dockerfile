@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Serve the existing visitor pages and the AI API from one HTTPS origin.
 # Caddy obtains a public certificate for the current instance EIP.
-RUN apk add --no-cache caddy curl
+RUN apk add --no-cache caddy curl openssl
 
 # Copy the whole app (respects .dockerignore: secrets & runtime state excluded)
 COPY . .
