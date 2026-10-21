@@ -146,7 +146,7 @@ async function main() {
   assert.deepEqual(attempts.map(a => a.model), ['qwen3.8-flash', 'qwen3.8-omni-flash']);
   rejectedFlash = false;
 
-  for(const [locale,pattern] of [['en',/clear English/],['ja',/natural Japanese/],['ko',/natural Korean/]]) {
+  for(const [locale,pattern] of [['en',/clear English/],['ja',/natural Japanese/],['ko',/natural Korean/],['zh-hant',/Traditional Chinese/]]) {
     const res=await request(base+'/api/v1/assistant/chat',{method:'POST',body:{locale,messages:[{role:'user',content:'닝보에서 하루 코스를 추천해 주세요.'}]}});
     assert.equal(res.status,200);await res.json();assert.match(received.input[0].content,pattern);
   }
