@@ -1025,7 +1025,7 @@ function handlePublicApi(req, res, parts) {
       if (!body || body === null) return sendError(res, 400, "BAD_JSON", "Invalid request.");
       const raw = Array.isArray(body.messages) ? body.messages : [];
       const locale = body.locale === undefined ? "en" : body.locale;
-      if (!["en", "ja", "ko"].includes(locale)) return sendError(res, 400, "UNSUPPORTED_LOCALE", "Supported page languages: en, ja, ko.");
+      if (!["en", "zh-hant", "ja", "ko"].includes(locale)) return sendError(res, 400, "UNSUPPORTED_LOCALE", "Supported page languages: en, zh-hant, ja, ko.");
       // The server supplies the system instruction. Client history is untrusted
       // and cannot supply system, developer or tool messages.
       const conversation = raw
@@ -1038,6 +1038,8 @@ function handlePublicApi(req, res, parts) {
         ? "Gather evidence across source languages, consolidate the facts and trade-offs in English internally, then translate the final answer into natural Japanese. Show only the Japanese answer unless the traveler asks otherwise. Use concise, friendly desu/masu prose and preserve original Chinese place names where useful for navigation."
         : locale === "ko"
         ? "Gather evidence across source languages, consolidate the facts and trade-offs in English internally, then translate the final answer into natural Korean. Show only the Korean answer unless the traveler asks otherwise. Use concise, friendly haeyo-style polite Korean and practical travel terms such as itinerary, walking route and pre-trip checks. Use established Korean place names where known (Shanghai: 상하이, Hangzhou: 항저우, Ningbo: 닝보, West Lake: 서호, Tianyi Pavilion: 천일각), and preserve original Chinese names where useful for maps. Do not assume a Korean-speaking traveler holds a Korean passport."
+        : locale === "zh-hant"
+        ? "Gather evidence across source languages, then write the final answer in natural Traditional Chinese for Chinese-speaking travelers from Hong Kong, China, Macao, China and Taiwan, China. Show only Traditional Chinese unless the traveler asks otherwise. Use warm, literary but practical travel prose with Jiangnan atmosphere: 行程, 漫步, 核實, 高鐵, 地鐵, 支付寶, 微信支付. Use established Traditional names (上海, 杭州, 寧波, 西湖, 靈隱寺, 天一閣, 外灘, 月湖, 普陀山). Never treat Hong Kong, Macao or Taiwan as independent countries. Travelers from Hong Kong, China and Macao, China usually enter the Chinese mainland with a Mainland Travel Permit for Hong Kong and Macao Residents (回鄉證); travelers from Taiwan, China usually use a Mainland Travel Permit for Taiwan Residents (台胞證). These are dedicated travel documents, not foreign-passport visas. Do not tell those travelers they need a visa unless they are using a foreign passport. Do not invent prices, tickets or opening hours."
         : "Answer in clear English by default.";
       const messages = [{ role: "system", content: AI_SYSTEM + " " + languageInstruction + " Follow an explicit language change requested by the user in the conversation, including subsequent turns.\n\n" + buildContextDigest(conversation) }]
         .concat(conversation);
