@@ -2,7 +2,7 @@ name: Build backend image
 
 on:
   push:
-    branches: [main]
+    branches: [main, codex/zh-hant-locale-20261021]
   workflow_dispatch:
 
 permissions:
